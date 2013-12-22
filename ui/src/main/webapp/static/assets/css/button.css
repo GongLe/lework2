@@ -1,7 +1,7 @@
  /**google style button**/
 
  .btn {
-     padding: 5px 14px 4px;
+     padding: 5px 14px;
      font-size: 13px;
      font-weight:bold;
      line-height: 18px;
@@ -9,7 +9,7 @@
      -webkit-box-shadow: none;
      box-shadow: none;
      background-clip: border-box;
-     font-family: "宋体";
+     font-family: arial;
  }
 
  .btn:hover {

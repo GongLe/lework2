@@ -43,7 +43,9 @@
 <script src="../static/plugins/colorbox/jquery.colorbox.js"></script>
 <!-- easyui css custom theme    -->
 <link rel="stylesheet" href="../static/plugins/easyui/1.3.2/themes/bootstrap/easyui.custom.css" >
-
+<!--icheck-->
+<%--<link rel="stylesheet" href="../static/plugins/iCheck/skins/minimal/blue.css" >
+<script src="../static/plugins/iCheck/icheck.js" ></script>--%>
 <!-- jquery easyui loader-->
 <script src="../static/plugins/easyui/1.3.2/easyloader.js" ></script>
 <script>

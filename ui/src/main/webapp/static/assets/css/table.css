@@ -37,7 +37,7 @@ th, td, .table-bordered {
 }
 .table.table-hover tbody tr:hover td {
 /*    background-color:#f5f5f5;*/
-    background-color:#c4e3f3!important;
+    background-color:#ffc!important;
 }
 .table-nomargin{
     margin: 0;
@@ -523,4 +523,39 @@ div.DTS div.dataTables_scrollBody {
     height: 24px;
     padding: 0 15px 0 24px;
     line-height: 24px;
+}
+
+.row-actions {
+    font-size: 12px;
+    visibility: hidden;
+    padding: 4px 0 0;
+    color: #ddd;
+}
+.row-actions a{
+   text-decoration: none;
+}
+
+.row-actions .danger {
+    color:#a00;
+}
+.row-actions .info {
+    color: #3078eb;
+}
+
+.row-actions .warning {
+    color: #f99e1e;
+}
+.row-actions .danger:hover {
+    color:red;
+}
+
+.row-actions .info:hover {
+    color: #2963eb;
+}
+
+.row-actions .warning:hover {
+    color: #ed9c28;
+}
+tr:hover .row-actions{
+    visibility: visible;
 }
