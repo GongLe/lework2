@@ -12,7 +12,7 @@ var lework = (function ($, lework) {
     var DEFAULTS = {
         onClose: noop,
         content: '', /**html or text **/
-        timer: 6000, /** 6秒后关闭 **/
+        timer: 5000, /** 6秒后关闭 **/
         id: null,
         width: '150px',
         type: '', /**info,success,danger,error**/
@@ -65,7 +65,7 @@ var lework = (function ($, lework) {
             $(this).parent().trigger('close.alert');
         })
         that.$alert.appendTo($container);
-        $('<div class="clearfix" />').appendTo($container);
+      $('<div class="clearfix" />').appendTo($container);
     };
     Alert.prototype.autoColse = function () {
         // debugger;
