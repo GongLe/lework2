@@ -8,7 +8,7 @@
     /*border: 1px solid #cccccc;
     border-width: 0 1px 0 0;
     background-color: #f2f2f2;*/
-    z-index: 1000;
+    z-index: 900;
 }
 
 #sidebar:before {
@@ -28,7 +28,7 @@
 #sidebar.fixed,
 #sidebar#sidebar-fixed {
     position: fixed;
-    z-index: 1029;
+    z-index: 900;
     top: 45px;
     left: 0;
 }

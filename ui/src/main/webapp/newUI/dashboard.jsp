@@ -55,8 +55,7 @@
         </div>
         <div id="main-body">
             <div id="main-body-content">
-                <h3>标题title <button class="btn btn-danger btn-sm" hidefocus="true" >新建</button> </h3>
-
+                <h3>标题title <button class="btn btn-danger btn-sm" hidefocus="true" id="demoCreate">新建</button> </h3>
         <%--        <div class="row">
                     <div class="col-md-12">
                         <div class="pull-right" style="width:250px;">
@@ -67,6 +66,49 @@
                         </div>
                     </div>
                 </div>--%>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default"  >
+
+                            <div class="panel-body" style="padding: 5px 15px;">
+                                <form class="navbar-form" style="padding-top: 0px;padding: 0px 0 0 0;" role="form">
+                                    <div class="btn-group inline" style="font-size: 14px">
+                                        <button type="button" class="btn btn-white"><i class="icon-check-empty"></i> </button>
+                                    </div>
+                                    <div class="btn-group inline" style="font-size: 14px">
+                                        <button type="button" class="btn btn-white"><i class="icon-trash"></i></button>
+                                        <button type="button" class="btn btn-white"><i class="icon-refresh"></i></button>
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div class="pull-right">
+                                        <select class="form-control">
+                                            <option selected="selected" value="0">显示所有类别</option>
+                                            <option value="201312">系统类别</option>
+                                            <option value="201312">业务类别</option>
+                                        </select>
+                                        &nbsp;&nbsp;
+                                        <select class="form-control">
+                                            <option value="Code">编号</option>
+                                            <option value="Account">账户</option>
+                                            <option value="RealName">姓名</option>
+                                            <option value="Mobile">手机号码</option>
+                                            <option value="DepartmentId">部门</option>
+                                        </select>
+                                        <div class="form-group" style="margin-left:-5px;">
+                                            <input type="text" class="form-control" id="exampleInputPassword2" placeholder="搜索">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-white">筛选</button>
+                                        <button type="submit" class="btn btn-link">更多筛选<i class="icon-angle-down"></i></button>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="row">
                     <div class="col-md-12">
@@ -97,8 +139,9 @@
                                           <option value="DepartmentId">部门</option>
                                       </select>
                                       <div class="form-group" style="margin-left:-5px;">
-                                          <input type="text" class="form-control" id="exampleInputPassword2" placeholder="搜索">
+                                          <input type="text" class="form-control" id="cccc" placeholder="搜索">
                                       </div>
+
                                       <%--   <label class="checkbox-inline">
                                              <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
                                          </label>
@@ -121,58 +164,195 @@
                                </form>
 
                         </div>
-                        <div id="table-list_wrapper" class="dataTables_wrapper dataTable-box" role="grid"><div id="table-list_processing" class="dataTables_processing" style="visibility: hidden;">&nbsp;</div>
-                            <table id="table-list" class="table table-hover  table-nomargin table-striped -table-bordered dataTable dataTable-nosort clear-both" aria-describedby="table-list_info">
-                            <thead>
-                            <tr role="row"><th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-label="角色名称: activate to sort column ascending" style="width: 255px;">角色名称</th><th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="角色代码: activate to sort column ascending" style="width: 255px;">角色代码</th><th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="类别: activate to sort column ascending" style="width: 173px;">类别</th><th class="center sorting" tabindex="0" rowspan="1" colspan="1" aria-label="状态: activate to sort column ascending" style="width: 173px;">状态</th><th class="sorting_disabled" tabindex="0" rowspan="1" colspan="1" aria-label="操作" style="width: 125px;">操作</th></tr></thead><tbody role="alert" aria-live="polite" aria-relevant="all"><tr class="odd"><td class=" sorting_1">管理员</td><td class="">admin</td><td class="">系统角色</td><td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td><td class="">
-                            <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                <a class="green tooltips view" href="role/view?id=402881e742e019660142e0248f260007&amp;$SiteMesh=false" data-original-title="查看" onclick="$(this).colorbox({adjustY:'40%',width:'650px',overlayClose:false,scrolling:true,scrolling:false });">
-                                    <i class="icon-zoom-in bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="blue tooltips update" href="role/update?id=402881e742e019660142e0248f260007&amp;$SiteMesh=false" data-original-title="编辑" onclick="$(this).colorbox({ adjustY:'40%',width:'700px',overlayClose:false,scrolling:false });">
-                                    <i class="icon-edit bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="red tooltips confirmDelete" href="javascript:;" data-id="402881e742e019660142e0248f260007" data-original-title="删除" data-hasqtip="1">
-                                    <i class="icon-trash bigger-140 filterSelected"></i>
-                                </a>
+                        <div id="table-list_wrapper" class="dataTables_wrapper dataTable-box" role="grid">
+                            <div id="table-list_processing" class="dataTables_processing" style="visibility: hidden;">
+                                &nbsp;</div>
+                            <table id="table-list"
+                                   class="table table-hover  table-nomargin table-striped -table-bordered dataTable dataTable-nosort clear-both"
+                                   aria-describedby="table-list_info">
+                                <thead>
+                                <tr role="row">
+                                    <th tabindex="0" rowspan="1" colspan="1" style="width:20px;">
+                                        <input type="checkbox">
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1"
+                                        aria-label="角色名称: activate to sort column ascending" style="width: 255px;">角色名称
+                                    </th>
+                                    <th class="sorting" tabindex="0" rowspan="1" colspan="1"
+                                        aria-label="角色代码: activate to sort column ascending" style="width: 255px;">角色代码
+                                    </th>
+                                    <th class="sorting" tabindex="0" rowspan="1" colspan="1"
+                                        aria-label="类别: activate to sort column ascending" style="width: 173px;">类别
+                                    </th>
+                                    <th class="center sorting" tabindex="0" rowspan="1" colspan="1"
+                                        aria-label="状态: activate to sort column ascending" style="width: 173px;">状态
+                                    </th>
+                                    <th class="sorting_disabled" tabindex="0" rowspan="1" colspan="1" aria-label="操作"
+                                        style="width: 125px;">操作
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody role="alert" aria-live="polite" aria-relevant="all">
+                                <tr class="odd">
+                                    <td class=" sorting_1">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td class=" sorting_1">管理员</td>
+                                    <td class="">admin</td>
+                                    <td class="">系统角色</td>
+                                    <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
+                                    <td class="">
+                                        <!-- Single button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-white btn-xs dropdown-toggle normaler" data-toggle="dropdown">
+                                                操作<span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-rowaction" role="menu">
+                                                <li><a href="#">查看</a></li>
+                                                <li><a href="#">修改</a></li>
+                                                <li><a href="#"  style="color: red;">删除</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class=" sorting_1">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td class=" sorting_1">管理员</td>
+                                    <td class="">admin</td>
+                                    <td class="">系统角色</td>
+                                    <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
+                                    <td class="">
+                                        <!-- Single button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-white btn-xs dropdown-toggle normaler" data-toggle="dropdown">
+                                                操作<span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-rowaction" role="menu">
+                                                <li><a href="#">查看</a></li>
+                                                <li><a href="#">修改</a></li>
+                                                <li><a href="#"  style="color: red;">删除</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class=" sorting_1">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td class=" sorting_1">管理员</td>
+                                    <td class="">admin</td>
+                                    <td class="">系统角色</td>
+                                    <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
+                                    <td class="">
+                                        <!-- Single button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-white btn-xs dropdown-toggle normaler" data-toggle="dropdown">
+                                                操作<span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-rowaction" role="menu">
+                                                <li><a href="#">查看</a></li>
+                                                <li><a href="#">修改</a></li>
+                                                <li><a href="#"  style="color: red;">删除</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class=" sorting_1">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td class=" sorting_1">管理员</td>
+                                    <td class="">admin</td>
+                                    <td class="">系统角色</td>
+                                    <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
+                                    <td class="">
+                                        <!-- Single button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-white btn-xs dropdown-toggle normaler" data-toggle="dropdown">
+                                                操作<span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-rowaction" role="menu">
+                                                <li><a href="#">查看</a></li>
+                                                <li><a href="#">修改</a></li>
+                                                <li><a href="#"  style="color: red;">删除</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class=" sorting_1">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td class=" sorting_1">管理员</td>
+                                    <td class="">admin</td>
+                                    <td class="">系统角色</td>
+                                    <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
+                                    <td class="">
+                                        <!-- Single button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-white btn-xs dropdown-toggle normaler" data-toggle="dropdown">
+                                                操作<span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-rowaction" role="menu">
+                                                <li><a href="#">查看</a></li>
+                                                <li><a href="#">修改</a></li>
+                                                <li><a href="#"  style="color: red;">删除</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class=" sorting_1">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td class=" sorting_1">管理员</td>
+                                    <td class="">admin</td>
+                                    <td class="">系统角色</td>
+                                    <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
+                                    <td class="">
+                                        <!-- Single button -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-white btn-xs dropdown-toggle normaler" data-toggle="dropdown">
+                                                操作<span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-rowaction" role="menu">
+                                                <li><a href="#">查看</a></li>
+                                                <li><a href="#">修改</a></li>
+                                                <li><a href="#"  style="color: red;">删除</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="table-footer clearfix">
+                                <div class="dataTables_info" id="table-list_info">显示1到4条,共4条记录</div>
+                                <div class="dataTables_paginate paging_full_numbers" id="table-list_paginate"><a
+                                        tabindex="0" class="first paginate_button paginate_button_disabled"
+                                        id="table-list_first">首页</a><a tabindex="0"
+                                                                       class="previous paginate_button paginate_button_disabled"
+                                                                       id="table-list_previous"> 上一页 </a><span><a
+                                        tabindex="0" class="paginate_active">1</a></span><a tabindex="0"
+                                                                                            class="next paginate_button paginate_button_disabled"
+                                                                                            id="table-list_next">
+                                    下一页 </a><a tabindex="0" class="last paginate_button paginate_button_disabled"
+                                               id="table-list_last"> 尾页 </a></div>
                             </div>
-                        </td></tr><tr class="even"><td class=" sorting_1">普通用户</td><td class="">normalRole</td><td class="">系统角色</td><td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td><td class="">
-                            <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                <a class="green tooltips view" href="role/view?id=402881e742e019660142e02d11b5000b&amp;$SiteMesh=false" data-original-title="查看" onclick="$(this).colorbox({adjustY:'40%',width:'650px',overlayClose:false,scrolling:true,scrolling:false });">
-                                    <i class="icon-zoom-in bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="blue tooltips update" href="role/update?id=402881e742e019660142e02d11b5000b&amp;$SiteMesh=false" data-original-title="编辑" onclick="$(this).colorbox({ adjustY:'40%',width:'700px',overlayClose:false,scrolling:false });">
-                                    <i class="icon-edit bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="red tooltips confirmDelete" href="javascript:;" data-id="402881e742e019660142e02d11b5000b" data-original-title="删除" data-hasqtip="2">
-                                    <i class="icon-trash bigger-140 filterSelected"></i>
-                                </a>
-                            </div>
-                        </td></tr><tr class="odd"><td class=" sorting_1">测试角色-上海分公司01</td><td class="">02</td><td class="">系统角色</td><td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td><td class="">
-                            <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                <a class="green tooltips view" href="role/view?id=402882ee42b34ff50142b358eeba0001&amp;$SiteMesh=false" data-original-title="查看" onclick="$(this).colorbox({adjustY:'40%',width:'650px',overlayClose:false,scrolling:true,scrolling:false });">
-                                    <i class="icon-zoom-in bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="blue tooltips update" href="role/update?id=402882ee42b34ff50142b358eeba0001&amp;$SiteMesh=false" data-original-title="编辑" onclick="$(this).colorbox({ adjustY:'40%',width:'700px',overlayClose:false,scrolling:false });">
-                                    <i class="icon-edit bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="red tooltips confirmDelete" href="javascript:;" data-id="402882ee42b34ff50142b358eeba0001" data-original-title="删除" data-hasqtip="3">
-                                    <i class="icon-trash bigger-140 filterSelected"></i>
-                                </a>
-                            </div>
-                        </td></tr><tr class="even"><td class=" sorting_1">测试角色-上海分公司03</td><td class="">03</td><td class="">系统角色</td><td class="center"><i class="icon-ok-sign bigger-130 red" title="禁用的"></i></td><td class="">
-                            <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-                                <a class="green tooltips view" href="role/view?id=402882ee42b34ff50142b3590a6c0002&amp;$SiteMesh=false" data-original-title="查看" onclick="$(this).colorbox({adjustY:'40%',width:'650px',overlayClose:false,scrolling:true,scrolling:false });">
-                                    <i class="icon-zoom-in bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="blue tooltips update" href="role/update?id=402882ee42b34ff50142b3590a6c0002&amp;$SiteMesh=false" data-original-title="编辑" onclick="$(this).colorbox({ adjustY:'40%',width:'700px',overlayClose:false,scrolling:false });">
-                                    <i class="icon-edit bigger-140 filterSelected"></i>
-                                </a>
-                                <a class="red tooltips confirmDelete" href="javascript:;" data-id="402882ee42b34ff50142b3590a6c0002" data-original-title="删除" data-hasqtip="4">
-                                    <i class="icon-trash bigger-140 filterSelected"></i>
-                                </a>
-                            </div>
-                        </td></tr></tbody></table><div class="table-footer clearfix"><div class="dataTables_info" id="table-list_info">显示1到4条,共4条记录</div><div class="dataTables_paginate paging_full_numbers" id="table-list_paginate"><a tabindex="0" class="first paginate_button paginate_button_disabled" id="table-list_first">首页</a><a tabindex="0" class="previous paginate_button paginate_button_disabled" id="table-list_previous"> 上一页 </a><span><a tabindex="0" class="paginate_active">1</a></span><a tabindex="0" class="next paginate_button paginate_button_disabled" id="table-list_next"> 下一页 </a><a tabindex="0" class="last paginate_button paginate_button_disabled" id="table-list_last"> 尾页 </a></div></div></div>
+                        </div>
 
                     </div>
                 </div>
@@ -184,8 +364,8 @@
 
               <div id="table-list_wrapper2" class="dataTables_wrapper  " role="grid">
                   <div id="table-list_processing1" class="dataTables_processing" style="visibility: hidden;">&nbsp;</div>
-                  <table id="table-list2"
-                         class="table table-nomargin table-striped -table-bordered dataTable dataTable-nosort clear-both"
+                  <table id="table-list2"  cellspacing="0"
+                         class="table table-hover table-striped -table-bordered dataTable dataTable-nosort clear-both"
                          aria-describedby="table-list_info">
                       <thead>
                       <tr role="row">
@@ -211,16 +391,17 @@
                           <td class=" sorting_1">
                               <input type="checkbox" >
                           </td>
-                          <td class=" sorting_1">管理员>>
+                          <td class=" sorting_1"><a href="javascript:;">管理员test长度................</a>
                               <div class="row-actions">
-                                  <span><a href="#" class="info"  >查看</a> | </span>
-                                  <span><a class="info" href="#" title="编辑此项目">编辑</a> | </span>
-                                  <span><a class="danger" href="#">删除</a></span>
-
+                                  <span><a href="#" class="info"  ><i class="icon-refresh"></i></a> | </span>
+                                  <span><a class="info" href="#" title="编辑此项目"><i class="icon-edit"></i></a> | </span>
+                                  <span><a class="danger" href="#"><i class="icon-trash"></i></a></span>
                               </div>
                           </td>
                           <td class="">admin</td>
-                          <td class="">系统角色</td>
+                          <td class="">
+                              god
+                          </td>
                           <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
 
                       </tr>
@@ -228,16 +409,17 @@
                           <td class=" sorting_1">
                               <input type="checkbox" >
                           </td>
-                          <td class=" sorting_1">管理员>>
+                          <td class=" sorting_1"><a href="javascript:;">管理员test长度................</a>
                               <div class="row-actions">
-                                  <span><a href="#" class="info"  >查看</a> | </span>
-                                  <span><a class="info" href="#" title="编辑此项目">编辑</a> | </span>
-                                  <span><a class="danger" href="#">删除</a></span>
-
+                                  <span><a href="#" class="info"  ><i class="icon-refresh"></i></a> | </span>
+                                  <span><a class="info" href="#" title="编辑此项目"><i class="icon-edit"></i></a> | </span>
+                                  <span><a class="danger" href="#"><i class="icon-trash"></i></a></span>
                               </div>
                           </td>
                           <td class="">admin</td>
-                          <td class="">系统角色</td>
+                          <td class="">
+                              god
+                          </td>
                           <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
 
                       </tr>
@@ -245,16 +427,17 @@
                           <td class=" sorting_1">
                               <input type="checkbox" >
                           </td>
-                          <td class=" sorting_1">管理员>>
+                          <td class=" sorting_1"><a href="javascript:;">管理员test长度................</a>
                               <div class="row-actions">
-                                  <span><a href="#" class="info"  >查看</a> | </span>
-                                  <span><a class="info" href="#" title="编辑此项目">编辑</a> | </span>
-                                  <span><a class="danger" href="#">删除</a></span>
-
+                                  <span><a href="#" class="info"  ><i class="icon-refresh"></i></a> | </span>
+                                  <span><a class="info" href="#" title="编辑此项目"><i class="icon-edit"></i></a> | </span>
+                                  <span><a class="danger" href="#"><i class="icon-trash"></i></a></span>
                               </div>
                           </td>
                           <td class="">admin</td>
-                          <td class="">系统角色</td>
+                          <td class="">
+                              god
+                          </td>
                           <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
 
                       </tr>
@@ -262,54 +445,20 @@
                           <td class=" sorting_1">
                               <input type="checkbox" >
                           </td>
-                          <td class=" sorting_1">管理员>>
+                          <td class=" sorting_1"><a href="javascript:;">管理员test长度................</a>
                               <div class="row-actions">
-                                  <span><a href="#" class="info"  >查看</a> | </span>
-                                  <span><a class="info" href="#" title="编辑此项目">编辑</a> | </span>
-                                  <span><a class="danger" href="#">删除</a></span>
-
+                                  <span><a href="#" class="info"  ><i class="icon-refresh"></i></a> | </span>
+                                  <span><a class="info" href="#" title="编辑此项目"><i class="icon-edit"></i></a> | </span>
+                                  <span><a class="danger" href="#"><i class="icon-trash"></i></a></span>
                               </div>
                           </td>
                           <td class="">admin</td>
-                          <td class="">系统角色</td>
+                          <td class="">
+                              god
+                          </td>
                           <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
 
                       </tr>
-                      <tr class="odd">
-                          <td class=" sorting_1">
-                              <input type="checkbox" >
-                          </td>
-                          <td class=" sorting_1">管理员>>
-                              <div class="row-actions">
-                                  <span><a href="#" class="info"  >查看</a> | </span>
-                                  <span><a class="info" href="#" title="编辑此项目">编辑</a> | </span>
-                                  <span><a class="danger" href="#">删除</a></span>
-
-                              </div>
-                          </td>
-                          <td class="">admin</td>
-                          <td class="">系统角色</td>
-                          <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
-
-                      </tr>
-                      <tr class="odd">
-                          <td class=" sorting_1">
-                              <input type="checkbox" >
-                          </td>
-                          <td class=" sorting_1">管理员>>
-                              <div class="row-actions">
-                                  <span><a href="#" class="info"  >查看</a> | </span>
-                                  <span><a class="info" href="#" title="编辑此项目">编辑</a> | </span>
-                                  <span><a class="danger" href="#">删除</a></span>
-
-                              </div>
-                          </td>
-                          <td class="">admin</td>
-                          <td class="">系统角色</td>
-                          <td class="center"><i class="icon-ok-sign bigger-130 green" title="启用的"></i></td>
-
-                      </tr>
-
                       </tbody>
                   </table>
                   <div class="table-footer clearfix">

@@ -57,7 +57,7 @@ var lework = (function ($, lework) {
                     that.settings.onClose.apply(this);
                 }
                 that.destroy();
-            }) .html(that.settings.content || '&nbsp;&nbsp;')
+            }) .html('<div class="alert-inner-text">'+(that.settings.content || '&nbsp;&nbsp;')+'</div> ')
         this.$alert.append(' <button type="button" class="close" title="关闭" >×</button> ')
         //关闭按钮
         this.$alert.on('click', '.close', function (e) {

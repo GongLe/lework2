@@ -37,7 +37,8 @@ th, td, .table-bordered {
 }
 .table.table-hover tbody tr:hover td {
 /*    background-color:#f5f5f5;*/
-    background-color:#ffc!important;
+    /*background-color:#ffc!important;*/
+    background-color:#f2f7ff!important;
 }
 .table-nomargin{
     margin: 0;
@@ -148,6 +149,9 @@ th .lbl:only-child,td .lbl:only-child {
     -moz-box-shadow: 0 1px 1px rgba(0,0,0,.04);
     -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
 
+}
+.dataTable th:hover  {
+    background: #f2f7ff;
 }
 .dataTable th[class*=sort] {
     cursor:pointer
@@ -335,77 +339,54 @@ span.ColVis_radio {
 .dataTables_wrapper .dataTables_info span {
     font-weight: 600;
 }
+/**datatables 分页样式**/
 .dataTables_wrapper .dataTables_paginate {
     float: right;
-    margin-bottom: 10px;
     margin-right: 5px;
-    margin-top:10px;
+    margin-top: 10px;
+    margin-bottom: 10px
 }
-.dataTables_wrapper .dataTables_paginate > a {
-    height: 20px;
-    padding: 4px 10px;
-    border: 1px solid #ccc;
-    margin-left: 2px;
-    line-height: 20px;
-    font-size: 12px;
-    overflow: hidden;
-/*    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;*/
-    color: #005aa0;
-    background:#fff;
 
-}
-.dataTables_wrapper .dataTables_paginate > a.paginate_button_disabled ,
-.dataTables_wrapper .dataTables_paginate > a.paginate_disabled_previous,
-.dataTables_wrapper .dataTables_paginate > a.paginate_disabled_next
-{
-   color: #ccc;
-    background:#fff;
-    cursor: default;
-}
-.dataTables_wrapper .dataTables_paginate > a.paginate_button_disabled:hover,
-.dataTables_wrapper .dataTables_paginate > a.paginate_disabled_previous:hover,
-.dataTables_wrapper .dataTables_paginate > a.paginate_disabled_next:hover{
-    text-decoration: none;
-    color: #ccc;
-    background:#fff;
-    cursor: default;
-}
-.dataTables_wrapper .dataTables_paginate > a:hover {
-    background: #005aa0;
-    color: #fff;
+.dataTables_wrapper .dataTables_paginate>a {
+    margin-right: 5px;
+    background: #eee;
+    padding: 3px 8px;
+    color: #333;
     text-decoration: none;
     cursor: pointer;
 }
-.dataTables_wrapper .dataTables_paginate > span > a {
-    height: 20px;
-    padding:4px 10px;
-    border: 1px solid #ccc;
-    margin-left: 2px;
-    line-height: 20px;
-    font-size: 12px;
-    overflow: hidden;
-/*    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;*/
-    color: #005aa0;
-    background:#fff;
+
+.dataTables_wrapper .dataTables_paginate>a.paginate_button_disabled {
+    color: #999
+}
+
+.dataTables_wrapper .dataTables_paginate>a.paginate_button_disabled:hover {
+    background: #eee;
+    cursor: default
+}
+
+.dataTables_wrapper .dataTables_paginate>a:hover {
+    background: #ddd
+}
+
+
+.dataTables_wrapper .dataTables_paginate>span>a {
+    padding: 3px 9px;
+    margin-right: 5px;
+    background: #eee;
+    color: #333;
+    text-decoration: none;
     cursor: pointer;
 }
-.dataTables_wrapper .dataTables_paginate > span > a:hover {
-    background: #005aa0;
-    color: #fff;
-}
-.dataTables_wrapper .dataTables_paginate > span > a.paginate_active {
-    padding:5px 10px 5px 10px;
-    border: none;
-    color: #fff;
-    font-weight: 700;
-    background: #146aa0;
-    cursor: default;
 
+
+.dataTables_wrapper .dataTables_paginate>span>a.paginate_active {
+    background:#307ecc;
+    color: #fff   ;
+    position: relative;
 }
+
+
 .dataTables_scroll {
     clear: both;
 }
@@ -526,10 +507,14 @@ div.DTS div.dataTables_scrollBody {
 }
 
 .row-actions {
-    font-size: 12px;
+    display:  inline;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
     visibility: hidden;
-    padding: 4px 0 0;
+    padding:0 5px;
     color: #ddd;
+    float: right;
 }
 .row-actions a{
    text-decoration: none;
@@ -539,7 +524,7 @@ div.DTS div.dataTables_scrollBody {
     color:#a00;
 }
 .row-actions .info {
-    color: #3078eb;
+    color: #3b71a3;
 }
 
 .row-actions .warning {
@@ -550,12 +535,30 @@ div.DTS div.dataTables_scrollBody {
 }
 
 .row-actions .info:hover {
-    color: #2963eb;
+    color: #96a3e7;
 }
 
 .row-actions .warning:hover {
-    color: #ed9c28;
+    color: #ddc423;
 }
 tr:hover .row-actions{
     visibility: visible;
+}
+
+/**row actions .dropdown-menu**/
+.dropdown-menu-rowaction{
+    min-width:100px;
+}
+.dropdown-menu-rowaction > li > a{
+    padding:3px 10px;
+}
+
+.btn-thead,
+.btn-thead:hover,
+.btn-thead:active {
+    padding: 2px 2px 0 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }

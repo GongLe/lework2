@@ -6,11 +6,12 @@
 */
 .lework-PopupPanel {
     position: fixed;
-    left: 0;
+    width: 600px;
+    left: 50%;
     top: 0;
     right: 0;
     height:0;
-    margin-top: 33px;
+    margin:33px 0 0 -300px;
     visibility: visible;
     overflow: visible;
     font-size:12px;
@@ -38,11 +39,11 @@
 .lework-alert {
     display: inline-block;
     position: relative;
+   
     padding:5px 25px 5px 15px;
     margin: 5px auto;
     margin-bottom:0;
     text-shadow: none;
-
     font-size: 1.2em;
     font-size: 1.0 em\9;
     font-weight: bold;
@@ -57,9 +58,12 @@
     border-radius: 2px;
     color: #333333;
     z-index: 998;
-
 }
-
+.alert-inner-text{
+    display: inline-block;
+    max-width: 600px;
+    overflow: auto;
+}
 .lework-alert-success {
     background-color: #dff0d8;
     border-color: #a3d48e;
