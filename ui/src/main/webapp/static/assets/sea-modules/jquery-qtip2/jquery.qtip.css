@@ -621,3 +621,16 @@ x:-o-prefocus, .qtip .qtip-tip{
 .qtipmodal-ie6fix{
     position: absolute !important;
 }
+
+/**
+自定义confirm box样式
+**/
+.qtip-confirmbox{
+
+    border-width: 2px;
+    -webkit-box-shadow:0 0 0 2px rgba(219,137,120,0.3);
+    -moz-box-shadow:0 0 0 2px rgba(219,137,120,0.3);
+    box-shadow:0 0 0 2px rgba(219,137,120,0.3);
+    border-color:#db8978;
+    background-color: white;
+}

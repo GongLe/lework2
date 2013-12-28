@@ -522,13 +522,15 @@
             }
         );
     }
-    //CMD jquery plugin
+    // CMD模块化 jquery plugin
     if (typeof define === "function" && define) {
-        define(function (require) {
-            return function ($) {
-                console.log('init jquery-migrate ')
-                init($);
-            }
+        define(function (require, exports, module) {
+            var jQuery = require('jquery');
+            init(jQuery);
+            module.exports = jQuery;
+
         });
+    } else{
+        init(window.jQuery) ;
     }
 })();

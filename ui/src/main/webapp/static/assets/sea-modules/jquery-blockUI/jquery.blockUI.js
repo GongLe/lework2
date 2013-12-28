@@ -13,11 +13,11 @@
  */
 
 ;
-(function () {
+(function ( window, document, undefined ) {
     /*jshint eqeqeq:false curly:false latedef:false */
     "use strict";
 
-    function setup($) {
+    var  setup = function($) {
         $.fn._fadeIn = $.fn.fadeIn;
 
         var noOp = $.noop || function () {
@@ -618,11 +618,26 @@
     }
 
 
-    define(function (require) {
-        return function ($) {
-            setup($);
-        }
-    });
+    // CMD模块化 jquery plugin
+    if (typeof define === "function" && define) {
+        define(function (require, exports, module) {
+            var jQuery = require('jquery');
+            setup(jQuery);
+            module.exports = jQuery;
+
+        });
+    } else{
+        setup(window.jQuery) ;
+    }
 
 
-})();
+    /**更简洁的方式定义CMD模块**/
+
+    /* define(function (require) {
+     var jQuery = require('jquery');
+     setup(jQuery);
+     return jQuery;
+
+     });*/
+
+})( window, document, undefined );
