@@ -526,7 +526,7 @@
     if (typeof define === "function" && define) {
         define(function (require) {
             return function ($) {
-                console.log('jquery-migrate ')
+                console.log('init jquery-migrate ')
                 init($);
             }
         });

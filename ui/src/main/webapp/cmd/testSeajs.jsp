@@ -31,7 +31,7 @@
         })
     </script>
     <script>
-        //demo
+        //demo :: main
         seajs.use(['jquery','blockUI','jqueryMigrate'], function ($, blockUI,jqueryMigrate) {
             blockUI($)
             console.log(typeof(jqueryMigrate) == "function")
