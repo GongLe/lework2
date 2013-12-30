@@ -1,7 +1,6 @@
 table {
     border-collapse: separate\9; /**修复IE8 table border加倍问题**/
     font-size: 13px;
-
 }
 
 th, td, .table-bordered {
@@ -535,7 +534,7 @@ div.DTS div.dataTables_scrollBody {
 }
 
 .row-actions .info:hover {
-    color: #96a3e7;
+    color: #3736d6;
 }
 
 .row-actions .warning:hover {

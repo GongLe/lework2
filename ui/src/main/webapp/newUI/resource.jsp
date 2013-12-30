@@ -98,7 +98,7 @@
 <script>
     /**************demo*****************/
    $(function(){
-       lework.alert({content:'演示信息提示',timer:10000,onClose:function(){
+       lework.alert({content:'演示信息提示',timer:50000,onClose:function(){
            lework.alert({content:'关闭回调',type:'info' })
        }})
        $('#demoCreate').on('click', function () {

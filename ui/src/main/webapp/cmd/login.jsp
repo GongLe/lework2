@@ -39,6 +39,8 @@
 
     <!--lework custom component style-->
     <link rel="stylesheet" href="../static/assets/css/lework.component.css">
+    <!--login css-->
+    <link rel="stylesheet" href="../static/assets/css/login.css">
 
     <title>CMD:seajs hello world</title>
     <link rel="stylesheet" href="">
@@ -81,28 +83,26 @@
         seajs.use(['blockUI' , 'cookie','datatables','validate' ], function (blockUI,$) {
 
         })
-        seajs.use(['confirmDelete' ], function ($) {
-            $('#seaJsConfirmDelete').confirmDelete({onConfirm: function () {
-                //snip...
-                //返回false弹出层将不会关闭
-                return true;
-            },
-            onCancel:function(){
-                //snip...
-                //返回false弹出层将不会关闭
-            //    return false;
-            }
-            });
-        })
+
     </script>
 </head>
 <body>
-   <h2>CMD:seajs hello world</h2>
-  <div class="row">
-      <div class="col-md-5"></div>
-      <div class="col-md-5">
-          <a href="javascript:;" id="seaJsConfirmDelete">confirmDelete</a>
-      </div>
-  </div>
+
+<div class="container">
+    <div class="form-container card">
+
+        <form class="form-signin" role="form">
+            <h2 class="form-signin-heading">登录</h2>
+            <input type="text" class="form-control" placeholder="帐号名" required autofocus>
+            <input type="password" class="form-control" placeholder="密码" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me">保持登录状态
+            </label>
+        </form>
+
+    </div>
+</div> <!-- /container -->
+
 </body>
 </html>
