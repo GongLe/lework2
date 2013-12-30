@@ -16,7 +16,13 @@
     <packaging>pom</packaging>
     <modules>
         <module>parent</module>
-    
+        <module>runner</module>
+        <module>core-common</module>
+        <module>core-persistence</module>
+        <module>core-service</module>
+        <module>core-web</module>
+        <module>core-website</module>
+
     </modules>
 
 

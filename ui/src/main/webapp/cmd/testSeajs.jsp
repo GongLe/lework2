@@ -58,13 +58,15 @@
                 'validate': 'jquery-validation/1.11.1/jquery.validate.js',
                 'validateMethods': 'jquery-validation/1.11.1/additional-methods.js',
                 'validate_cn_zh': 'jquery-validation/1.11.1/jquery_validate_message_cn_zh.js',
+                'fullCalendar': 'jquery-fullcalendar/1.6.4/fullcalendar.js',
                 'bootstrap': 'bootstrap/3.0.3/bootstrap.js',
                 'wdatePicker': 'My97DatePicker/WdatePicker.js',
+                'xDate': 'xdate/xdate.js',
                 'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
-                'prototype': 'lework/lework.prototype.js',
+                'extendPrototype': 'lework/lework.prototype.js',
                 'utils': 'lework/lework.utils.js'
             },
-            preload: ['jquery','prototype']
+            preload: ['jquery','extendPrototype']
         });
         seajs.on('exec', function (module) {
             if (module.uri === seajs.resolve('jquery')) {

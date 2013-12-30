@@ -129,7 +129,7 @@
     if (typeof define === "function" && define) {
         define(function (require) {
             var jQuery = require('jquery');
-            require('qtip2')
+            require('qtip2');
             init(jQuery);
             return jQuery;
         });

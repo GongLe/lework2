@@ -14,9 +14,9 @@
         <!-- 各个modules版本定义-->
         <org.lework>1.0-SNAPSHOT</org.lework>
 
-        <spring.version>3.2.5.RELEASE</spring.version>
-        <hibernate.version>4.2.7.Final</hibernate.version>
-        <spring-data-jpa.version>1.4.2.RELEASE</spring-data-jpa.version>
+        <spring.version>3.2.6.RELEASE</spring.version>
+        <hibernate.version>4.2.8.Final</hibernate.version>
+        <spring-data-jpa.version>1.4.3.RELEASE</spring-data-jpa.version>
         <mybatis.version>3.2.2</mybatis.version>
         <tomcat-jdbc.version>7.0.47</tomcat-jdbc.version>
         <sitemesh.version>2.4.2</sitemesh.version>
@@ -41,7 +41,7 @@
         <httpclient.version>4.2.5</httpclient.version>
         <freemarker.version>2.3.20</freemarker.version>
         <javasimon.version>3.4.0</javasimon.version>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.10</junit.version>
         <mockito.version>1.9.5</mockito.version>
         <powermock.version>1.5.1</powermock.version>
         <selenium.version>2.34.0</selenium.version>
@@ -81,7 +81,7 @@
             <url>http://72.21.81.253/maven2</url>
         </repository>
 
-        <!-- BAE maven repository   -->
+        <!-- BAE maven repository
         <repository>
             <id>baemaven</id>
             <name>BAE Maven</name>
@@ -89,14 +89,39 @@
             <releases>
                 <enabled>true</enabled>
             </releases>
-        </repository>
+        </repository>      -->
 
     </repositories>
 
     <!-- 预定义依赖项的version,scope与exclusions,子项目中只需定义groupId 和 artifactId 即可 -->
     <dependencyManagement>
         <dependencies>
-           
+            <dependency>
+                <groupId>org.lework</groupId>
+                <artifactId>lework-runner</artifactId>
+                <version>${org.lework}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lework</groupId>
+                <artifactId>core-common</artifactId>
+                <version>${org.lework}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lework</groupId>
+                <artifactId>core-persistence</artifactId>
+                <version>${org.lework}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lework</groupId>
+                <artifactId>core-service</artifactId>
+                <version>${org.lework}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lework</groupId>
+                <artifactId>core-web</artifactId>
+                <version>${org.lework}</version>
+            </dependency>
+
             <!-- SPRING basic begin(一般不需要显式定义) -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -279,6 +304,12 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
                 <version>2.5</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet.jsp</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -485,12 +516,12 @@
          <!-- LOGGING begin -->
             <!-- remove the real common-logging from classpath -->
             <!-- declare as provided or exclude from spring jars -->
-            <dependency>
+        <!--    <dependency>
                 <artifactId>commons-logging</artifactId>
                 <groupId>commons-logging</groupId>
                 <version>${commons-logging.version}</version>
                 <scope>provided</scope>
-            </dependency>
+            </dependency>-->
 
             <!-- add slf4j interfaces to classpath -->
             <dependency>
@@ -776,14 +807,14 @@
 
     <!-- BAE maven pluginRepository-->
     <pluginRepositories>
-        <pluginRepository>
+   <!--     <pluginRepository>
             <id>baemaven</id>
             <name>BAE Maven</name>
             <url>http://maven.duapp.com/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
-        </pluginRepository>
+        </pluginRepository>-->
 
         <pluginRepository>
             <id>central2</id>
@@ -886,7 +917,6 @@
                         <archive>
                             <manifest>
                                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             </manifest>
                         </archive>
                     </configuration>

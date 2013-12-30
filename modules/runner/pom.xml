@@ -235,6 +235,13 @@
 
     <build>
         <plugins>
+            <!-- jar打包相关插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+
             <!-- source attach plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
