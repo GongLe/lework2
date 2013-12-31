@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@include file="/WEB-INF/included/resource.jsp" %>
-<%response.setStatus(200);%>
+<%--<%response.setStatus(200);%>--%>
 
 <!DOCTYPE html>
 <html>

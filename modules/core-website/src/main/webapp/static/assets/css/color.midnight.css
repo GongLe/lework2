@@ -1,0 +1,96 @@
+
+#main-topbar>.navbar{
+
+    background: #363b3f;
+
+}
+#main-topbar .navbar-default .navbar-brand,
+#main-topbar .navbar-default .navbar-nav > li > a {
+    color: #fff ;
+}
+#main-topbar .navbar-default .navbar-nav > li > a:hover,
+#main-topbar .navbar-default .navbar-nav > li > a:focus{
+    color: #e14d43;
+}
+#main-topbar .navbar-default .navbar-nav > .open > a,
+#main-topbar .navbar-default .navbar-nav > .open > a:hover,
+#main-topbar .navbar-default .navbar-nav > .open > a:focus {
+    color: #fff;
+    background: #e14d43;
+}
+#sidebar:before {
+
+    background-color: #363b3f;
+
+}
+
+.nav-list > li > a {
+    color: #fff;
+
+}
+
+.nav-list > li > a:focus {
+    color: #c7a589;
+    background: #888;
+}
+
+.nav-list > li > a:hover {
+    color: #fff;
+    background: #e14d43;
+}
+
+.nav-list > li.active {
+    background: #c7a589;
+}
+
+.nav-list > li.open > a {
+    color: #fff;
+    background: #e14d43;
+}
+
+.nav-list > li a > .arrow {
+    color: #fff;
+}
+
+.nav-list > li a:hover > .arrow,
+.nav-list > li.active > a > .arrow,
+.nav-list > li.open > a > .arrow {
+    color: #fff;
+}
+
+.nav-list a.dropdown-toggle .badge, .nav-list a.dropdown-toggle .label {
+    color: #fff;
+}
+
+.nav-list > li .submenu {
+    background: #26292c;
+}
+
+.nav-list > li .submenu > li > a {
+    color: #fcfcfc;
+}
+
+.menu-min .nav-list > li.open:hover > a,
+.nav-list > li .submenu > li.active > a {
+    color: #e8e8e8;
+}
+
+.nav-list > li .submenu > li > a:hover {
+    color: #e14d43;
+}
+
+.nav-list > li .submenu > li a > [class*="icon-"]:first-child {
+    background: none;
+    color: #e14d43;
+}
+.nav-list > li .submenu > li.active > a > [class*="icon-"]:first-child{
+    color: #e14d43;
+}
+.menu-min .nav-list > li > .submenu{
+    background: #26292c;
+}
+.menu-min .nav-list > li > a > .menu-text-in,
+.menu-min .nav-list > li.open.active > a{
+    color: #fff;
+    background: #e14d43;
+}

@@ -1,5 +1,6 @@
 package org.lework.core.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.lework.runner.utils.Strings;
@@ -47,6 +48,7 @@ public abstract class IdEntity {
     }
 
     @Transient
+    @JsonIgnore
     public boolean isNew() {
         return Strings.isBlank(getId());
     }

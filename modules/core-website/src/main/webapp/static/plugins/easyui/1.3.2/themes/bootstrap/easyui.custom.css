@@ -1142,33 +1142,48 @@ a.m-btn-plain-active {
 .pagination .pagination-num {
   border-color: #D4D4D4;
 }
-.panel {
+.combo-p.panel,.window.panel {
   overflow: hidden;
   text-align: left;
+  padding: 0;
+    margin: 0;
 }
-.panel-header,
-.panel-body {
+.combo-p.panel>.panel-header,
+.window.panel>.panel-header,
+.combo-p.panel>.panel-body,
+.window.panel> .panel-body {
+
   border-width: 1px;
   border-style: solid;
 }
-.panel-header {
+.combo-p.panel>.panel-header,
+.window.panel>.panel-header  {
   padding: 5px;
   position: relative;
 }
-.panel-title {
+.combo-p.panel .panel-title,
+.window.panel .panel-title
+{
   background: url('./images/blank.gif') no-repeat;
 }
 .panel-header-noborder {
   border-width: 0 0 1px 0;
 }
-.panel-body {
-  overflow: auto;
-  border-top-width: 0px;
+
+.combo-p.panel>.panel-body,
+.window.panel> .panel-body {
+
+    padding: 0;
+    overflow: auto;
+    border: 1px solid #b9b9b9;
+    border-top: none;
 }
-.panel-body-noheader {
+.combo-p.panel .panel-body-noheader ,
+.window.panel .panel-body-noheader{
   border-top-width: 1px;
 }
-.panel-body-noborder {
+.combo-p.panel  .panel-body-noborder,
+.window.panel  .panel-body-noborder {
   border-width: 0px;
 }
 .panel-with-icon {
@@ -1242,19 +1257,22 @@ a.m-btn-plain-active {
 .panel-tool-expand {
   background: url('./images/panel_tools.png') no-repeat -32px -16px;
 }
-.panel-header,
-.panel-body {
+.combo-p.panel>.panel-header,
+.window.panel> .panel-body {
   border-color: #D4D4D4;
 }
-.panel-header {
+.combo-p.panel>.panel-header,
+.window.panel> .panel-header {
   background-color: #F2F2F2;
 }
-.panel-body {
+.combo-p.panel>.panel-body,
+.window.panel> .panel-body {
   background-color: #ffffff;
   color: #333;
   font-size: 14px;
 }
-.panel-title {
+.combo-p.panel .panel-title,
+.window.panel .panel-title  {
   font-size: 14px;
   font-weight: bold;
   color: #777;

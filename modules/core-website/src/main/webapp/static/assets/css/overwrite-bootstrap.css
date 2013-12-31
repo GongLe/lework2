@@ -1,0 +1,27 @@
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-bottom-width: 1px;
+}
+.table > thead > tr > th{
+    border-bottom: 1px solid #dddddd!important;
+}
+/*
+.panel-datatables {
+
+}
+
+.panel-datatables >.panel-body {
+    padding: 0;
+}
+.panel-datatables >.panel-body .table-bordered {
+  border: none;
+}
+.panel-datatables >.panel-body  .table-bordered thead tr th:first-child,
+.panel-datatables >.panel-body  .table-bordered tbody tr th:first-child{
+    border: none;
+}*/
+
+.modal-footer {
+    margin-top: 10px;
+    padding: 10px 20px 15px;
+    text-align: right;
+}

@@ -1,5 +1,13 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp"%>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<%--<meta http-equiv="Cache-Control" content="no-store"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>--%>
+
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
 <script src="static/assets/js/html5shiv.js"></script>
@@ -25,7 +33,7 @@
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-qtip2/jquery.qtip.css">
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-chosen/chosen.css">
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-colorbox/colorbox.css">
-<link rel="stylesheet" href="${ctx}/static/assets/css/login.css">
+
 <!-- easyui css custom theme    -->
  <link rel="stylesheet" href="${ctx}/static/plugins/easyui/1.3.2/themes/bootstrap/easyui.custom.css" >
 
