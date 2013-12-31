@@ -1,125 +1,76 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp"%>
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-<le:javascript src="/assets/js/html5shiv.js"/>
+<script src="static/assets/js/html5shiv.js"></script>
+<script src="static/assets/js/respond.js"></script>
 <![endif]-->
-<!--bootstrap css-->
-<le:stylesheet src="/static/plugins/bootstrap/2.3.2/css/non-icon/bootstrap.css"/>
-<le:stylesheet src="/static/plugins/bootstrap/2.3.2/css/bootstrap-responsive.css"/>
-<!-- google code prettify css-->
-<le:stylesheet src="/static/plugins/google-code-prettify/prettify.css"/>
-<!--font icons :: font-awesome-->
-<le:stylesheet src="/static/plugins/font-awesome/css/font-awesome.css"/>
+
+<link rel="stylesheet" href="${ctx}/static/assets/sea-modules/bootstrap/3.0.3/bootstrap.css" >
+<link rel="stylesheet" href="${ctx}/static/assets/css/overwrite-bootstrap.css" >
+
+<link rel="stylesheet" href="${ctx}/static/assets/css/font-awesome/css/font-awesome.css">
 <!--[if IE 7]>
-<le:stylesheet src="/static/plugins/font-awesome/css/font-awesome-ie7.min.css"/>
+<link rel="stylesheet" href="${ctx}/static/assets/css/font-awesome/css/font-awesome-ie7.css">
 <![endif]-->
+<link rel="stylesheet" href="${ctx}/static/assets/css/layout.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/form.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/button.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/sidebar2.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/table.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/tabs.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/component.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/utils.css">
 
-
-<!--utils-->
-<le:stylesheet src="/static/assets/ace/css/ace-utils.css"/>
-<le:stylesheet src="/static/assets/ace/css/ace-color.css"/>
-<!--layout-->
-<le:stylesheet src="/static/assets/ace/css/ace-layout.css"/>
-<!--components-->
-<le:stylesheet src="/static/assets/ace/css/ace-components.css"/>
-<!--typography-->
-<le:stylesheet src="/static/assets/ace/css/ace-typography.css"/>
-<!--elements-->
-<le:stylesheet src="/static/assets/ace/css/ace-elements.css"/>
-<!--forms-->
-<le:stylesheet src="/static/assets/ace/css/ace-forms.css"/>
-<!--navbar-->
-<le:stylesheet src="/static/assets/ace/css/ace-navbar.css"/>
-<!--left-sidebar-->
-<le:stylesheet src="/static/assets/ace/css/ace-left-sidebar.css"/>
-<!--widgets-->
-<le:stylesheet src="/static/assets/ace/css/ace-widget.css"/>
-<!--table-->
-<le:stylesheet src="/static/assets/ace/css/table.css"/>
-<!--tree-->
-<%--<le:stylesheet src="/static/assets/ace/css/ace-tree.css"/>
-<!--gallery-->
-<le:stylesheet src="/static/assets/ace/css/ace-gallery.css"/>   --%>
-<!--lework custom component style-->
-<le:stylesheet src="/static/assets/css/lework.component.css"/>
-
-<!--[if lt IE 9]>
-<le:stylesheet src="/static/assets/ace/css/ace-ie.min.css"/>
-<![endif]-->
-
+<link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-qtip2/jquery.qtip.css">
+<link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-chosen/chosen.css">
+<link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-colorbox/colorbox.css">
+<link rel="stylesheet" href="${ctx}/static/assets/css/login.css">
 <!-- easyui css custom theme    -->
-<le:stylesheet src="/static/plugins/easyui/1.3.2/themes/bootstrap/easyui.custom.css"/>
+ <link rel="stylesheet" href="${ctx}/static/plugins/easyui/1.3.2/themes/bootstrap/easyui.custom.css" >
 
-<!--系统javascript 原型扩充-->
-<le:javascript src="/static/plugins/lework.prototype.js" />
-<!--jquery -->
-<le:javascript src="/static/assets/js/jquery-1.10.2.js"/>
-<le:javascript src="/static/assets/js/jquery-migrate-1.2.1.js"/>
-<le:javascript src="/static/plugins/jquery.cookie.js"/>
+<!--lework custom component style-->
+<link rel="stylesheet" href="${ctx}/static/assets/css/lework.component.css">
+<script src="${ctx}/static/assets/sea-modules/seajs/2.1.1/sea-debug.js"></script>
 <script>
-    if ("ontouchend" in document) document.write("<script src=${ctx}/static/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
-
-    jQuery(function () {
-        if (!("ace" in window)) {
-            window.ace = {}
-        }
-        window.ace.click_event = $.fn.tap ? "tap" : "click";
+    // Set configuration
+    seajs.config({
+        base: '<%=request.getContextPath()%>/static/assets/sea-modules',
+        alias: {
+            'jquery': 'jquery/1.10.2/jquery-debug.js',
+            'migrate': 'jquery/1.10.2/jquery-migrate.js',
+            'cookie': 'jquery-cookie/jquery.cookie.js',
+            'datatables': 'jquery-datatables/1.9.4/jquery.dataTables.js',
+            'qtip2': 'jquery-qtip2/jquery.qtip.js',
+            'chosen': 'jquery-chosen/chosen.jquery.js',
+            'colorbox': 'jquery-colorbox/jquery.colorbox.js',
+            'slimscroll': 'jquery-slimscroll/jquery.slimscroll.js',
+            'blockUI': 'jquery-blockUI/jquery.blockUI.js',
+            'validate': 'jquery-validation/1.11.1/jquery.validate.js',
+            'validateMethods': 'jquery-validation/1.11.1/additional-methods.js',
+            'validate_cn_zh': 'jquery-validation/1.11.1/jquery_validate_message_cn_zh.js',
+            'fullCalendar': 'jquery-fullcalendar/1.6.4/fullcalendar.js',
+            'bootstrap': 'bootstrap/3.0.3/bootstrap.js',
+            'bootbox': 'bootbox/4.1.0/bootbox.js',
+            'wdatePicker': 'My97DatePicker/WdatePicker.js',
+            'xDate': 'xdate/xdate.js',
+            'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
+            'extendPrototype': 'lework/lework.prototype.js',
+            'funPage': 'lework/lework.function.page.js',
+            'utils': 'lework/lework.utils.js'
+        },
+        preload: ['jquery', 'bootstrap', 'extendPrototype','funPage']
     });
-    if (!('lework'  in window)) {
-        window.lework = {}  ;
-    }
+    seajs.on('exec', function (module) {
+        if (module.uri === seajs.resolve('jquery')) {
+            // window.$ = window.jQuery = module.exports;
+        }
+    })
 </script>
-<!--bootstrap js-->
-<le:javascript src="/static/plugins/bootstrap/2.3.2/js/bootstrap.js"/>
-<!--ace js-->
-<le:javascript src="/static/assets/ace/js/ace.min2.js"/>
-
-<!-- bootstrap modal
-<le:stylesheet src="/static/plugins/bootstrap-modal/css/bootstrap-modal.css"/>
-<le:javascript src="/static/plugins/bootstrap-modal/js/bootstrap-modalmanager.js"/>
-<le:javascript src="/static/plugins/bootstrap-modal/js/bootstrap-modal.js"/>
--->
-<!--jquery colorbox-->
-<le:stylesheet src="/static/plugins/colorbox/colorbox.css"/>
-<le:javascript src="/static/plugins/colorbox/jquery.colorbox.js"/>
-<!-- pnotify-->
-<le:stylesheet src="/static/plugins/pnotify/jquery.pnotify.default.css"/>
-<le:javascript src="/static/plugins/pnotify/jquery.pnotify.js" />
-<!-- jquery validation -->
-<le:javascript src="/static/plugins/jquery-validation/1.11.1/jquery.validate.js" />
-<le:javascript src="/static/plugins/jquery-validation/1.11.1/additional-methods.js" />
-<le:javascript src="/static/plugins/jquery-validation/1.11.1/jquery_validate_message_cn_zh.js" />
-<!--jquery datatables-->
-<le:javascript src="/static/plugins/DataTables-1.9.4/media/js/jquery.dataTables.js" />
-<!--jquery template JSRender-->
-<le:javascript src="/static/plugins/JsRender/jsrender.min.js" />
-<!--qtip2-->
-<le:stylesheet src="/static/plugins/qtip2/jquery.qtip.css" />
-<le:javascript src="/static/plugins/qtip2/jquery.qtip.js" />
-<!--jquery.slimscroll-->
-<le:javascript src="/static/plugins/slimscroll/jquery.slimscroll.js" />
-
-<le:javascript src="/static/plugins/blockUI/jquery.blockUI.js" />
-
-<!--jquery chonse-->
-<le:javascript src="/static/plugins/chosen/chosen.jquery.js" />
-<le:stylesheet src="/static/plugins/chosen/chosen.css"/>
-
-<!--lework jquery plugins :: ConfirmDelete -->
-<le:javascript src="/static/plugins/lework.jquery.confirmdelete.js" />
-<!--lework jquery plugins :: TableMutilDelete -->
-<le:javascript src="/static/plugins/lework.jquery.TableMutilDelete.js" />
-<!--lework   plugins :: Alert -->
-<le:stylesheet src="/static/plugins/lework-alert/lework.jquery.alert.css" />
-<le:javascript src="/static/plugins/lework-alert/lework.jquery.alert.js" />
-<!--插件全局设置 -->
-<le:javascript src="/static/plugins/lework.plugins.setting.js" />
-<le:javascript src="/static/plugins/lework.utils.js" />
-<le:javascript src="/static/plugins/lework.jquery.hiddenSubmit.js" />
 
 <!-- jquery easyui loader-->
 <script src="${ctx}/static/plugins/easyui/1.3.2/easyloader.js" ></script>
+
 <script>
     /**====================
      * jquery easyui
@@ -129,13 +80,7 @@
         easyloader.theme = "bootstrap"; // 设置主题
         easyloader.css = false  ;
     }
-    /**===============
-        close ajax cache
-       =================
-    **/
-    $.ajaxSetup ({
-        cache: false
-    });
+
 </script>
 
 
