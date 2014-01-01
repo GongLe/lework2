@@ -3,25 +3,20 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp"%>
 <%
+    //菜单保存到session
     ShiroUser user = SubjectUtils.getUser();
-    if (session.getAttribute("menuList") == null) {
+    if (session.getAttribute("USER_MENU_LIST") == null) {
         if (user != null) {
-            session.setAttribute("menuList", user.getMenus());
+            session.setAttribute("USER_MENU_LIST", user.getMenus());
         }
     }
 %>
-
 <div class="sidebar" id="sidebar">
-<form action="search-results.html" method="GET" class="search-form">
-    <div class="search-pane">
-        <input type="text" name="search" placeholder="Search here...">
-        <button type="submit"><i class="icon-search"></i></button>
-    </div>
-</form>
 
-<ul class="nav nav-list">
+
+<ul class="nav-list" role="navigation">
     <%-- 三级级菜单循环输出--%>
-    <c:forEach items="${sessionScope.menuList}" var="menu">
+    <c:forEach items="${sessionScope.USER_MENU_LIST}" var="menu">
         <li>
             <a href="${ctx}${menu.url}" data-menu-id="${menu.id}"  id="${menu.id}"  <c:if test="${  menu.hasChild eq 'true' }">class="dropdown-toggle" </c:if> >
                 <c:if test="${not empty menu.icon}">
@@ -73,104 +68,32 @@
             </c:if>
         </li>
     </c:forEach>
-<%--<li>
-    <a href="#" class="dropdown-toggle">
-        <i class="icon-desktop"></i>
-        <span class="menu-text-in"> UI Elements <span class="badge badge-primary ">4</span></span>
-
-        <b class="arrow icon-angle-down"></b>
-    </a>
-
-    <ul class="submenu">
-        <li>
-            <a href="${ctx}/ace/elements.jsp">
-                <i class="icon-double-angle-right"></i>
-                Elements
-            </a>
-        </li>
-
-        <li>
-            <a href="${ctx}/ace/buttons.jsp">
-                <i class="icon-double-angle-right"></i>
-                Buttons &amp; Icons
-            </a>
-        </li>
-
-        <li>
-            <a href="treeview.jsp">
-                <i class="icon-double-angle-right"></i>
-                Treeview
-            </a>
-        </li>
-
-        <li>
-            <a href="#" class="dropdown-toggle">
-                <i class="icon-double-angle-right"></i>
-
-                Three Level Menu
-                <b class="arrow icon-angle-down"></b>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a href="#">
-                        <i class="icon-leaf"></i>
-                        Item #1
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-pencil"></i>
-
-                        4th level
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
-
-                    <ul class="submenu">
-                        <li>
-                            <a href="#">
-                                <i class="icon-plus"></i>
-                                Add Product
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                <i class="icon-eye-open"></i>
-                                View Products
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</li>--%>
-
-
 </ul>
-<!--/.nav-list-->
+<!-- /.nav-list -->
 
 <div class="sidebar-collapse" id="sidebar-collapse">
-    <i class="icon-double-angle-left"></i>
+    <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
 </div>
+
+
 </div>
-<!--./sidebar-->
 <script>
-    (function () {
-        //设置当前菜单ID
-        $('#sidebar').on('click', 'a', function () {
-            //写入大概二十分钟cookie
-            $(this).data('menuId') && $.cookie('CUR_MENU_ID', $(this).data('menuId'), {expires: 0.015})
-        })
-        //激活当前页面菜单.
-        var curMenuId = $.cookie('CUR_MENU_ID') , $this , $submenu;
-        if (curMenuId) {
-            $this = $('#' + curMenuId);
-            $this.parent('li').addClass('active')
-            $submenu = $this.parents('ul.submenu');
-            $submenu.length > 0 && $submenu.parent('li').addClass('active open')
-        }
-    })()
+    seajs.use(['jquery' , 'cookie'  ], function ($) {
+        $(function () {
+            //设置当前菜单ID
+            $('#sidebar').on('click', 'a', function () {
+                //写入大概二十分钟cookie
+                $(this).data('menuId') && $.cookie('CUR_MENU_ID', $(this).data('menuId'), {expires: 0.015})
+            })
+            //激活当前页面菜单.
+            var curMenuId = $.cookie('CUR_MENU_ID') , $this , $submenu;
+            if (curMenuId) {
+                $this = $('#' + curMenuId);
+                $this.parent('li').addClass('active')
+                $submenu = $this.parents('ul.submenu');
+                $submenu.length > 0 && $submenu.parent('li').addClass('active open')
+            }
+
+        }) //dom ready
+    }) //seajs.use
 </script>
