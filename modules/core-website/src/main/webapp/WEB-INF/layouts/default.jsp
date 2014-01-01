@@ -9,12 +9,6 @@
 <!--[if gt IE 8]><!--><html lang="zh-CN"><!--<![endif]-->
 <head>
     <title><sitemesh:title/></title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <meta http-equiv="Cache-Control" content="no-store"/>
-    <meta http-equiv="Pragma" content="no-cache"/>
-    <meta http-equiv="Expires" content="0"/>
 
     <%@ include file="/WEB-INF/included/resource.jsp" %>
 
@@ -22,17 +16,19 @@
 </head>
 
 <body>
-<%@ include file="/WEB-INF/included/navbar.jsp" %>
-<div class="main-container container-fluid">
-    <%@ include file="/WEB-INF/included/sidebar.jsp" %>
-    <div class="main-content">
-        <sitemesh:body></sitemesh:body>
-        <div id="main-footer">
-            <div class="innerContent">
-                innerContent :: footer
-            </div>
-        </div>
-    </div> <!--/.main-content-->
-</div> <!--/.main-container-->
+    <div id="main-wrap">
+    <%@include file="/WEB-INF/included/sidebar.jsp" %>
+
+        <div id="main-content">
+            <div id="main-topbar">
+                <%@ include file="/WEB-INF/included/navbar.jsp" %>
+            </div> <!--/#main-topbar-->
+            <div id="main-body">
+                <div id="main-body-content">
+
+                </div> <!--/#main-body-content -->
+            </div>  <!--/#main-body-->
+        </div> <!--/#main-content-->
+     </div> <!--/#main-wrap-->
 </body>
 </html>

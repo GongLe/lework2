@@ -71,6 +71,7 @@ body {
 #colorSelect{
     margin: 0;
     padding: 0;
+    min-width: 160px;
 }
 #colorSelect>li{
     display: block;

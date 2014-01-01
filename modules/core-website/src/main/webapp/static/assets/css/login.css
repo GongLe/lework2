@@ -36,6 +36,11 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+.form-signin .captcha {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 5px;
+}
 .form-signin .form-control:focus {
     z-index: 2;
 }

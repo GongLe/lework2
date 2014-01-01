@@ -19,3 +19,9 @@
 .panel-datatables >.panel-body  .table-bordered tbody tr th:first-child{
     border: none;
 }*/
+
+.modal-footer {
+    margin-top: 10px;
+    padding: 10px 20px 15px;
+    text-align: right;
+}

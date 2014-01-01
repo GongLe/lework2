@@ -62,13 +62,15 @@
                 'validate_cn_zh': 'jquery-validation/1.11.1/jquery_validate_message_cn_zh.js',
                 'fullCalendar': 'jquery-fullcalendar/1.6.4/fullcalendar.js',
                 'bootstrap': 'bootstrap/3.0.3/bootstrap.js',
+                'bootbox': 'bootbox/4.1.0/bootbox.js',
                 'wdatePicker': 'My97DatePicker/WdatePicker.js',
                 'xDate': 'xdate/xdate.js',
                 'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
                 'extendPrototype': 'lework/lework.prototype.js',
+                'funPage': 'lework/lework.function.page.js',
                 'utils': 'lework/lework.utils.js'
             },
-            preload: ['jquery','extendPrototype']
+            preload: ['jquery','extendPrototype','funPage']
         });
         seajs.on('exec', function (module) {
             if (module.uri === seajs.resolve('jquery')) {
@@ -101,8 +103,17 @@
   <div class="row">
       <div class="col-md-5"></div>
       <div class="col-md-5">
-          <a href="javascript:;" id="seaJsConfirmDelete">confirmDelete</a>
+
       </div>
   </div>
 </body>
+<script>
+   seajs.use(['bootbox' ], function (bootbox) {
+       seajs.use(['bootbox' ], function (bootbox,$) {
+           bootbox.confirm("Are you sure?", function(result) {
+
+           });
+       })
+    })
+</script>
 </html>

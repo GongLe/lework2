@@ -23,8 +23,8 @@
             <input type="password" class="form-control" name="password" placeholder="密码" required>
             <c:if test="${not empty sessionScope.showCaptcha == true }">
 
-                <input name="captcha" class="form-control" autocomplete="off" placeholder="验证码" style="width: 40%;">
-                <img id="captchaImg" title="点击刷新验证码" src="login/getCaptcha" width="70" height="28"/>
+                <input name="captcha" class="form-control captcha" autocomplete="off" placeholder="验证码" style="width:50%;">
+                <img id="captchaImg" title="点击刷新验证码" src="login/getCaptcha" style="height:30px;width:70px"/>
 
             </c:if>
             <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>

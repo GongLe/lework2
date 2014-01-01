@@ -48,7 +48,9 @@
             'jquery': 'jquery/1.10.2/jquery-debug.js',
             'migrate': 'jquery/1.10.2/jquery-migrate.js',
             'cookie': 'jquery-cookie/jquery.cookie.js',
-            'datatables': 'jquery-datatables/1.9.4/jquery.dataTables.js',
+            '_datatables': 'jquery-datatables/1.9.4/jquery.dataTables.js', /**私有模块,供模块依赖调用**/
+            'datatables': 'jquery-datatables/1.9.4/jquery.dataTables.options.js',
+            'form': 'jquery-form/jquery.form.js',
             'qtip2': 'jquery-qtip2/jquery.qtip.js',
             'chosen': 'jquery-chosen/chosen.jquery.js',
             'colorbox': 'jquery-colorbox/jquery.colorbox.js',
@@ -64,7 +66,7 @@
             'xDate': 'xdate/xdate.js',
             'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
             'extendPrototype': 'lework/lework.prototype.js',
-            'funPage': 'lework/lework.function.page.js',
+            'funPage': 'lework/lework.function.page.js',  /**页面公用函数**/
             'utils': 'lework/lework.utils.js'
         },
         preload: ['jquery', 'bootstrap', 'extendPrototype','funPage']
@@ -80,13 +82,11 @@
 <script src="${ctx}/static/plugins/easyui/1.3.2/easyloader.js" ></script>
 
 <script>
-    /**====================
-     * jquery easyui
-     * ====================**/
+    /**  jquery easyui **/
     if (easyloader) {
         easyloader.locale = "zh_CN"; // 本地化设置
         easyloader.theme = "bootstrap"; // 设置主题
-        easyloader.css = false  ;
+        easyloader.css = false;
     }
 
 </script>

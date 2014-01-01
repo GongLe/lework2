@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Gongle
-  Date: 13-12-27
-  Time: 下午3:10
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -68,21 +61,21 @@
                 'xDate': 'xdate/xdate.js',
                 'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
                 'extendPrototype': 'lework/lework.prototype.js',
+                'funPage': 'lework/lework.function.page.js',
                 'utils': 'lework/lework.utils.js'
             },
-            preload: ['jquery','extendPrototype']
+            preload: ['jquery','extendPrototype','funPage']
         });
         seajs.on('exec', function (module) {
             if (module.uri === seajs.resolve('jquery')) {
                // window.$ = window.jQuery = module.exports;
             }
         })
-    </script>
-    <script>
-        //demo :: main
-        seajs.use(['blockUI' , 'cookie','datatables','validate' ], function (blockUI,$) {
+        seajs.use(['jquery','bootstrap'],function($){
 
         })
+    </script>
+    <script>
 
     </script>
 </head>
@@ -93,7 +86,8 @@
 
         <form class="form-signin" role="form">
             <h2 class="form-signin-heading">登录</h2>
-            <input type="text" class="form-control" placeholder="帐号名" required autofocus>
+
+            <input type="text" class="form-control" placeholder="用户名" required autofocus>
             <input type="password" class="form-control" placeholder="密码" required>
             <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
             <label class="checkbox">
