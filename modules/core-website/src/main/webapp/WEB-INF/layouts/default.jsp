@@ -8,6 +8,13 @@
 <!--[if IE 8]> <html class="lt-ie9" lang="zh-CN"> <![endif]-->
 <!--[if gt IE 8]><!--><html lang="zh-CN"><!--<![endif]-->
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="Cache-Control" content="no-store"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+
     <title><sitemesh:title/></title>
 
     <%@ include file="/WEB-INF/included/resource.jsp" %>
@@ -24,9 +31,7 @@
                 <%@ include file="/WEB-INF/included/navbar.jsp" %>
             </div> <!--/#main-topbar-->
             <div id="main-body">
-                <div id="main-body-content">
-
-                </div> <!--/#main-body-content -->
+                <sitemesh:body/>
             </div>  <!--/#main-body-->
         </div> <!--/#main-content-->
      </div> <!--/#main-wrap-->

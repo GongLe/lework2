@@ -1,13 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp"%>
 
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<%--<meta http-equiv="Cache-Control" content="no-store"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>--%>
-
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
 <script src="static/assets/js/html5shiv.js"></script>
@@ -29,13 +22,17 @@
 <link rel="stylesheet" href="${ctx}/static/assets/css/tabs.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/component.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/utils.css">
+<!--color theme-->
+<link rel="stylesheet" href="${ctx}/static/assets/css/color.coffee.css">
 
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-qtip2/jquery.qtip.css">
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-chosen/chosen.css">
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-colorbox/colorbox.css">
 
+<%--
 <!-- easyui css custom theme    -->
  <link rel="stylesheet" href="${ctx}/static/plugins/easyui/1.3.2/themes/bootstrap/easyui.custom.css" >
+--%>
 
 <!--lework custom component style-->
 <link rel="stylesheet" href="${ctx}/static/assets/css/lework.component.css">
@@ -44,10 +41,16 @@
     // Set configuration
     seajs.config({
         base: '<%=request.getContextPath()%>/static/assets/sea-modules',
+        map: [
+            [ '.js' , '.js?v=' + (new Date()).getTime() ]
+        ],
         alias: {
-            'jquery': 'jquery/1.10.2/jquery-debug.js',
-            'migrate': 'jquery/1.10.2/jquery-migrate.js',
+            '_jquery': 'jquery/1.10.2/jquery-debug.js',
+            'jquery': 'jquery/1.10.2/jquery-migrate.js',
             'cookie': 'jquery-cookie/jquery.cookie.js',
+            'easyui': 'easyui/jquery.easyui.min.js',
+            '_easyuiCss': 'easyui/themes/bootstrap/easyui.custom.css',
+            '_easyuiLocale': 'easyui/locale/easyui-lang-zh_CN.js',
             '_datatables': 'jquery-datatables/1.9.4/jquery.dataTables.js', /**私有模块,供模块依赖调用**/
             'datatables': 'jquery-datatables/1.9.4/jquery.dataTables.options.js',
             'form': 'jquery-form/jquery.form.js',
@@ -67,7 +70,8 @@
             'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
             'extendPrototype': 'lework/lework.prototype.js',
             'funPage': 'lework/lework.function.page.js',  /**页面公用函数**/
-            'utils': 'lework/lework.utils.js'
+            'utils': 'lework/lework.utils.js',
+            'mustache': 'mustache/mustache.js'
         },
         preload: ['jquery', 'bootstrap', 'extendPrototype','funPage']
     });
@@ -78,7 +82,7 @@
     })
 </script>
 
-<!-- jquery easyui loader-->
+<!-- jquery easyui loader
 <script src="${ctx}/static/plugins/easyui/1.3.2/easyloader.js" ></script>
 
 <script>
@@ -90,5 +94,5 @@
     }
 
 </script>
-
+-->
 

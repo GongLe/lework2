@@ -455,7 +455,7 @@ div.DTS div.dataTables_scrollBody {
   /*  margin-top:-20px;*/
     text-align: center;
     color: #536aab;
-    background: url(../../images/loading_circular_35x35.GIF) no-repeat center center;
+    background: url(../images/loading_circular_35x35.GIF) no-repeat center center;
 }
 
 .table-funtion-bar{

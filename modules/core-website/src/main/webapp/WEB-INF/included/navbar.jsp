@@ -34,6 +34,7 @@
                             </ul>
                         </a>
                     </li>
+                    <li class="divider"></li>
                     <li>
                         <a href="${ctx}/account/profile">
                             <i class="icon-user"></i>

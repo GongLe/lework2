@@ -18,7 +18,8 @@
     <%-- 三级级菜单循环输出--%>
     <c:forEach items="${sessionScope.USER_MENU_LIST}" var="menu">
         <li>
-            <a href="${ctx}${menu.url}" data-menu-id="${menu.id}"  id="${menu.id}"  <c:if test="${  menu.hasChild eq 'true' }">class="dropdown-toggle" </c:if> >
+            <a  <c:if   test="${ not empty menu.url }">  href="${ctx}${menu.url}"  </c:if>
+                    data-menu-id="${menu.id}"  id="${menu.id}"  <c:if test="${  menu.hasChild eq 'true' }">class="dropdown-toggle" </c:if> >
                 <c:if test="${not empty menu.icon}">
                     <i class="${menu.icon}"></i>
                 </c:if>

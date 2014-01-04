@@ -1,6 +1,5 @@
 ;
 (function (window, document, undefined) {
-
     var init = function ($) {
         /** jquery DataTables Plugins 全局设置 **/
         if ($.fn.dataTable) {

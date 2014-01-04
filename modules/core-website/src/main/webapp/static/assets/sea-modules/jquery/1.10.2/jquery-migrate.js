@@ -525,7 +525,7 @@
     // CMD模块化 jquery plugin
     if (typeof define === "function" && define) {
         define(function (require, exports, module) {
-            var jQuery = require('jquery');
+            var jQuery = require('_jquery');
             init(jQuery);
             module.exports = jQuery;
 
