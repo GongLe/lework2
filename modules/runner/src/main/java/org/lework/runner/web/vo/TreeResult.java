@@ -11,22 +11,22 @@ import java.util.Map;
  * easyui Tree TO对象
  *
  * @author Gongle
- *         <p/>
- *         <pre>
- *                                 Every node can contains following properties:
- *                                  id: node id, which is important to load remote data
- *                                  text: node text to show
- *                                  state: node state, 'open' or 'closed', default is 'open'. When set to 'closed', the node have children nodes and will load them from remote site
- *                                  checked: Indicate whether the node is checked selected.
- *                                  attributes: custom attributes can be added to a node
- *                                  children: an array nodes defines some children nodes
- *                                 </pre>
+ *         Every node can contains following properties:
+ *         id: node id, which is important to load remote data
+ *         text: node text to show
+ *         state: node state, 'open' or 'closed', default is 'open'. When set to 'closed', the node have children nodes and will load them from remote site
+ *         checked: Indicate whether the node is checked selected.
+ *         attributes: custom attributes can be added to a node
+ *         children: an array nodes defines some children nodes
  */
 public class TreeResult implements Serializable {
+    public final static String STATE_OPEN = "open";
+    public final static String STATE_CLOSED = "closed";
+
     public TreeResult() {
     }
 
-    public TreeResult(String id, String text, String iconCls, int type) {
+    public TreeResult(String id, String text, String iconCls, String type) {
         this.id = id;
         this.text = text;
         this.iconCls = iconCls;
@@ -47,11 +47,13 @@ public class TreeResult implements Serializable {
 
     /**
      * 添加属性
+     *
      * @param name
      * @param value
      */
-    public void addAttribute(String name, Object value) {
-        addAttribute(name, value);
+    public Map addAttribute(String name, Object value) {
+        getAttributes().put(name, value);
+        return this.attributes;
     }
 
     public String getId() {
@@ -110,5 +112,5 @@ public class TreeResult implements Serializable {
         this.iconCls = iconCls;
     }
 
-    
+
 }

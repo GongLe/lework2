@@ -4,9 +4,10 @@ import java.util.List;
 
 /**
  * 区块回调接口
+ *
  * @param <T>
  */
 public interface RangeCallback<T> {
 
-    public void each(int curPageNum, List<T> rangeData);
+    public void each(int pageNum, List<T> pageResult);
 }

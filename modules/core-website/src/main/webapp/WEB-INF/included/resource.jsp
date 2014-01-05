@@ -38,11 +38,12 @@
 <link rel="stylesheet" href="${ctx}/static/assets/css/lework.component.css">
 <script src="${ctx}/static/assets/sea-modules/seajs/2.1.1/sea-debug.js"></script>
 <script>
+    var STATIC_VERSION = '1.0' ;
     // Set configuration
     seajs.config({
         base: '<%=request.getContextPath()%>/static/assets/sea-modules',
         map: [
-            [ '.js' , '.js?v=' + (new Date()).getTime() ]
+            [ '.js' , '.js?v=' + STATIC_VERSION  ]
         ],
         alias: {
             '_jquery': 'jquery/1.10.2/jquery-debug.js',

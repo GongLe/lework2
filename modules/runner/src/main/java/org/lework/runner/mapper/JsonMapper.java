@@ -1,13 +1,8 @@
 
 package org.lework.runner.mapper;
 
-import java.io.IOException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -15,6 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * 简单封装Jackson，实现JSON String<->Java Object的Mapper.
@@ -30,10 +30,14 @@ public class JsonMapper {
     private ObjectMapper mapper;
 
     public JsonMapper() {
-        this(null);
+        this(null, false);
     }
 
-    public JsonMapper(Include include) {
+    public JsonMapper(boolean allowSingleQuotes) {
+        this(null, allowSingleQuotes);
+    }
+
+    public JsonMapper(Include include, boolean allowSingleQuotes) {
         mapper = new ObjectMapper();
         // 设置输出时包含属性的风格
         if (include != null) {
@@ -41,20 +45,29 @@ public class JsonMapper {
         }
         // 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        if (allowSingleQuotes == true) {
+            // to allow use of apostrophes (single quotes), non standard
+            mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        }
     }
 
     /**
      * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
      */
     public static JsonMapper nonEmptyMapper() {
-        return new JsonMapper(Include.NON_EMPTY);
+        return new JsonMapper(Include.NON_EMPTY, false);
     }
+
+    public static JsonMapper nonEmptyMapper(boolean allowSingleQuotes) {
+        return new JsonMapper(Include.NON_EMPTY, allowSingleQuotes);
+    }
+
 
     /**
      * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
      */
     public static JsonMapper nonDefaultMapper() {
-        return new JsonMapper(Include.NON_DEFAULT);
+        return new JsonMapper(Include.NON_DEFAULT, false);
     }
 
     /**

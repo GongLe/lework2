@@ -10,6 +10,7 @@ import org.lework.core.service.organization.OrganizationService;
 import org.lework.core.service.role.RoleService;
 import org.lework.runner.mapper.JsonMapper;
 import org.lework.runner.orm.support.SearchFilter;
+import org.lework.runner.spring.SpringMvcHolder;
 import org.lework.runner.utils.Collections3;
 import org.lework.runner.utils.Strings;
 import org.lework.runner.web.AbstractController;
@@ -25,9 +26,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,11 +79,19 @@ public class UserController  extends AbstractController {
         callback(response, CallbackData.build("resetPasswordCallback", "用户&quot;" + userNames + "&quot;密码重置成功", NotificationType.DEFAULT));
     }
     /**
-     * list页面*
+     * 列表页面*
      */
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
-
+        Role r = new Role();
+        r.setCode("code");
+        r.setName("name");
+        List<Role> list = new ArrayList<Role>();
+        list.add(r);
+        list.add(r);
+        list.add(r);
+        list.add(r);
+        SpringMvcHolder.addAttribute("list",list, RequestAttributes.SCOPE_REQUEST);
         return "user/user";
     }
 

@@ -15,7 +15,8 @@
             <description>name</description>
             <name>name</name>
             <required>false</required>
-            <rtexprvalue>true</rtexprvalue> <!--rtexprvalue的全称是 Run-time Expression Value， 它用于表示是否可以使用JSP表达式. -->
+            <rtexprvalue>true</rtexprvalue>
+            <!--rtexprvalue的全称是 Run-time Expression Value， 它用于表示是否可以使用JSP表达式. -->
         </attribute>
         <attribute>
             <description>html link#media,default value "all"</description>
@@ -79,6 +80,60 @@
         <attribute>
             <description>equals html link#type</description>
             <name>type</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>equals html link#media</description>
+            <name>media</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>equals html link#rel</description>
+            <name>rel</name>
+            <required>false</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>select</name>
+        <!-- 定义标签处理类 -->
+        <tag-class>org.lework.runner.web.taglib.SelectTag</tag-class>
+        <body-content>empty</body-content>
+        <!-- 配置标签属性 -->
+        <attribute>
+            <description>ID ,Name</description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>html attribute</description>
+            <name>attr</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>headerKey</description>
+            <name>headerKey</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>headerValue</description>
+            <name>headerValue</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>list</description>
+            <name>list</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>listKey</description>
+            <name>listKey</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>listValue</description>
+            <name>listValue</name>
             <required>false</required>
         </attribute>
         <attribute>

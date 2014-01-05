@@ -11,7 +11,7 @@ import org.lework.runner.orm.support.SearchFilter;
 import org.lework.runner.orm.support.Specifications;
 import org.lework.runner.utils.Collections3;
 import org.lework.runner.utils.Strings;
-import org.lework.runner.web.easyui.TreeResult;
+import org.lework.runner.web.vo.TreeResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

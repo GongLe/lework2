@@ -18,6 +18,8 @@ import java.util.Map;
  * </pre>
  */
 public enum RoleTypes {
+
+
     system("system", "系统角色"),
     business("business", "业务角色"),
     application("application ", "应用角色") ;

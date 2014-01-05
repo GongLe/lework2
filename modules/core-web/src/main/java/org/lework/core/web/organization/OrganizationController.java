@@ -13,7 +13,7 @@ import org.lework.runner.web.AbstractController;
 import org.lework.runner.web.CallbackData;
 import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
-import org.lework.runner.web.easyui.TreeResult;
+import org.lework.runner.web.vo.TreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

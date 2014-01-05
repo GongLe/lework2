@@ -8,132 +8,71 @@
 </head>
 
 <body>
-
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>
-            <a href="${ctx}/dashboard" class="grey"> <i class="icon-home home-icon"></i></a>
-        </li>
-        <li class="active">
-            用户管理
-        </li>
-    </ul>
-    <!--.breadcrumb-->
-
-</div>
-
-<div class="page-content">
-    <div class="row-fluid">
-        <div class="span12">
-
-            <div class="box box-bordered">
-                <div class="box-title no-margin-top"  >
-                   <%-- <h3 class="blue">用户管理</h3>--%>
-                    <h4 class="inner"><i class="icon-user"></i>用户管理</h4>
-                </div>
-                <div class="box-content no-padding ">
-                    <div class="pull-left" style="width:18%;min-height:600px;border-right:1px dashed  #c5d0dc;">
-                        <%--<h5 class="header smaller lighter blue" style="margin:5px 10px;" >角色组</h5>--%>
-                          <ul id="orgTree" style="padding:10px 10px 0 5px;" ></ul>
-                    </div>
-                    <div class="pull-left" style="width:78%; padding:0 0 5px 10px;" >
-                        <div class="table-funtion-bar clear-both">
-                            <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn no-border dropdown-toggle">
-                                    <i id="checkIcon" class="icon-check-empty bigger-120"></i>
-                                    <span class="caret"></span>
-                                </button>
-
-                                <ul class="dropdown-menu dropdown-default">
-                                    <li id="selectedAll">
-                                        <a href="javascript:;"  >全选</a>
-                                    </li>
-                                    <li id="cancelSelected" >
-                                        <a href="javascript:;" >取消</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <button class="btn no-border tooltips" id="create-function" data-original-title="新增" >
-                                    <i class="icon-plus"></i>
-                                </button>
-                                <button class="btn no-border tooltips" id="refresh-function" data-original-title="刷新">
-                                    <i class="icon-refresh"></i>
-                                </button>
-                                <button class="btn no-border tooltips" id="delete-function" style="display:none;" data-original-title="删除">
-                                    <i class="icon-trash"></i>
-                                </button>
-                             <%--   <button class="btn btn-danger no-border tooltips" id="role-function"  data-original-title="分配角色">
-                                    <i class="icon-group"></i>
-                                </button>--%>
-                                <button class="btn btn-danger no-border tooltips" id="resetPassword-function" style="display:none;"   data-original-title="重置密码">
-                                    <i class="icon-key"></i>
-                                </button>
-                            </div>
-                            <div class="input-append no-margin-bottom pull-right">
-                                <!--自定义搜索-->
-                                <form id="searchForm" name="searchForm" class="no-margin no-padding">
-                                        <span class="input-icon input-icon-right">
-                                            <input class="input-medium" id="search" name="search" type="text" placeholder="用户名/姓名">
-                                            <i class="icon-search blue" onclick="$('#searchForm').submit()" ></i>
-                                        </span>
-                                </form> <!--/#searchForm-->
-                            </div>
-
-                        </div><!--/.table-funtion-bar-->
-                        <table id="table-list"
-                               class="table table-hover  table-nomargin table-bordered dataTable dataTable-nosort clear-both">
-                        </table>
-                    </div><!--/.pull-left-->
+<div id="main-body-content">
+    <h3>用户管理 <button class="btn btn-danger btn-sm" hidefocus="true"  id="create-function" >新建</button> </h3>
+    <div class="row">
+        <div class="col-md-2" style="padding:23px 0 0 0">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul id="orgTree" style="padding:10px 10px 0 5px;" ></ul>
                 </div>
             </div>
-            <!--/.box-->
+        </div>
+        <div class="col-md-10">
+
+                <div class="tablenav top clearfix" style="padding: 0">
+
+                    <form class="navbar-form" style="padding:10px 0 0 0;" role="form">
+                        <select class="form-control" >
+                            <option value="-1" selected="selected">批量操作</option>
+                            <option value="unapprove">删除</option>
+                            <option value="approve">批准</option>
+                            <option value="spam">标记为垃圾评论</option>
+                            <option value="trash">移至回收站</option>
+                        </select>
+                        <button type="submit" class="btn btn-white">应用</button>
+                        &nbsp;&nbsp;
+                        <div class="pull-right">
+                          <%--  <input class="easyui-combotree" data-options="url:'organization/getTree',method:'get'" style="width:200px;height:30px">
+--%>
+                              <le:select list="{'111':'1111','222':'222'}" name="name" attr=" class=\"form-control\" "></le:select>
+                       <le:select list="${list}" name="name"  listKey="code" listValue="name" headerKey="--headerKey--" headerValue="--value--"
+                                  attr=" class=\"form-control\" " ></le:select>
+                            <select class="form-control">
+                                <option selected="selected" value="0">显示所有部门</option>
+                                <option value="201312">系统类别</option>
+                                <option value="201312">业务类别</option>
+                            </select>
+                            &nbsp;&nbsp;
+                            <select class="form-control">
+                                <option value="Code">编号</option>
+                                <option value="Account">账户</option>
+                                <option value="RealName">姓名</option>
+                                <option value="Mobile">手机号码</option>
+                                <option value="DepartmentId">部门</option>
+                            </select>
+                            <div class="form-group" style="margin-left:-5px;">
+                                <input type="text" class="form-control" id="cccc" placeholder="搜索">
+                            </div>
+                            <button type="submit" class="btn btn-white">筛选</button>
+                        </div>
+
+
+                    </form>
+
+                </div>
+                <table id="table-list"
+                       class="table table-hover table-striped dataTable dataTable-nosort clear-both">
+                </table>
         </div>
     </div>
-</div>
 
+</div> <!--/#main-body-content -->
 
-<!--/.page-content-->
 <script>
-    var $orgTree =  $('#orgTree') ,
-            oTable = $('#table-list');
-    $(function () {
-        //表单提交后,iframe回调函数
-        window.actionCallback = function (resp) {
-            $.colorbox.close();
-            oTable.fnDraw();
-            lework.alert({content: resp.attributes.message, type: resp.attributes.type })
-        };
-        //重置密码回调
-        window.resetPasswordCallback = function (resp) {
-            $.colorbox.close();
-            lework.alert({content: resp.attributes.message, type: resp.attributes.type })
-        };
-        window.deleteCallback = function (resp) {
-            $.colorbox.close();
-            oTable.fnDraw();
-            lework.alert({content:resp.attributes.message ,type: resp.attributes.type ,width:'250px'})
-        };
-        //自定义搜索表单
-        $('#searchForm').submit(function(event){
-            event.preventDefault() ;
-            oTable.fnDraw();
-        });
-        //easy ui org tree
-        using(['tree'], function () {
-            $orgTree.tree({
-                url: 'organization/getTree',
-                method: 'get',
-                checkbox: false,
-                onLoadSuccess: function (node, data) {
-                },
-                onSelect : function (node) {
-                    oTable.fnDraw();
-                }
-            });
-        }) //using
-
-
+    seajs.use(['mustache','jquery','datatables','easyui'], function (mustache,$) {
+        var $orgTree =  $('#orgTree') ,
+                oTable = $('#table-list');
         oTable.dataTable({
             'aoColumns': [
                 { 'mData': 'name', 'sTitle': '姓名' },
@@ -156,8 +95,9 @@
                 },
                 {
                     'mRender': function (data, type, full) {
-                      //  console.log(data)
-                        return  $('#tableActionTpl').render({id: data});
+                        //  console.log(data)
+                       // return  $('#tableActionTpl').render({id: data});
+                        return   '' ;
                     },
                     'aTargets': [5 ]
                 },
@@ -171,130 +111,38 @@
             'bStateSave': false  , /**state saving **/
             'bProcessing': true ,
             'bServerSide': true,
-            'fnServerData': lework.springDataJpaPageableAdapter,
+            'fnServerData': $.springDataJpaPageableAdapter,
             'sAjaxSource': '${ctx}/user/getDatatablesJson',
-             'fnServerParams' :function(aoData ){
-                 var orgNode = $.fn.tree && $('#orgTree').tree('getSelected');
-                 if (orgNode)
-                     aoData.push({ 'name': 'orgId', 'value': orgNode.id  });
-                 aoData.pushArray($('#searchForm').serializeArray());
-             },
             'fnInitComplete': function () {     /**datatables ready**/
-                //lework.initDatatablesSearchHolder('用户名/姓名');
-            } ,
-            fnDrawCallback :function(oSettings ){
-                //resert function bar
-                checkFunbarStatus(false) ;
-                // bootstrap-tooltip
-                $('.tooltips').tooltip();
-                $('.confirmDelete').confirmDelete({onDelete: function () {
-                    var id = $(this).data('id') ;
-                    $.hiddenSubmit({
-                        formAction: 'user/delete',
-                        data: [  {name: 'deleteId', value:  id } ],
-                        complete : function(){  checkFunbarStatus(false); }
-                    })
-                    return true;
-                 }
-                });
+            },
+            fnDrawCallback: function (oSettings) {
 
             }
         });//dataTables
+        //easy ui org tree
 
-        //多行选择
-        oTable.tableMutilDelete({
-            afterSelect: function () {
-                var size = oTable.find('tr.selected').size();
-                checkFunbarStatus(size > 0);
-            }
-        });
+           $('#orgTree').tree({
+               url: 'organization/getTree',
+               method: 'get',
+               checkbox: false,
+               onLoadSuccess: function (node, data) {
+               },
+               onSelect : function (node) {
+                   //oTable.fnDraw();
+               }
+           });
 
-        //重置密码
-        $('#resetPassword-function').on('click',function () {
-            var ids = [];
-            oTable.find('tr.selected .confirmDelete').each(function () {
-                ids.push($(this).data('id'))
-            });
-            $(this).colorbox({
-                href: 'user/resetPassword?' + $.param({'$SiteMesh': false, 'userIds': ids.join(',')}),
-                adjustY: '40%',
-                width: '700px',
-                overlayClose: false,
-                scrolling: false
-            })
-        });
-         //新建
-        $('#create-function').on('click',function () {
-            $(this).colorbox({
-                href :'user/update?$SiteMesh=false' ,
-                adjustY:'40%',
-                width: '700px',
-                overlayClose: false,
-                scrolling: false
-            })
-        });
-        //刷新
-        $('#refresh-function').on('click',function () {
-            oTable.fnDraw();
-            //重置function bar状态
-            checkFunbarStatus(false);
-        });
-        //双击进入修改页面
-        oTable.on('dblclick','tbody>tr',function(event){
-            event.preventDefault();
-            $(this).find('.update').trigger('click');
-        });
+    })  //seajs use
 
-        //多行删除
-        $('#delete-function').confirmDelete({text: '<span class="text-warning">确认删除多条记录？</span>',
-            onDelete: function () {
-                var ids = [];
-                oTable.find('tr.selected .confirmDelete').each(function () {
-                    ids.push($(this).data('id'))
-                });
-                ids = ids.join(',');
-                $.hiddenSubmit({
-                    formAction: 'user/delete',
-                    data: [  {name: 'deleteIds', value: ids } ] ,
-                    complete : function(){  checkFunbarStatus(false); }
-                })
-            return true;
-        }
-        });
-
-        //取消选择
-        $('#cancelSelected').on('click',function () {
-            oTable.find('tbody>tr').removeClass('selected warning');
-            checkFunbarStatus(false);
-        });
-        //全选行
-        $('#selectedAll').on('click',function () {
-            oTable.find('tbody>tr').addClass('selected warning')
-            checkFunbarStatus(true);
-        });
-
-        //根据所选行,修改function bar状态.
-        function checkFunbarStatus(hasSelected) {
-            if (hasSelected == true) {
-                $('#checkIcon').removeClass('icon-check-empty').addClass('icon-check')
-                $('#delete-function,#resetPassword-function').show();
-            } else {
-                $('#checkIcon').removeClass('icon-check').addClass('icon-check-empty');
-                $('#delete-function,#resetPassword-function').hide();
-            }
-        }
-
-    })  //dom ready
 
 
 </script>
-
-<!-- ===============JsRender template ===================
-    @see http://www.jsviews.com/#samples/jsr/converters
+<%--<script src="${ctx}/static/assets/sea-modules/lework/lework.convert.js"></script>--%>
+<!-- ===============Mustache template ===================
+    @see https://github.com/janl/mustache.js
 -->
-
 <!--table action template-->
-<script id="tableActionTpl" type="text/x-jsrender">
+<script id="tableActionTpl" type="text/x-mustache">
     <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
         <a class="green tooltips view"  href="user/view?id={{:id}}&$SiteMesh=false"   data-original-title="查看"
            onclick="$(this).colorbox({adjustY:'40%',width:'900px',overlayClose:false,scrolling:true,scrolling:false });" >

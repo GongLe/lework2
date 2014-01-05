@@ -4,7 +4,7 @@ import org.lework.core.common.enumeration.OrgTypes;
 import org.lework.core.common.enumeration.Status;
 import org.lework.core.persistence.entity.organization.Organization;
 import org.lework.runner.orm.support.SearchFilter;
-import org.lework.runner.web.easyui.TreeResult;
+import org.lework.runner.web.vo.TreeResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,4 +1,4 @@
-package org.lework.commons;
+package org.lework.core.common;
 
 /**
  * Service层公用的Exception.

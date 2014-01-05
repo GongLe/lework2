@@ -65,8 +65,9 @@ public class JsonResult implements Serializable {
         return result;
     }
 
-    public void addAttribute(String key, Object val) {
+    public Map addAttribute(String key, Object val) {
         attributes.put(key, val);
+        return attributes;
     }
 
     public Map getAttributes() {
