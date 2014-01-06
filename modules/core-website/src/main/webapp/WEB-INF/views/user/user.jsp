@@ -35,9 +35,13 @@
                         <div class="pull-right">
                           <%--  <input class="easyui-combotree" data-options="url:'organization/getTree',method:'get'" style="width:200px;height:30px">
 --%>
-                              <le:select list="{'111':'1111','222':'222'}" name="name" attr=" class=\"form-control\" "></le:select>
+                              <le:select list="{'111':'1111','222':'222'}" name="name" attr=" class=\"form-control\" "
+                                         headerKey="--headerKey--" headerValue="-#value#-" ></le:select>
                        <le:select list="${list}" name="name"  listKey="code" listValue="name" headerKey="--headerKey--" headerValue="--value--"
                                   attr=" class=\"form-control\" " ></le:select>
+                              <le:selectTree attr=" class=\"form-control\" "    value="2c9f84db426eb16801426ee83a9a0002"
+                                      treeReuslt="${tree}" name="treeid" headerValue="--treeheaderValue--" headerKey="--treeheaderKey--"></le:selectTree>
+
                             <select class="form-control">
                                 <option selected="selected" value="0">显示所有部门</option>
                                 <option value="201312">系统类别</option>

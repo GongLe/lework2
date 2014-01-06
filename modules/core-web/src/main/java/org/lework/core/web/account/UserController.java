@@ -17,6 +17,7 @@ import org.lework.runner.web.AbstractController;
 import org.lework.runner.web.CallbackData;
 import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
+import org.lework.runner.web.vo.TreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -92,6 +93,8 @@ public class UserController  extends AbstractController {
         list.add(r);
         list.add(r);
         SpringMvcHolder.addAttribute("list",list, RequestAttributes.SCOPE_REQUEST);
+        List<TreeResult> tree = organizationService.getOrgTree(null);
+        SpringMvcHolder.addAttribute("tree",tree, RequestAttributes.SCOPE_REQUEST);
         return "user/user";
     }
 

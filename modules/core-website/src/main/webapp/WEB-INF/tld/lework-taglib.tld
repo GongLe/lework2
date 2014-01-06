@@ -111,6 +111,11 @@
             <required>false</required>
         </attribute>
         <attribute>
+            <description>init selected value</description>
+            <name>value</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
             <description>headerKey</description>
             <name>headerKey</name>
             <required>false</required>
@@ -136,15 +141,50 @@
             <name>listValue</name>
             <required>false</required>
         </attribute>
+
+    </tag>
+    <tag>
+        <name>selectTree</name>
+        <!-- 定义标签处理类 -->
+        <tag-class>org.lework.runner.web.taglib.SelectTreeTag</tag-class>
+        <body-content>empty</body-content>
+        <!-- 配置标签属性 -->
         <attribute>
-            <description>equals html link#media</description>
-            <name>media</name>
+            <description>ID ,Name</description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>init selected value,multiple value can concat "," </description>
+            <name>value</name>
             <required>false</required>
         </attribute>
         <attribute>
-            <description>equals html link#rel</description>
-            <name>rel</name>
+            <description>html attribute</description>
+            <name>attr</name>
             <required>false</required>
+        </attribute>
+        <attribute>
+            <description>headerKey</description>
+            <name>headerKey</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>headerValue</description>
+            <name>headerValue</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>child node indentStr flag;子节点缩进标识</description>
+            <name>indentStr</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>easyui treeReuslt</description>
+            <name>treeReuslt</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
 </taglib>

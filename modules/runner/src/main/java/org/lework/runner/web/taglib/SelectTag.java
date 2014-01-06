@@ -3,6 +3,7 @@ package org.lework.runner.web.taglib;
 import org.apache.commons.lang3.Validate;
 import org.lework.runner.mapper.JsonMapper;
 import org.lework.runner.utils.Reflections;
+import org.lework.runner.utils.Strings;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
@@ -37,7 +38,7 @@ import java.util.Map;
  */
 public class SelectTag extends SimpleTagSupport {
     private final static String OPTION_SELECTED = " selected=\"selected\" " ;
-    private final static String EMPTY = "" ;
+
     // html attribute
     private String attr;
     // html ID ,Name
@@ -46,8 +47,8 @@ public class SelectTag extends SimpleTagSupport {
     private Object value;
   /*  private Boolean multiple;
     private Integer size ;*/
-    private String headerKey = EMPTY;
-    private String headerValue = EMPTY;
+    private String headerKey = Strings.EMPTY;
+    private String headerValue = Strings.EMPTY;
     private String listKey;
     private String listValue;
     private Object list; //String or List;
@@ -57,7 +58,7 @@ public class SelectTag extends SimpleTagSupport {
         if (list == null) {
             getJspContext()
                     .getOut()
-                    .write(String.format("<select name=\"%s\" id=\"%s\" %s >%s</select>", getName(), getName(), getAttr(),EMPTY));
+                    .write(String.format("<select name=\"%s\" id=\"%s\" %s >%s</select>", getName(), getName(), getAttr(),Strings.EMPTY));
             return;
         }
         StringBuilder builder = new StringBuilder(String.format("<option value=\"%s\">%s</option> ",  getHeaderValue(),getHeaderKey() ));
@@ -71,7 +72,7 @@ public class SelectTag extends SimpleTagSupport {
                 entry = (Map.Entry) it.next();
                 builder.append("<option value=\"")
                         .append(entry.getValue()).append("\" ")
-                        .append(entry.getValue().equals(this.value) ? OPTION_SELECTED : EMPTY)
+                        .append(entry.getValue().equals(this.value) ? OPTION_SELECTED : Strings.EMPTY)
                         .append(" >")
                         .append(entry.getKey())
                         .append("</option>\n");
@@ -89,7 +90,7 @@ public class SelectTag extends SimpleTagSupport {
 
                 builder.append("<option value=\"")
                         .append(v).append("\" ")
-                        .append(v.equals(this.value) ? OPTION_SELECTED : EMPTY)
+                        .append(v.equals(this.value) ? OPTION_SELECTED : Strings.EMPTY)
                         .append(" >")
                         .append(k)
                         .append("</option>\n");
