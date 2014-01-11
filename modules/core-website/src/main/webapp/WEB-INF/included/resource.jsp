@@ -37,8 +37,9 @@
 <!--lework custom component style-->
 <link rel="stylesheet" href="${ctx}/static/assets/css/lework.component.css">
 <script src="${ctx}/static/assets/sea-modules/seajs/2.1.1/sea-debug.js"></script>
+
 <script>
-    var STATIC_VERSION = '1.0' ;
+    var STATIC_VERSION = Math.random()
     // Set configuration
     seajs.config({
         base: '<%=request.getContextPath()%>/static/assets/sea-modules',
@@ -58,6 +59,7 @@
             'qtip2': 'jquery-qtip2/jquery.qtip.js',
             'chosen': 'jquery-chosen/chosen.jquery.js',
             'colorbox': 'jquery-colorbox/jquery.colorbox.js',
+            'dialog': 'artDialog/v6/dialog-plus.js',
             'slimscroll': 'jquery-slimscroll/jquery.slimscroll.js',
             'blockUI': 'jquery-blockUI/jquery.blockUI.js',
             'validate': 'jquery-validation/1.11.1/jquery.validate.js',

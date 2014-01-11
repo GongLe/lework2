@@ -33,10 +33,8 @@
                         <button type="submit" class="btn btn-white">应用</button>
                         &nbsp;&nbsp;
                         <div class="pull-right">
-                          <%--  <input class="easyui-combotree" data-options="url:'organization/getTree',method:'get'" style="width:200px;height:30px">
---%>
-                              <le:select list="{'111':'1111','222':'222'}" name="name" attr=" class=\"form-control\" "
-                                         headerKey="--headerKey--" headerValue="-#value#-" ></le:select>
+                          <input class="easyui-combotree" data-options="url:'organization/getTree',method:'get'" style="width:200px;height:30px">
+
                        <le:select list="${list}" name="name"  listKey="code" listValue="name" headerKey="--headerKey--" headerValue="--value--"
                                   attr=" class=\"form-control\" " ></le:select>
                               <le:selectTree attr=" class=\"form-control\" "    value="2c9f84db426eb16801426ee83a9a0002"
@@ -74,11 +72,20 @@
 </div> <!--/#main-body-content -->
 
 <script>
+    seajs.use(['dialog','jquery' ], function (dialog,$) {
+        var d = dialog({
+            title: 'message',
+            content: '<input autofocus />'
+        });
+        d.showModal();
+    });   //seajs use
+
     seajs.use(['mustache','jquery','datatables','easyui'], function (mustache,$) {
         var $orgTree =  $('#orgTree') ,
                 oTable = $('#table-list');
         oTable.dataTable({
             'aoColumns': [
+                { 'mData': 'id', 'sTitle': '<input type="checkbox" id="toggleCheckAll" >' },
                 { 'mData': 'name', 'sTitle': '姓名' },
                 { 'mData': 'loginName', 'sTitle': '用户名'}  ,
                 { 'mData': 'email', 'sTitle': 'Email'}  ,
@@ -88,6 +95,13 @@
             ],
             'aoColumnDefs': [
                 {
+                    "sWidth": "5%",
+                    'mRender': function (data, type, full) {
+                        return    '<input type="checkbox" data-id="{0}" class="checkbox-row" >'.format(data);
+                    },
+                    'aTargets': [0 ]
+                }, {
+                    "sWidth": "8%",
                     'mRender': function (data, type, full) {
                         //  console.log(data)
                         if (data == 'enable') {
@@ -95,7 +109,7 @@
                         }
                         return    '<i class="icon-remove-circle bigger-130 red" title="禁用的"></i>';
                     },
-                    'aTargets': [4 ]
+                    'aTargets': [5 ]
                 },
                 {
                     'mRender': function (data, type, full) {
@@ -103,13 +117,13 @@
                        // return  $('#tableActionTpl').render({id: data});
                         return   '' ;
                     },
-                    'aTargets': [5 ]
+                    'aTargets': [6 ]
                 },
                 { bSortable: false,
-                    aTargets: [5]
+                    aTargets: [0,6]
                 } ,
                 //   { 'bVisible': false,  'aTargets': [ 1 ] },
-                { 'sClass': 'center', 'aTargets': [4] }
+                { 'sClass': 'center', 'aTargets': [5] }
             ],
             'sDom': 'rt<"table-footer clearfix"ip>',
             'bStateSave': false  , /**state saving **/
