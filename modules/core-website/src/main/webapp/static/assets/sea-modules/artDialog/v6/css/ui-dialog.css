@@ -24,6 +24,11 @@
     transform: scale(0);
     -webkit-transition: -webkit-transform .15s ease-in-out, opacity .15s ease-in-out;
     transition: transform .15s ease-in-out, opacity .15s ease-in-out;
+    color: #222;
+    border: 1px solid rgba(0,0,0,0.333);
+    border-radius: 0;
+    -webkit-box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 
 }
 .ui-popup-show .ui-dialog {
@@ -111,7 +116,9 @@
     text-align: left;
 }
 .ui-dialog-footer {
-    padding: 0 20px 20px 20px;
+   /* padding: 0 20px 20px 20px;*/
+    padding: 0px 15px 15px;
+    text-align: right;
 }
 .ui-dialog-statusbar {
     float: left;
@@ -159,6 +166,16 @@
       -ms-user-select: none;
        -o-user-select: none;
           user-select: none;
+    /**重写按钮样式**/
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 18px;
+    cursor: default;
+    border-radius: 2px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background-clip: border-box;
+    /**// 重写按钮样式**/
 }
 
 .ui-dialog-footer button:focus {
@@ -215,17 +232,30 @@
 }
 
 .ui-dialog-footer button.ui-dialog-autofocus {
-  color: #ffffff;
-  background-color: #428bca;
-  border-color: #357ebd;
+    /**替换样式为google style button*/
+    color: #ffffff;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+    background-image: -webkit-linear-gradient(top, #4d90fe 0%, #4787ed 100%);
+    background-image: linear-gradient(to bottom, #4d90fe 0%, #4787ed 100%);
+    background-repeat: repeat-x;
+    border: 1px solid #3079ed;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4d90fe', endColorstr='#ff4787ed', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
 .ui-dialog-footer button.ui-dialog-autofocus:hover,
 .ui-dialog-footer button.ui-dialog-autofocus:focus,
 .ui-dialog-footer button.ui-dialog-autofocus:active {
-  color: #ffffff;
-  background-color: #3276b1;
-  border-color: #285e8e;
+    /**替换样式为google style button*/
+    color: #ffffff;
+    background-color: #3078eb;
+    background-color: #3078eb \9;
+    background-image: -webkit-linear-gradient(top, #4d90fe 0%, #3078eb 100%);
+    background-image: linear-gradient(to bottom, #4d90fe 0%, #3078eb 100%);
+    background-repeat: repeat-x;
+    border: 1px solid #196aeb;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4d90fe', endColorstr='#ff3078eb', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
 .ui-dialog-footer button.ui-dialog-autofocus:active {
