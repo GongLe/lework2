@@ -74,10 +74,18 @@
 <script>
     seajs.use(['dialog','jquery' ], function (dialog,$) {
         var d = dialog({
-            title: 'message',
-            content: '<input autofocus />'
+            title: '欢迎',
+            content: '欢迎使用 artDialog 对话框组件！',
+            ok: function () {
+                var that = this;
+                this.title('正在提交..');
+                setTimeout(function () {
+                    that.close().remove();
+                }, 2000);
+                return false;
+            }
         });
-        d.showModal();
+        d.show();
     });   //seajs use
 
     seajs.use(['mustache','jquery','datatables','easyui'], function (mustache,$) {

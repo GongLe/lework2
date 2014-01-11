@@ -1142,7 +1142,7 @@ a.m-btn-plain-active {
 .pagination .pagination-num {
   border-color: #D4D4D4;
 }
-/*.panel {
+ .panel {
   overflow: hidden;
   text-align: left;
 }
@@ -1170,7 +1170,7 @@ a.m-btn-plain-active {
 }
 .panel-body-noborder {
   border-width: 0px;
-}*/
+}
 .panel-with-icon {
   padding-left: 18px;
 }
@@ -1242,9 +1242,10 @@ a.m-btn-plain-active {
 .panel-tool-expand {
   background: url('images/panel_tools.png') no-repeat -32px -16px;
 }
-/*.panel-header,
+ .panel-header,
 .panel-body {
   border-color: #D4D4D4;
+     padding: 0;
 }
 .panel-header {
   background-color: #F2F2F2;
@@ -1253,7 +1254,7 @@ a.m-btn-plain-active {
   background-color: #ffffff;
   color: #333;
   font-size: 14px;
-}*/
+}
 .panel-title {
   font-size: 14px;
   font-weight: bold;
