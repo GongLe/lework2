@@ -25,6 +25,8 @@
 <!--color theme-->
 <link rel="stylesheet" href="${ctx}/static/assets/css/color.coffee.css">
 
+<!--TODO 在模块中再加载?
+-->
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-qtip2/jquery.qtip.css">
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-chosen/chosen.css">
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-colorbox/colorbox.css">
@@ -60,6 +62,7 @@
             'chosen': 'jquery-chosen/chosen.jquery.js',
             'colorbox': 'jquery-colorbox/jquery.colorbox.js',
             'dialog': 'artDialog/v6/dialog-plus.js',
+            'notify': 'notify/notify.js',
             'slimscroll': 'jquery-slimscroll/jquery.slimscroll.js',
             'blockUI': 'jquery-blockUI/jquery.blockUI.js',
             'validate': 'jquery-validation/1.11.1/jquery.validate.js',

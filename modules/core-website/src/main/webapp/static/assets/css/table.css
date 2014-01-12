@@ -117,7 +117,13 @@ th .lbl:only-child,td .lbl:only-child {
 .dataTables_paginate.pagination {
     margin:0 12px
 }
-.dataTables_wrapper label {
+.dataTables_wrapper{
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+
+} .dataTables_wrapper label {
     display:inline-block;
     font-size:12px
 }
