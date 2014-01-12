@@ -40,27 +40,25 @@
     display: inline-block;
     position: relative;
     padding:5px 25px 5px 15px;
-    padding-bottom: 0px\9;
     margin: 5px auto;
     text-shadow: none;
     font-size: 1.2em;
     font-size: 1.0 em\9;
     font-weight: bold;
-    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #333;
     background-color: #f9edbe;
     border: 1px solid #f0c36d;
     vertical-align: baseline;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    color: #333333;
     z-index: 998;
+    vertical-align: middle;
 }
 .alert-inner-text{
-    display: inline-block;
+    display: inline;
     max-width: 600px;
+    line-height:20px;
     overflow: auto;
 }
 .lework-notify-success {

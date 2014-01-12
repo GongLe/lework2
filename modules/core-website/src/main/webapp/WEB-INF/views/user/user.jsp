@@ -11,14 +11,8 @@
 <div id="main-body-content">
     <h3>用户管理 <button class="btn btn-danger btn-sm" hidefocus="true"  id="create-function" >新建</button> </h3>
     <div class="row">
-        <div class="col-md-2" style="padding:23px 0 0 0">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <ul id="orgTree" style="padding:10px 10px 0 5px;" ></ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-10">
+
+        <div class="col-md-12">
 
                 <div class="tablenav top clearfix" style="padding: 0">
 
@@ -33,7 +27,6 @@
                         <button type="submit" class="btn btn-white">应用</button>
                         &nbsp;&nbsp;
                         <div class="pull-right">
-                          <input class="easyui-combotree" data-options="url:'organization/getTree',method:'get'" style="width:200px;height:30px">
 
                        <le:select list="${list}" name="name"  listKey="code" listValue="name" headerKey="--headerKey--" headerValue="--value--"
                                   attr=" class=\"form-control\" " ></le:select>
@@ -72,7 +65,7 @@
 </div> <!--/#main-body-content -->
 
 <script>
-    seajs.use(['dialog','jquery' ], function (dialog,$) {
+    seajs.use(['dialog','notify','jquery' ], function (dialog,notify,$) {
         var d = dialog({
             title: '欢迎',
             content: '欢迎使用 artDialog 对话框组件！',
@@ -86,6 +79,7 @@
             }
         });
         d.show();
+        notify({content:'default theme themethemethemethemethemethemetheme',timer:null})
     });   //seajs use
 
     seajs.use(['mustache','jquery','datatables','easyui'], function (mustache,$) {
@@ -145,18 +139,6 @@
 
             }
         });//dataTables
-        //easy ui org tree
-
-           $('#orgTree').tree({
-               url: 'organization/getTree',
-               method: 'get',
-               checkbox: false,
-               onLoadSuccess: function (node, data) {
-               },
-               onSelect : function (node) {
-                   //oTable.fnDraw();
-               }
-           });
 
     })  //seajs use
 
