@@ -46,7 +46,8 @@
     seajs.config({
         base: '<%=request.getContextPath()%>/static/assets/sea-modules',
         map: [
-            [ '.js' , '.js?v=' + STATIC_VERSION  ]
+            [ '.js' , '.js?v=' + STATIC_VERSION  ],
+            [ '.css' , '.css?v=' + STATIC_VERSION  ]
         ],
         alias: {
             '_jquery': 'jquery/1.10.2/jquery-debug.js',
@@ -61,7 +62,7 @@
             'qtip2': 'jquery-qtip2/jquery.qtip.js',
             'chosen': 'jquery-chosen/chosen.jquery.js',
             'colorbox': 'jquery-colorbox/jquery.colorbox.js',
-            'dialog': 'artDialog/v6/dialog-plus.js',
+            'dialog': 'artDialog/4.1.7/jquery.artDialog.js',
             'notify': 'notify/notify.js',
             'slimscroll': 'jquery-slimscroll/jquery.slimscroll.js',
             'blockUI': 'jquery-blockUI/jquery.blockUI.js',
