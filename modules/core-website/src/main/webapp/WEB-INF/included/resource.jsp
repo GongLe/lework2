@@ -31,10 +31,6 @@
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-chosen/chosen.css">
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-colorbox/colorbox.css">
 
-<%--
-<!-- easyui css custom theme    -->
- <link rel="stylesheet" href="${ctx}/static/plugins/easyui/1.3.2/themes/bootstrap/easyui.custom.css" >
---%>
 
 <!--lework custom component style-->
 <link rel="stylesheet" href="${ctx}/static/assets/css/lework.component.css">
@@ -76,11 +72,11 @@
             'xDate': 'xdate/xdate.js',
             'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
             'extendPrototype': 'lework/lework.prototype.js',
-            'funPage': 'lework/lework.function.page.js',  /**页面公用函数**/
+            'funPage': 'lework/lework.function.page.js', /**页面公用函数**/
             'utils': 'lework/lework.utils.js',
             'mustache': 'mustache/mustache.js'
         },
-        preload: ['jquery', 'bootstrap', 'extendPrototype','funPage']
+        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage']
     });
     seajs.on('exec', function (module) {
         if (module.uri === seajs.resolve('jquery')) {

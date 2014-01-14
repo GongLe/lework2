@@ -1,100 +1,102 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
-<div  id="userInputBody"  >
-    <div class="row-fluid ">
-        <div class="span12" >
-            <!--隐藏域-->
-            <input type="hidden" name="$SiteMesh" value="false">
-            <form:hidden path="entity.id" />
-            <div class="control-group">
-                <label class="control-label " for="name">姓名</label>
-                <div class="controls">
-                    <input  class="input-xlarge" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入姓名">
+<div  id="userInputBody" style="width:600px;max-height:650px"  >
+    <div class="row">
+        <div class="col-sm-12" >
+            <form action="user/update"  method="post" id="inputForm" name="inputForm" class="form-horizontal" role="form">
+                <!--隐藏域-->
+                <input type="hidden" name="$SiteMesh" value="false">
+                <form:hidden path="entity.id" />
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="name" >姓名</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入姓名">
+                    </div>
+                    <!--${entity.name}-->
                 </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label " for="loginName">用户名</label>
-                <div class="controls">
-                    <input  class="input-xlarge" type="text" id="loginName" name="loginName"   value="${entity.loginName}" placeholder="输入用户名">
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label"  for="loginName">用户名</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="loginName" name="loginName"   value="${entity.loginName}" placeholder="输入用户名">
+                    </div>
                 </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label " for="plainPassword">密码</label>
-                <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-key"></i></span>
-                        <input style="width: 245px;" type="password"  name="plainPassword" id="plainPassword"
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label" for="plainPassword">密码</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text"  type="password"  name="plainPassword" id="plainPassword"
                         <c:if test="${entity.isNew == true }">  value="123456" title="默认密码为123456" placeholder="输入密码" </c:if>
                         <c:if test="${entity.isNew == false }"> placeholder="新密码"</c:if>    >
                     </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="orgId">所属部门</label>
-                <div class="controls" >
-                    <input type="text" id="orgId" name="orgId"  value="${entity.org.id}"  style="width:284px;height:28px;" >
-                    <div class="help-inline">
-                        <a href="javascript:;" onclick="$('#inputForm #orgId').combotree('clear');">清空</a>
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label"  for="status">状态</label>
+                    <div class="col-xs-10">
+                        <form:select  path="entity.status" cssClass="form-control" cssStyle="width:284px"  >
+                            <form:options  items="${statusList}"  itemValue="code" itemLabel="name"/>
+                        </form:select>
                     </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="orgId">所属角色</label>
-                <div class="controls">
 
-                    <select id="roleIds" name="roleIds" multiple    >
-                        <c:forEach items="${chosenRoleOptions}" var="group">
-                            <optgroup label="${group.key}">
-                                <c:forEach items="${group.value}" var="opt">
-                                    <option
-                                            <c:if test="${opt.selected == true}">selected="selected"</c:if>
-                                            value="${opt.value}">${opt.name}</option>
-                                </c:forEach>
-                            </optgroup>
-                        </c:forEach>
-                    </select>
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label" for="orgId">所属部门</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text"  type="password"   >
+                    </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label " for="email">手机号码</label>
-                <div class="controls">
-                    <input  class="input-xlarge" type="text" id="mobile" name="mobile"   value="${entity.mobile}" placeholder="输入手机号码l">
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label"  >所属角色</label>
+                    <div class="col-xs-10">
+                        <select id="roleIds" name="roleIds" multiple     >
+                            <c:forEach items="${chosenRoleOptions}" var="group">
+                                <optgroup label="${group.key}">
+                                    <c:forEach items="${group.value}" var="opt">
+                                        <option
+                                                <c:if test="${opt.selected == true}">selected="selected"</c:if>
+                                                value="${opt.value}">${opt.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label " for="email">Email</label>
-                <div class="controls">
-                    <input  class="input-xlarge" type="text" id="email" name="email"   value="${entity.email}" placeholder="输入email">
-                </div>
-            </div>
 
-            <div class="control-group">
-                <label class="control-label" for="status">状态</label>
-                <div class="controls">
-                    <form:select  path="entity.status" cssClass="input-xlarge" cssStyle="width:284px"  >
-                        <form:options  items="${statusList}"  itemValue="code" itemLabel="name"/>
-                    </form:select>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"   for="email">手机号码</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="mobile" name="mobile"   value="${entity.mobile}" placeholder="输入手机号码">
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-group">
-                <label class="control-label" for="description">描述</label>
-                <div class="controls">
-                    <textarea class="input-xlarge" rows="3" id="description" name="description"   placeholder="输入描述信息" > ${entity.description}</textarea>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="email">Email</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="email" name="email"   value="${entity.email}" placeholder="输入email">
+                    </div>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label" for="description">描述</label>
+                    <div class="col-xs-10">
+
+                        <textarea class="form-control"  rows="3" id="description" name="description"   placeholder="输入描述信息" > ${entity.description}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-2 col-xs-10">
+                        <button type="submit" class="btn btn-default">Sign in</button>
+                    </div>
+                </div>
+            </form>
+
         </div>
 
-    </div> <!--/.row-fluid-->
+    </div> <!--/.row-->
 </div><!--/#inputBody-->
 <script>
   seajs.use(['mustache', 'jquery', 'dialog', 'notify',  'confirmDelete' ,'slimscroll','validate','chosen'], function (mustache, $, dialog, notify) {
 
     $(function(){
-
-      /*  $('#userInputBody').slimscroll({
+/*
+        $('#userInputBody').slimscroll({
             height:'400px'
         }); //slimscroll*/
         //from validater

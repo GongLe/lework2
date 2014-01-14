@@ -985,7 +985,7 @@ define(function (require, exports, module) {
                 +								'<td colspan="2" class="aui_header">'
                 +									'<div class="aui_titleBar">'
                 +										'<div class="aui_title"></div>'
-                +										'<button class="aui_close"  >'   /**TODO a标签替换为button**/
+                +										'<button class="aui_close" title="关闭" >'   /**TODO a标签替换为button**/
                 +											'\xd7'
                 +										'</button>'
                 +									'</div>'
@@ -1089,6 +1089,7 @@ define(function (require, exports, module) {
 
             //open dialog
             ret = artDialog(opt);
+            ret.DOM.outer.addClass('aui-outer-shadow');
             setTimeout(function () {
                 //  jquery load ,ajax加载html
                 ret.DOM.content.load(arg[0], arg[1], function (responseText, textStatus, XMLHttpRequest) {

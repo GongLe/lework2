@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<div id="main-body-content">
+<div id="main-body-content" >
     <h3>用户管理 <button class="btn btn-danger btn-sm" hidefocus="true"  id="create-function" >新建</button> </h3>
     <div class="row">
 
@@ -26,18 +26,12 @@
                         </select>
                         <button type="submit" class="btn btn-white">应用</button>
                         &nbsp;&nbsp;
-                      <%--  <div class="pull-right">--%>
 
-                       <le:select list="${list}" name="name"  listKey="code" listValue="name" headerKey="--headerKey--" headerValue="--value--"
+                       <le:select list="${list}" name="name"  listKey="code" listValue="name" headerKey="--显示所有部门--" headerValue=""
                                   attr=" class=\"form-control\" " ></le:select>
                               <le:selectTree attr=" class=\"form-control\" "    value="2c9f84db426eb16801426ee83a9a0002"
-                                      treeReuslt="${tree}" name="treeid" headerValue="--treeheaderValue--" headerKey="--treeheaderKey--"></le:selectTree>
+                                      treeReuslt="${tree}" name="treeid" headerKey="--显示所有部门--" headerValue="" ></le:selectTree>
 
-                            <select class="form-control">
-                                <option selected="selected" value="0">显示所有部门</option>
-                                <option value="201312">系统类别</option>
-                                <option value="201312">业务类别</option>
-                            </select>
                             &nbsp;&nbsp;
                             <select class="form-control">
                                 <option value="Code">编号</option>
@@ -50,8 +44,6 @@
                                 <input type="text" class="form-control" id="cccc" placeholder="搜索">
                             </div>
                             <button type="submit" class="btn btn-white">筛选</button>
-                       <%-- </div>--%>
-
 
                     </form>
 
@@ -67,6 +59,7 @@
 <script>
 
     seajs.use(['mustache', 'jquery', 'notify', 'dialog', 'datatables', 'confirmDelete' ], function (mustache, $, notify, dialog) {
+
 
         var oTable = $('#table-list'),
                 rowActionTpl = $('#tableActionTpl').html();
@@ -155,14 +148,8 @@
                 lock: true,
                 title: '编辑',
                 width: 700,
-                height: 600,
-                okVal: '保存',
-                ok: function () {
-                    this.title('3秒后自动关闭').time(3);
-                    return false;
-                },
-                cancelVal: '关闭',
-                cancel: true, //为true等价于function(){}
+                height:600,
+                padding: '5px 10px',		// 内容与边界填充距离
                 ajax: {type: 'get', url: 'user/update?', data: $(this).data(), ajaxCallback: function () {
                     console.log('ajaxCallback....')
                 }}
