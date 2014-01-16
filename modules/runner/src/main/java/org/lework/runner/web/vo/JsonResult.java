@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * @author Gongle
- * @Description: 通用json对象
+ *  通用json对象,不完全遵守java bean规范,setter方法返回当前对象,可以链式操作,使得代码可以更加简洁.
  */
 public class JsonResult implements Serializable {
 
