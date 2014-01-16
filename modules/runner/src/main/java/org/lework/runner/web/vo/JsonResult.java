@@ -1,5 +1,7 @@
 package org.lework.runner.web.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,32 +14,21 @@ import java.util.Map;
 public class JsonResult implements Serializable {
 
     public JsonResult() {
-        super();
-
     }
 
-    /**
-     * 操作状态*
-     */
-    private boolean status = false;
+    private Boolean status;
+
+    private HttpStatus httpStatus;
 
     /**
      * 操作信息*
      */
     private String msg;
 
-
-    /**
-     * 新增操作*
-     */
-    private boolean isNewRecord = false;
-
-
     /**
      * 额外附带信息*
      */
     private Map attributes = new HashMap();
-
 
     /**
      * 操作完成，返回状态信息
@@ -45,7 +36,8 @@ public class JsonResult implements Serializable {
      * @param message
      * @return
      */
-    public static JsonResult success(String message) {
+    @JsonIgnore
+    public static JsonResult ok(String message) {
         JsonResult result = new JsonResult();
         result.setStatus(true);
         result.setMsg(message);
@@ -58,16 +50,25 @@ public class JsonResult implements Serializable {
      * @param message
      * @return
      */
-    public static JsonResult failure(String message) {
+    @JsonIgnore
+    public static JsonResult bad(String message) {
         JsonResult result = new JsonResult();
         result.setStatus(false);
         result.setMsg(message);
         return result;
     }
 
-    public Map addAttribute(String key, Object val) {
+    /**
+     * 附加属性
+     *
+     * @param key key
+     * @param val value
+     * @return 返回JsonResult可继续使用其它API, 链式操作.
+     */
+    @JsonIgnore
+    public JsonResult addAttribute(String key, Object val) {
         attributes.put(key, val);
-        return attributes;
+        return this;
     }
 
     public Map getAttributes() {
@@ -82,23 +83,31 @@ public class JsonResult implements Serializable {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public JsonResult setMsg(String msg) {
         this.msg = msg;
+        return this;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public JsonResult setStatus(Boolean status) {
         this.status = status;
+        return this;
     }
 
-    public boolean isNewRecord() {
-        return isNewRecord;
+    public Integer getHttpStatusCode() {
+        return this.httpStatus != null ? this.httpStatus.value() : null;
     }
 
-    public void setNewRecord(boolean newRecord) {
-        isNewRecord = newRecord;
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
+
+    public JsonResult setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
+        return this;
+    }
+
 }

@@ -17,41 +17,88 @@ import java.util.*;
  */
 public class Collections3 {
     /**
-     * 获取List集合中目标成员的下一个成员
+     * 获取某集合的下一个成员
+     *
      * @param <T>
      * @param list
-     * @param destination 目标成员
+     * @param obj
      */
-    public static <T> T getNextElement(List<T> list ,T destination){          
-        T result  = null ;
-        if(!isEmpty(list)){
-            return  list.get(getNextElementIndex(list, destination));
+    public static <T> T getNextElement(List<T> list, T obj) {
+        T result = null;
+        if (!isEmpty(list)) {
+            return list.get(getNextElementIndex(list, obj));
         }
-        return result  ;
+        return result;
     }
+
     /**
-     * 获取List集合中目标成员的下一个成员索引
+     * 获取某集合的上一个成员
+     *
      * @param <T>
      * @param list
-     * @param destination   目标成员
+     * @param obj
      */
-    public static <T> int getNextElementIndex(List<T> list ,T destination){    
-        int m = -1 ;
-        if(!isEmpty(list)){
+    public static <T> T getPreElement(List<T> list, T obj) {
+        T result = null;
+        if (!isEmpty(list)) {
+            return list.get(getPreElementIndex(list, obj));
+        }
+        return result;
+    }
+
+    /**
+     * 获取某集合的下一个成员索引
+     *
+     * @param <T>
+     * @param list
+     * @param obj
+     */
+    public static <T> int getNextElementIndex(List<T> list, T obj) {
+        int m = -1;
+        if (!isEmpty(list)) {
             //我的位置索引
-            m = list.indexOf(destination) ;
-            //最后一个
-            if(m == (list.size() -1) ){
-                return  0 ;
-            }else if(list.size() ==1 ){
-                return  0 ;
-            }else {
-                return m +1 ;
+            m = list.indexOf(obj);
+            //最后一个时,返回首部
+            if (m == (list.size() - 1)) {
+                return 0;
+                //长度为1,总返回自己
+            } else if (list.size() == 1) {
+                return 0;
+            } else {
+                //中部
+                return m + 1;
             }
         }
-        return -1  ;
+        return -1;
     }
-	/**
+
+    /**
+     * 获取某集合的上一个成员索引
+     *
+     * @param <T>
+     * @param list
+     * @param obj
+     */
+    public static <T> int getPreElementIndex(List<T> list, T obj) {
+        int m = -1;
+        if (!isEmpty(list)) {
+            // 我的位置索引
+            m = list.indexOf(obj);
+            // 长度为1
+            if (list.size() == 1) {
+                return 0;
+                // 最首端时
+            } else if (m == 0) {
+                return list.size() - 1;
+                // 中部
+            } else {
+                return m - 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
 	 * 提取集合中的对象的两个属性(通过Getter函数), 组合成Map.
 	 * 
 	 * @param collection 来源集合.
@@ -262,4 +309,23 @@ public class Collections3 {
         return collection.contains(element);
     }
 
+    /**
+     *  集合是否有交集
+     * @param collection
+     * @param elements
+     * @param <T>
+     * @return
+     */
+    public static <T> boolean contain(Collection<T> collection, T... elements) {
+        boolean ret = false;
+        if (isEmpty(collection) || elements == null)
+            return ret;
+        for (T e : elements) {
+            if (collection.contains(e)) {
+                ret = true;
+                break;
+            }
+        }
+        return ret;
+    }
 }
