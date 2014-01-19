@@ -3,8 +3,8 @@
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-<script src="static/assets/js/html5shiv.js"></script>
-<script src="static/assets/js/respond.js"></script>
+    <script src="static/assets/js/html5shiv.js"></script>
+    <script src="static/assets/js/respond.js"></script>
 <![endif]-->
 
 <link rel="stylesheet" href="${ctx}/static/assets/sea-modules/bootstrap/3.0.3/bootstrap.css" >
@@ -24,12 +24,6 @@
 <link rel="stylesheet" href="${ctx}/static/assets/css/utils.css">
 <!--color theme-->
 <link rel="stylesheet" href="${ctx}/static/assets/css/color.coffee.css">
-
-<!--TODO 在模块中再加载?
--->
-<link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-qtip2/jquery.qtip.css">
-<link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-chosen/chosen.css">
-<link rel="stylesheet" href="${ctx}/static/assets/sea-modules/jquery-colorbox/colorbox.css">
 
 
 <!--lework custom component style-->
@@ -76,27 +70,15 @@
             'utils': 'lework/lework.utils.js',
             'mustache': 'mustache/mustache.js'
         },
-        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage','chosen' ]
+        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage','chosen','slimscroll' ]
     });
     seajs.on('exec', function (module) {
         if (module.uri === seajs.resolve('jquery')) {
             // window.$ = window.jQuery = module.exports;
         }
     })
-    //TODO 预加载组件???
-</script>
-
-<!-- jquery easyui loader
-<script src="${ctx}/static/plugins/easyui/1.3.2/easyloader.js" ></script>
-
-<script>
-    /**  jquery easyui **/
-    if (easyloader) {
-        easyloader.locale = "zh_CN"; // 本地化设置
-        easyloader.theme = "bootstrap"; // 设置主题
-        easyloader.css = false;
-    }
 
 </script>
--->
+
+
 

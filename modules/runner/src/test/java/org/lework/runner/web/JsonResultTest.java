@@ -10,8 +10,8 @@ public class JsonResultTest {
 
     @Test
     public void toJson() {
-        JsonResult failure = JsonResult.bad("bad").setHttpStatus(HttpStatus.BAD_REQUEST);
-        JsonResult success = JsonResult.ok("success").setHttpStatus(HttpStatus.OK);
+        JsonResult failure = JsonResult.failure("bad").setHttpStatus(HttpStatus.BAD_REQUEST);
+        JsonResult success = JsonResult.success("success").setHttpStatus(HttpStatus.OK);
         System.out.println((new JsonMapper()).toJson(failure));
         System.out.println((new JsonMapper()).toJson(success));
     }

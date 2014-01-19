@@ -1122,6 +1122,7 @@
     // CMD模块化 jquery plugin
     if (typeof define === "function" && define) {
         define(function (require ) {
+            require('./colorbox.css');
             var jQuery = require('jquery');
             init(jQuery);
             return jQuery;

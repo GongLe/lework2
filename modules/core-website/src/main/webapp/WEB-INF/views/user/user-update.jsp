@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label   class="col-xs-2 control-label" for="plainPassword">密码</label>
                     <div class="col-xs-10">
-                        <input class="form-control" type="text"  type="password"  name="plainPassword" id="plainPassword"
+                        <input class="form-control" type="password"  name="plainPassword" id="plainPassword"
                         <c:if test="${entity.isNew == true }">  value="123456" title="默认密码为123456" placeholder="输入密码" </c:if>
                         <c:if test="${entity.isNew == false }"> placeholder="新密码"</c:if>    >
                     </div>
@@ -80,12 +80,7 @@
                         <textarea class="form-control"  rows="3" id="description" name="description"   placeholder="输入描述信息" > ${entity.description}</textarea>
                     </div>
                 </div>
-           <%--     <div class="form-group">
-                    <div class="col-xs-offset-8 col-xs-4 align-right" style="padding-top: 10px" >
-                        <button type="submit" class="btn btn-primary" id="submitBtn">保存</button> &nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" id="closeBtn" >关闭</button>
-                    </div>
-                </div>--%>
+
             </form>
 
         </div>
@@ -93,29 +88,36 @@
     </div> <!--/.row-->
 </div><!--/#inputBody-->
 <script>
-  seajs.use(['mustache', 'jquery', 'dialog', 'notify',  'confirmDelete' ,'slimscroll','validate','chosen'], function (mustache, $, dialog, notify) {
+  seajs.use(['mustache', 'jquery', 'dialog', 'notify', 'slimscroll','validate','chosen','form'], function (mustache, $, dialog, notify) {
 
     $(function(){
-        //关闭弹出层
-        $('#closeBtn').on('click', function () {
-            var d = dialog.list['UPDATE_DIALOG'];
-            d && d.close();
-        })
+      var $inputForm =  $('#inputForm');
+      $('#userInputBody').slimscroll({
+            width:'630px',
+            height:'460px'
+        }); //slimscroll
 
-
-    // TODO 效果不是那么好,会有闪屏现象 ?
-
-    $('#userInputBody').slimscroll({
-                width:'630px',
-                height:'460px'
-            });
-     //slimscroll
+        var ajaxSubmitOption = {
+            // target: '#output2',   // target element(s) to be updated with server response
+            beforeSubmit: $.noop,  // pre-submit callback
+            success: function (resp, statusText) {
+                notify({content: resp.msg});
+                //关闭弹出层
+                var d = dialog.list['UPDATE_DIALOG'];
+                d && d.close();
+                //刷新父页面表格
+                $.isFunction(window.refreshDatatables) && window.refreshDatatables();
+            }, // post-submit callback
+            // other available options:
+            //url:       url         // override for form's 'action' attribute
+            //type:      type        // 'get' or 'post', override for form's 'method' attribute
+            dataType: 'json'        // 'xml', 'script', or 'json' (expected server response type)
+        };
 
         //from validater
-        $('#inputForm').validate({
+        $inputForm.validate({
             submitHandler: function (form) {
-                $('#submitBtn').prop('disable', true).text('保存中....')
-                form.submit();
+                $(form).ajaxSubmit(ajaxSubmitOption);
             },
             rules: {
             name: {
@@ -133,7 +135,7 @@
                     dataType: 'json',           //接受数据格式
                     data: {                     //要传递的数据
                       userId  : function() {
-                            return $('#id').val() ;
+                            return $inputForm.find('#id').val() ;
                         }
                     }
                 }
@@ -147,7 +149,7 @@
                     dataType: 'json',           //接受数据格式
                     data: {                     //要传递的数据
                       userId  : function() {
-                            return $('#id').val() ;
+                            return $inputForm.find('#id').val() ;
                         }
                     }
                 }
@@ -175,12 +177,11 @@
        }); //end validate
 
 
-        $('#inputForm #roleIds').chosen({
-            width:'284px',
-            placeholder_text_multiple:'请选择角色'
+        $inputForm.find('#roleIds').chosen({
+            width: '284px',
+            placeholder_text_multiple: '请选择角色'
         }); //chosen
 
-
-    })
+    }) //dom ready
   })//seajs use
 </script>

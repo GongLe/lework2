@@ -17,6 +17,7 @@ import org.lework.runner.web.AbstractController;
 import org.lework.runner.web.CallbackData;
 import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
+import org.lework.runner.web.vo.JsonResult;
 import org.lework.runner.web.vo.TreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -84,6 +85,7 @@ public class UserController  extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
+        //TODO test code
         Role r = new Role();
         r.setCode("code");
         r.setName("name");
@@ -118,39 +120,39 @@ public class UserController  extends AbstractController {
      * 保存
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public void update(@Valid @ModelAttribute("entity") User entity , BindingResult result,
-                       @RequestParam(value = "orgId" ,required = false) String orgId,
-                       @RequestParam(value = "roleIds" ,required = false) List<String> roleIds,
-                       HttpServletResponse response) {
-        //关联角色
-        if (Collections3.isEmpty(roleIds)) {
-            entity.setRoles(null);
-        } else {
-            List<Role> ownRoles = roleService.getRolesByIds(roleIds);
-            entity.setRoles(ownRoles);
-        }
-        //关联组织机构
-        if (Strings.isBlank(orgId)) {
-            entity.setOrg(null);
-            entity.setOrgName(null);
-        } else {
-            Organization ownOrg = organizationService.getOrganization(orgId);
-            entity.setOrgName(ownOrg.getName());
-            entity.setOrg(ownOrg);
-        }
-
+    public
+    @ResponseBody
+    JsonResult update(@Valid @ModelAttribute("entity") User entity, BindingResult result,
+                      @RequestParam(value = "orgId", required = false) String orgId,
+                      @RequestParam(value = "roleIds", required = false) List<String> roleIds) {
         if (result.hasErrors()) {
-            callback(response, CallbackData.build("actionCallback", "用户&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
             logger.warn(result.toString());
+            return JsonResult.failure("数据不合法,保存失败");
         }
+        JsonResult jsonResult = JsonResult.failure("用户&quot;" + entity.getName() + "&quot;保存失败");
         try {
+            //关联角色
+            if (Collections3.isEmpty(roleIds)) {
+                entity.setRoles(null);
+            } else {
+                List<Role> ownRoles = roleService.getRolesByIds(roleIds);
+                entity.setRoles(ownRoles);
+            }
+            //关联组织机构
+            if (Strings.isBlank(orgId)) {
+                entity.setOrg(null);
+                entity.setOrgName(null);
+            } else {
+                Organization ownOrg = organizationService.getOrganization(orgId);
+                entity.setOrgName(ownOrg.getName());
+                entity.setOrg(ownOrg);
+            }
             accountService.saveUser(entity);
-            callback(response, CallbackData.build("actionCallback", "用户&quot;" + entity.getName() + "&quot;保存成功", NotificationType.DEFAULT));
+            jsonResult = JsonResult.success("用户&quot;" + entity.getName() + "&quot;保存成功");
         } catch (Exception e) {
-            e.printStackTrace();
-            callback(response, CallbackData.build("actionCallback", "用户&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
+            logger.error("用户保存异常:{}", e);
         }
-
+        return jsonResult;
     }
 
 
@@ -158,31 +160,31 @@ public class UserController  extends AbstractController {
      * 删除
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public void delete(@RequestParam(value = "deleteId", required = false) String deleteId,
-                       @RequestParam(value = "deleteIds", required = false) String deleteIds,
-                       HttpServletResponse response) {
-
+    public
+    @ResponseBody
+    JsonResult delete(@RequestParam(value = "deleteIds", required = true) String deleteIds) {
+        JsonResult jsonResult = JsonResult.failure("删除失败"); ;
         try {
+            String[] ids = Strings.split(deleteIds, ",");
             //单个删除
-            if (Strings.isNotBlank(deleteId)) {
-                User entity = accountService.getUser(deleteId);
+            if (ids.length == 1) {
+                User entity = accountService.getUser(ids[0]);
                 accountService.deleteUser(entity);
-                callback(response, CallbackData.build("deleteCallback", "用户&quot;" + entity.getName() + "&quot;删除成功", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("用户&quot;" + entity.getName() + "&quot;删除成功");
             } else if (Strings.isNotBlank(deleteIds)) {   //多个删除
-                String[] ids = Strings.split(deleteIds, ",");
-
                 List<User> entities = accountService.getUserByIds(Arrays.asList(ids));
                 List<String> names = Collections3.extractToList(entities, "name");
                 accountService.deleteUsers(entities);
-                callback(response, CallbackData.build("deleteCallback", "用户&quot;" + Strings.join(names, ",") + "&quot;删除成功", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;删除成功");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            callback(response, CallbackData.build("deleteCallback", "用户删除失败.", NotificationType.ERROR));
+            logger.error("用户删除异常:{}", e);
         }
-
+        return jsonResult;
     }
+
     /**
      * 查看
      */

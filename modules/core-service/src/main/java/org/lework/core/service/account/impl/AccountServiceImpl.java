@@ -1,6 +1,7 @@
 package org.lework.core.service.account.impl;
 
 
+import org.lework.core.common.ServiceException;
 import org.lework.core.persistence.dao.user.UserDao;
 import org.lework.core.persistence.dao.user.UserNativeDao;
 import org.lework.core.persistence.entity.user.User;
@@ -103,6 +104,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void saveUser(User entity) {
+        if (!validateLoginName(entity.getId(), entity.getLoginName())) {
+            throw new ServiceException("用户名唯一性验证失败.");
+        }
         userDao.save(entity);
     }
 

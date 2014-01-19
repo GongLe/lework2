@@ -52,6 +52,7 @@ public class TreeResult implements Serializable {
      *
      * @param name
      * @param value
+     * @return 返回this 当前对象实例,可继续使用其它API, 链式操作.
      */
     public TreeResult addAttribute(String name, Object value) {
         getAttributes().put(name, value);

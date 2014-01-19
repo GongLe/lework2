@@ -1068,7 +1068,7 @@ define(function (require, exports, module) {
          * @param opt.ajax  {url ,[,type][, data ] [, ajaxCallback(responseText, textStatus, XMLHttpRequest) ]}
          */
         artDialog.ajaxModal = function (opt) {
-            var extendParam = {'__': (Math.random()), '$SiteMesh': false}, ret;
+            var extendParam = {'__': (new Date()).getTime(), '$SiteMesh': false}, ret;
             //jquery load option
             var arg = [], _data = undefined , src = opt['ajax'];
 
@@ -1088,7 +1088,13 @@ define(function (require, exports, module) {
             }
 
             //open dialog
-            ret = artDialog(opt);
+            ret = artDialog($.extend({
+                okVal: '保存',
+                cancelVal: '关闭',
+                ok: $.noop,
+                cancel: $.noop
+            },opt));
+
             ret.DOM.outer.addClass('aui-outer-shadow');
             setTimeout(function () {
                 //  jquery load ,ajax加载html

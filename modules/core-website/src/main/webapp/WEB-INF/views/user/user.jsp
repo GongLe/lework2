@@ -16,7 +16,7 @@
 
                 <div class="tablenav top clearfix" style="padding: 0">
 
-                    <form class="navbar-form" style="padding:10px 0 0 0;" role="form">
+                    <form class="navbar-form" style="padding:10px 0 0 0;" role="form" id="tableNavForm">
                         <select class="form-control" >
                             <option value="-1" selected="selected">批量操作</option>
                             <option value="unapprove">删除</option>
@@ -60,21 +60,16 @@
 
     seajs.use(['mustache', 'jquery', 'notify', 'dialog', 'datatables', 'confirmDelete' ], function (mustache, $, notify, dialog) {
 
-
         var oTable = $('#table-list'),
                 rowActionTpl = $('#tableActionTpl').html();
         //--------全局函数定义--------------
-        window.actionCallback = function (resp) {
-            //关闭弹出层
-            //刷新表格
-            oTable.fnDraw();
-            //操作提示
-            notify({content: resp.attributes.message, type: resp.attributes.type })
+        window.refreshDatatables = function () {
+            oTable.fnDraw();     //刷新表格
         };
         //---------jquery datatables --------
         oTable.dataTable({
             'aoColumns': [
-                { 'mData': 'id', 'sTitle': '<input type="checkbox" id="toggleCheckAll" >' },
+                { 'mData': 'id', 'sTitle': '<input type="checkbox" class="row-check-all" >' },
                 { 'mData': 'name', 'sTitle': '姓名' },
                 { 'mData': 'loginName', 'sTitle': '用户名'}  ,
                 { 'mData': 'email', 'sTitle': 'Email'}  ,
@@ -85,7 +80,7 @@
                 {
                     'sWidth': '5%',
                     'mRender': function (data, type, full) {
-                        return   '<input type="checkbox"value="{0}" class="row-checkbox" >'.format(data);
+                        return   '<input type="checkbox" value="{0}" class="row-check-one" >'.format(data);
                     },
                     'aTargets': [0 ]
                 },  {
@@ -117,16 +112,25 @@
             'bProcessing': true ,
             'bServerSide': true,
             'fnServerData': $.springDataJpaPageableAdapter,
-            'sAjaxSource': '${ctx}/user/getDatatablesJson',
+            'sAjaxSource': 'user/getDatatablesJson',
             'fnInitComplete': function () {     /**datatables ready**/
-
             },
             fnDrawCallback: function (oSettings) {
                 //确认删除弹出层
-                  oTable.find('.confirmDelete')
+                oTable.find('.confirmDelete')
                         .confirmDelete({
                             onConfirm: function () {
-                               //TODO 确认删除回调,刷新表格
+                                var id   =  $(this).data('id');
+                                $.ajax({
+                                    url: 'user/delete',
+                                    data: {deleteIds: id},
+                                    cache: false,
+                                    type:'post',
+                                    success: function (resp) {
+                                        notify({content: resp.msg});
+                                        refreshDatatables();
+                                    }
+                                })
                             }
                         });
 
@@ -136,27 +140,25 @@
         //----------事件定义---------
         //双击编辑行
          oTable.on('dblclick.lework', 'tr', function () {
-            // d.showModal();
             //触发编辑
             $(this).find('.edit').trigger('click.lework')
         })
         //编辑
-
         oTable.on('click.lework', '.edit', function () {
-            var rowInfo = $(this).data();
+            var rowData = $(this).data();
             dialog.ajaxModal({
                 id: 'UPDATE_DIALOG',
                 lock: true,
-                title: '编辑用户"{name}"'.format(rowInfo),
+                title: '编辑用户"{name}"'.format(rowData),
                 width: 630,
                 height: 500,
                 padding: '0',		// 内容与边界填充距离
-                ajax: {type: 'get', url: 'user/update?', data: $(this).data(), ajaxCallback: function () {
-                    console.log('ajaxCallback....')
-                }},
+                ajax: {type: 'get', url: 'user/update?', data: $(this).data() },
                 okVal: '保存',
                 ok: function () {
+                    //提交弹出层form
                     this.DOM.content.find('#inputForm').submit();
+                    return false;
                 },
                 cancelVal: '关闭',
                 cancel: function () {
@@ -170,10 +172,32 @@
         })
         //新建
         $('#create-function').on('click.lework', function () {
-            console.log('create');
+            dialog.ajaxModal({
+                id: 'UPDATE_DIALOG',
+                lock: true,
+                title: '新建用户',
+                width: 630,
+                height: 500,
+                padding: '0',		// 内容与边界填充距离
+                ajax: {type: 'get', url: 'user/update' },
+                okVal: '保存',
+                cancelVal: '关闭',
+                ok: function () {
+                    //提交弹出层form
+                    this.DOM.content.find('#inputForm').submit();
+                    return false;
+                }
+            })
         })
-
-
+        //--------------多行操作----------------
+        //表格checkbox操作
+        oTable.on('change.lework', '.row-check-all:checkbox', function () {
+            if ($(this).prop('checked')) {
+                oTable.find('.row-check-one').prop('checked', true)
+            } else {
+                oTable.find('.row-check-one').prop('checked', false)
+            }
+        })
     })  //seajs use
 
 

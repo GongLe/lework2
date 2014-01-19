@@ -64,7 +64,7 @@ public class JsonResult implements Serializable {
      *
      * @param key key
      * @param val value
-     * @return 返回JsonResult可继续使用其它API, 链式操作.
+     * @return 返回this 当前对象实例,可继续使用其它API, 链式操作.
      */
     @JsonIgnore
     public JsonResult addAttribute(String key, Object val) {
