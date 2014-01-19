@@ -21,6 +21,7 @@
 		max: jQuery.validator.format("请输入最大为 {0} 的值"),
 		min: jQuery.validator.format("请输入最小为 {0} 的值")
 });
+
 /**
  * 兼容bootstrap2
 
@@ -57,6 +58,26 @@ jQuery.extend(jQuery.validator.defaults ,{
     }
 })  ;
  */
+
+// override jquery validate plugin defaults
+$.validator.setDefaults({
+    highlight: function(element) {
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    unhighlight: function(element) {
+        $(element).closest('.form-group').removeClass('has-error');
+    },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function(error, element) {
+        if(element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
  /**
  ======================
  验证增强方法

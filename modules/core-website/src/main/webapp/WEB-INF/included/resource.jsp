@@ -37,7 +37,7 @@
 <script src="${ctx}/static/assets/sea-modules/seajs/2.1.1/sea-debug.js"></script>
 
 <script>
-    var STATIC_VERSION = Math.random()
+    var STATIC_VERSION = (new Date()).getTime() ;
     // Set configuration
     seajs.config({
         base: '<%=request.getContextPath()%>/static/assets/sea-modules',
@@ -72,17 +72,18 @@
             'xDate': 'xdate/xdate.js',
             'confirmDelete': 'lework/lework.jquery.confirmdelete.js',
             'extendPrototype': 'lework/lework.prototype.js',
-            'funPage': 'lework/lework.function.page.js', /**页面公用函数**/
+            'funPage': 'lework/lework.function.page.js', /**页面功能定义**/
             'utils': 'lework/lework.utils.js',
             'mustache': 'mustache/mustache.js'
         },
-        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage']
+        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage','chosen' ]
     });
     seajs.on('exec', function (module) {
         if (module.uri === seajs.resolve('jquery')) {
             // window.$ = window.jQuery = module.exports;
         }
     })
+    //TODO 预加载组件???
 </script>
 
 <!-- jquery easyui loader

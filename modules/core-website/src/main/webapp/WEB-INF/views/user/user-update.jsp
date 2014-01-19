@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
-<div  id="userInputBody" style="width:600px;max-height:650px"  >
+<div  id="userInputBody" style="padding:15px 40px 0 5px;/*width: 600px;max-height:600px;*/"  >
     <div class="row">
-        <div class="col-sm-12" >
+        <div class="col-sm-10 col-sm-offset-1" >
             <form action="user/update"  method="post" id="inputForm" name="inputForm" class="form-horizontal" role="form">
                 <!--隐藏域-->
                 <input type="hidden" name="$SiteMesh" value="false">
@@ -12,7 +12,6 @@
                     <div class="col-xs-10">
                         <input class="form-control" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入姓名">
                     </div>
-                    <!--${entity.name}-->
                 </div>
                 <div class="form-group">
                     <label   class="col-xs-2 control-label"  for="loginName">用户名</label>
@@ -73,6 +72,7 @@
                         <input class="form-control" type="text" id="email" name="email"   value="${entity.email}" placeholder="输入email">
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label  class="col-xs-2 control-label" for="description">描述</label>
                     <div class="col-xs-10">
@@ -80,11 +80,12 @@
                         <textarea class="form-control"  rows="3" id="description" name="description"   placeholder="输入描述信息" > ${entity.description}</textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-xs-offset-2 col-xs-10">
-                        <button type="submit" class="btn btn-default">Sign in</button>
+           <%--     <div class="form-group">
+                    <div class="col-xs-offset-8 col-xs-4 align-right" style="padding-top: 10px" >
+                        <button type="submit" class="btn btn-primary" id="submitBtn">保存</button> &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" id="closeBtn" >关闭</button>
                     </div>
-                </div>
+                </div>--%>
             </form>
 
         </div>
@@ -95,10 +96,21 @@
   seajs.use(['mustache', 'jquery', 'dialog', 'notify',  'confirmDelete' ,'slimscroll','validate','chosen'], function (mustache, $, dialog, notify) {
 
     $(function(){
-/*
-        $('#userInputBody').slimscroll({
-            height:'400px'
-        }); //slimscroll*/
+        //关闭弹出层
+        $('#closeBtn').on('click', function () {
+            var d = dialog.list['UPDATE_DIALOG'];
+            d && d.close();
+        })
+
+
+    // TODO 效果不是那么好,会有闪屏现象 ?
+
+    $('#userInputBody').slimscroll({
+                width:'630px',
+                height:'460px'
+            });
+     //slimscroll
+
         //from validater
         $('#inputForm').validate({
             submitHandler: function (form) {
@@ -167,6 +179,7 @@
             width:'284px',
             placeholder_text_multiple:'请选择角色'
         }); //chosen
+
 
     })
   })//seajs use

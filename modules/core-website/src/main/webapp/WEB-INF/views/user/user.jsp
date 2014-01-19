@@ -143,16 +143,24 @@
         //编辑
 
         oTable.on('click.lework', '.edit', function () {
-            console.log('edit');
+            var rowInfo = $(this).data();
             dialog.ajaxModal({
+                id: 'UPDATE_DIALOG',
                 lock: true,
-                title: '编辑',
-                width: 700,
-                height:600,
-                padding: '5px 10px',		// 内容与边界填充距离
+                title: '编辑用户"{name}"'.format(rowInfo),
+                width: 630,
+                height: 500,
+                padding: '0',		// 内容与边界填充距离
                 ajax: {type: 'get', url: 'user/update?', data: $(this).data(), ajaxCallback: function () {
                     console.log('ajaxCallback....')
-                }}
+                }},
+                okVal: '保存',
+                ok: function () {
+                    this.DOM.content.find('#inputForm').submit();
+                },
+                cancelVal: '关闭',
+                cancel: function () {
+                }
             })
 
         })

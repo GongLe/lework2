@@ -8,8 +8,9 @@ import java.util.Map;
 
 
 /**
+ * 通用json对象,不完全遵守java bean规范,setter方法返回当前对象,可以链式操作,使得代码可以更加简洁.
+ *
  * @author Gongle
- *  通用json对象,不完全遵守java bean规范,setter方法返回当前对象,可以链式操作,使得代码可以更加简洁.
  */
 public class JsonResult implements Serializable {
 
@@ -34,10 +35,10 @@ public class JsonResult implements Serializable {
      * 操作完成，返回状态信息
      *
      * @param message
-     * @return
+     * @return this 当前对象实例,可继续使用其它API, 链式操作.
      */
     @JsonIgnore
-    public static JsonResult ok(String message) {
+    public static JsonResult success(String message) {
         JsonResult result = new JsonResult();
         result.setStatus(true);
         result.setMsg(message);
@@ -48,10 +49,10 @@ public class JsonResult implements Serializable {
      * 获得失败的操作结果
      *
      * @param message
-     * @return
+     * @return this 当前对象实例,可继续使用其它API, 链式操作.
      */
     @JsonIgnore
-    public static JsonResult bad(String message) {
+    public static JsonResult failure(String message) {
         JsonResult result = new JsonResult();
         result.setStatus(false);
         result.setMsg(message);
