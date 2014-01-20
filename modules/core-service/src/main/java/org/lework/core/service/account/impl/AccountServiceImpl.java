@@ -2,6 +2,7 @@ package org.lework.core.service.account.impl;
 
 
 import org.lework.core.common.ServiceException;
+import org.lework.core.common.enumeration.Status;
 import org.lework.core.persistence.dao.user.UserDao;
 import org.lework.core.persistence.dao.user.UserNativeDao;
 import org.lework.core.persistence.entity.user.User;
@@ -33,6 +34,16 @@ public class AccountServiceImpl implements AccountService {
 
     private UserDao userDao;
     private UserNativeDao userNativeDao;
+
+    @Override
+    public void changeStatus(List<User> entities, Status status) {
+        if(Collections3.isEmpty(entities))
+             return;
+        for(User u : entities){
+            u.setStatus(status.getCode());
+        }
+        userDao.save(entities) ;
+    }
 
     @Autowired
     public void setUserNativeDao(UserNativeDao userNativeDao) {

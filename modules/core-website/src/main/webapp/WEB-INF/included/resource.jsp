@@ -57,8 +57,6 @@
             'slimscroll': 'jquery-slimscroll/jquery.slimscroll.js',
             'blockUI': 'jquery-blockUI/jquery.blockUI.js',
             'validate': 'jquery-validation/1.11.1/jquery.validate.js',
-            'validateMethods': 'jquery-validation/1.11.1/additional-methods.js',
-            'validate_cn_zh': 'jquery-validation/1.11.1/jquery_validate_message_cn_zh.js',
             'fullCalendar': 'jquery-fullcalendar/1.6.4/fullcalendar.js',
             'bootstrap': 'bootstrap/3.0.3/bootstrap.js',
             'bootbox': 'bootbox/4.1.0/bootbox.js',

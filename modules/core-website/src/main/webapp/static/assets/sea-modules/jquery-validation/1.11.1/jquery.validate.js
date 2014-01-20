@@ -1237,10 +1237,10 @@
     if (typeof define === "function" && define) {
         define(function (require) {
             var jQuery = require('jquery');
+
             // 异步加载一个模块，在加载完成时，执行回调
-            require.async('validateMethods');
-            require.async('validate_cn_zh');
-            init(jQuery);
+            init(jQuery)
+            require.async(['./additional-methods','./jquery_validate_message_cn_zh'] );
             return jQuery;
         });
     } else {

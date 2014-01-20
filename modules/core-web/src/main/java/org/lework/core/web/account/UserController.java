@@ -30,9 +30,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,18 +85,9 @@ public class UserController  extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
-        //TODO test code
-        Role r = new Role();
-        r.setCode("code");
-        r.setName("name");
-        List<Role> list = new ArrayList<Role>();
-        list.add(r);
-        list.add(r);
-        list.add(r);
-        list.add(r);
-        SpringMvcHolder.addAttribute("list",list, RequestAttributes.SCOPE_REQUEST);
-        List<TreeResult> tree = organizationService.getOrgTree(null);
-        SpringMvcHolder.addAttribute("tree",tree, RequestAttributes.SCOPE_REQUEST);
+
+        List<TreeResult> orgTree = organizationService.getOrgTree(null);
+        SpringMvcHolder.addAttribute("orgTree",orgTree, RequestAttributes.SCOPE_REQUEST);
         return "user/user";
     }
 
@@ -112,7 +103,10 @@ public class UserController  extends AbstractController {
             ids = Collections3.extractToList(ownRoles, "id");
             model.addAttribute("ownRoleIdsArr", JsonMapper.nonDefaultMapper().toJson(ids));
         }
-        model.addAttribute("chosenRoleOptions",roleService.getRoleGroupOptions(ownRoles,true)  );
+        model.addAttribute("chosenRoleOptions", roleService.getRoleGroupOptions(ownRoles, true));
+        //组织树.
+        List<TreeResult> orgTree = organizationService.getOrgTree(null);
+        model.addAttribute("orgTree", orgTree);
         return "user/user-update";
     }
 
@@ -195,27 +189,50 @@ public class UserController  extends AbstractController {
     }
 
     /**
-     * datatables  json result*
+     * 表头批量处理
+     * <code>
+     *     <option value="doDelete">删除</option>
+           <option value="doStatusDisable">禁用账号</option>
+           <option value="doStatusEnable">启用账号</option>
+     * </code>
+     */
+    @RequestMapping(value = "/doAction", method = {RequestMethod.POST})
+    public
+    @ResponseBody
+    JsonResult doAction(@RequestParam(value = "selectedRowIds") String selectedRowIds,
+                        @RequestParam(value = "action") String action) {
+        JsonResult jsonResult = null;
+        String[] ids = Strings.split(selectedRowIds, ",");
+        List<User> entities = accountService.getUserByIds(Arrays.asList(ids));
+        List<String> names = Collections3.extractToList(entities, "name");
+        if (action.equals("doDelete")) {
+            accountService.deleteUsers(entities);
+            jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;删除成功");
+        } else if (action.equals("doStatusDisable")) {
+            accountService.changeStatus(entities, Status.disable);
+            jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;置为" + Status.disable.getName());
+        } else if (action.equals("doStatusEnable")) {
+            accountService.changeStatus(entities, Status.enable);
+            jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;置为" + Status.enable.getName());
+        }
+        return jsonResult;
+    }
+
+    /**
+     * datatables  json result
      */
     @RequestMapping(value = "/getDatatablesJson", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
     DataTableResult<User> getDatatablesJson(
             @PageableDefault(page = 0, size = 10)  Pageable pageable,
-            @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "orgId", required = false) String orgId
-    ) {
+            HttpServletRequest request ) {
 
-        List<SearchFilter> filters = Lists.newArrayList();
-        if (Strings.isNotBlank(search)) {
+        List<SearchFilter> filters =SearchFilter.buildFromHttpRequest(request)      ;
+      /*  if (Strings.isNotBlank(search)) {
             //匹配用户名 or 姓名
             filters.add(new SearchFilter("LIKES_loginName_OR_name", search));
-        }
-        if (Strings.isNotBlank(orgId)) {
-            //匹配组织机构
-            filters.add(new SearchFilter("EQS_org.id", orgId ));
-        }
-
+        }*/
         Page<User> page = accountService.searchPageUser(pageable, filters);
 
         return DataTableResult.build(page);

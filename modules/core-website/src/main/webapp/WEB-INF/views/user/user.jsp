@@ -17,33 +17,26 @@
                 <div class="tablenav top clearfix" style="padding: 0">
 
                     <form class="navbar-form" style="padding:10px 0 0 0;" role="form" id="tableNavForm">
-                        <select class="form-control" >
-                            <option value="-1" selected="selected">批量操作</option>
-                            <option value="unapprove">删除</option>
-                            <option value="approve">批准</option>
-                            <option value="spam">标记为垃圾评论</option>
-                            <option value="trash">移至回收站</option>
+                        <select class="form-control" id="action">
+                            <option value="" selected="selected">批量操作</option>
+                            <option value="doDelete">删除</option>
+                            <option value="doStatusDisable">禁用账号</option>
+                            <option value="doStatusEnable">启用账号</option>
                         </select>
-                        <button type="submit" class="btn btn-white">应用</button>
-                        &nbsp;&nbsp;
-
-                       <le:select list="${list}" name="name"  listKey="code" listValue="name" headerKey="--显示所有部门--" headerValue=""
-                                  attr=" class=\"form-control\" " ></le:select>
-                              <le:selectTree attr=" class=\"form-control\" "    value="2c9f84db426eb16801426ee83a9a0002"
-                                      treeReuslt="${tree}" name="treeid" headerKey="--显示所有部门--" headerValue="" ></le:selectTree>
+                        <button type="button" class="btn btn-white" id="doAction">应用</button>
+                            <le:selectTree attr=" class=\"form-control\" " name="search_LIKES_org.name"
+                                           treeReuslt="${orgTree}" headerKey="--显示所有部门--" headerValue=""></le:selectTree>
 
                             &nbsp;&nbsp;
-                            <select class="form-control">
-                                <option value="Code">编号</option>
-                                <option value="Account">账户</option>
-                                <option value="RealName">姓名</option>
-                                <option value="Mobile">手机号码</option>
-                                <option value="DepartmentId">部门</option>
+                            <select class="form-control" onchange="$('#searchInput').attr('name',$(this).val() )">
+                                <option value="search_LIKES_loginName">用户名</option>
+                                <option value="search_LIKES_name">姓名</option>
+                                <option value="search_LIKES_mobile">手机号码</option>
                             </select>
-                            <div class="form-group" style="margin-left:-5px;">
-                                <input type="text" class="form-control" id="cccc" placeholder="搜索">
+                            <div class="form-group" style="margin-left:-5px;width:250px;">
+                                <input type="text" id="searchInput" name="search_LIKES_loginName" class="form-control" id="cccc" placeholder="搜索">
                             </div>
-                            <button type="submit" class="btn btn-white">筛选</button>
+                            <button type="button" onclick="refreshDatatables();" class="btn btn-white">筛选</button>
 
                     </form>
 
@@ -115,6 +108,10 @@
             'sAjaxSource': 'user/getDatatablesJson',
             'fnInitComplete': function () {     /**datatables ready**/
             },
+            'fnServerParams' :function(aoData ){
+                //表头搜索参数
+                aoData.pushArray($('#tableNavForm').serializeArray());
+            },
             fnDrawCallback: function (oSettings) {
                 //确认删除弹出层
                 oTable.find('.confirmDelete')
@@ -132,7 +129,7 @@
                                     }
                                 })
                             }
-                        });
+                        });//confirmDelete
 
             }
         });//dataTables
@@ -198,6 +195,32 @@
                 oTable.find('.row-check-one').prop('checked', false)
             }
         })
+        //批量操作
+        $('#doAction').confirmDelete({
+            text: '<span class="text-warning" >确认操作？</span>',
+            onConfirm: function () {
+                var action = $('#action').val(),
+                        selectedRowIds = oTable.find('.row-check-one:checked')
+                                .map(function () {
+                                    return $(this).val();
+                                }).get().join(',');
+                if (action && selectedRowIds) {
+                    $.ajax({
+                        url: 'user/doAction',
+                        data: {'selectedRowIds': selectedRowIds, 'action': action },
+                        cache: false,
+                        type: 'post',
+                        success: function (resp) {
+                            notify({content: resp.msg});
+                            refreshDatatables();
+                        }
+                    })
+                } else {
+                    notify({content: action ? '请选择行' : '请选择相应操作', type: 'info'});
+                }
+            }
+        }); //confirmDelete
+
     })  //seajs use
 
 

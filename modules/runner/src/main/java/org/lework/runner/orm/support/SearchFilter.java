@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * 与具体ORM实现无关的属性过滤条件封装类, 主要记录页面中简单的搜索过滤条件.
- * <code> eg:  filter_EQS_name,filter_LIKES_name_OR_email  </code>
+ * <code> eg:  search_EQS_name,search_LIKES_name_OR_email  </code>
  *
  * <pre>
  *     MatchType :  UEQ, EQ, LLIKE, LIKE, RLIKE, GT, LT, GTE, LTE
@@ -33,6 +33,7 @@ public class SearchFilter {
      * 多个属性间OR关系的分隔符.
      */
     public static final String OR_SEPARATOR = "_OR_";
+    public static final String DEFAULT_PREFIX = "search";
 
     /**
      * 属性比较类型.
@@ -98,12 +99,12 @@ public class SearchFilter {
     }
 
     /**
-     * 从HttpRequest中创建SearchFilter列表, 默认Filter属性名前缀为filter.
+     * 从HttpRequest中创建SearchFilter列表, 默认Filter属性名前缀为search.
      *
      * @see #buildFromHttpRequest(javax.servlet.http.HttpServletRequest, String)
      */
     public static List<SearchFilter> buildFromHttpRequest(final HttpServletRequest request) {
-        return buildFromHttpRequest(request, "filter");
+        return buildFromHttpRequest(request, DEFAULT_PREFIX );
     }
 
     /**
@@ -111,8 +112,8 @@ public class SearchFilter {
      * SearchFilter命名规则为Filter属性前缀_比较类型属性类型_属性名.
      * <p/>
      * eg.
-     * filter_EQS_name
-     * filter_LIKES_name_OR_email
+     * search_EQS_name
+     * search_LIKES_name_OR_email
      */
     public static List<SearchFilter> buildFromHttpRequest(final HttpServletRequest request, final String filterPrefix) {
         List<SearchFilter> filterList = new ArrayList<SearchFilter>();

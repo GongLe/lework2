@@ -1,5 +1,6 @@
 package org.lework.core.service.account;
 
+import org.lework.core.common.enumeration.Status;
 import org.lework.core.persistence.entity.user.User;
 import org.lework.runner.orm.support.SearchFilter;
 import org.springframework.data.domain.Page;
@@ -106,4 +107,5 @@ public interface AccountService {
      */
     public boolean validateEmail(String id, String email);
 
+    public void changeStatus(List<User> entities,Status status ) ;
 }

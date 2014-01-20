@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.lework.core.persistence.entity.AuditorEntity;
 import org.lework.core.persistence.entity.organization.Organization;
 import org.lework.core.persistence.entity.role.Role;
+import org.lework.runner.utils.Strings;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -169,6 +170,11 @@ public class User extends AuditorEntity {
     @JoinColumn(name="FK_ORG_ID")
     public Organization getOrg() {
         return org;
+    }
+
+    @Transient
+    public String getOrgId() {
+        return getOrg() != null ? getOrg().getId() : Strings.EMPTY;
     }
 
     public void setOrg(Organization org) {
