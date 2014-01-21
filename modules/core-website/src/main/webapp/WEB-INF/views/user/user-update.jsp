@@ -50,7 +50,7 @@
                     <label class="col-xs-2 control-label">所属角色</label>
 
                     <div class="col-xs-10">
-                        <select id="roleIds" name="roleIds" multiple>
+                        <select id="roleIds" name="roleIds" multiple >
                             <c:forEach items="${chosenRoleOptions}" var="group">
                                 <optgroup label="${group.key}">
                                     <c:forEach items="${group.value}" var="opt">

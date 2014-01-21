@@ -17,6 +17,11 @@
                 <div class="tablenav top clearfix" style="padding: 0">
 
                     <form class="navbar-form" style="padding:10px 0 0 0;" role="form" id="tableNavForm">
+                     <%--   <div class="btn-group">
+                            <button type="button" class="btn btn-default">Left</button>
+                            <button type="button" class="btn btn-default">Middle</button>
+                            <button type="button" class="btn btn-default">Right</button>
+                        </div>--%>
                         <select class="form-control" id="action">
                             <option value="" selected="selected">批量操作</option>
                             <option value="doDelete">删除</option>
@@ -24,7 +29,7 @@
                             <option value="doStatusEnable">启用账号</option>
                         </select>
                         <button type="button" class="btn btn-white" id="doAction">应用</button>
-                            <le:selectTree attr=" class=\"form-control\" " name="search_LIKES_org.name"
+                            <le:selectTree attr=" class=\"form-control\" " name="search_EQS_org.id"
                                            treeReuslt="${orgTree}" headerKey="--显示所有部门--" headerValue=""></le:selectTree>
 
                             &nbsp;&nbsp;
@@ -100,7 +105,7 @@
                 //   { 'bVisible': false,  'aTargets': [ 1 ] },
                 { 'sClass': 'center', 'aTargets': [5] }
             ],
-            'sDom': 'rt<"table-footer clearfix"ip>',
+            'sDom': 'rt<"table-footer clearfix"lip>',
             'bStateSave': false  , /**state saving **/
             'bProcessing': true ,
             'bServerSide': true,
@@ -216,7 +221,7 @@
                         }
                     })
                 } else {
-                    notify({content: action ? '请选择行' : '请选择相应操作', type: 'info'});
+                    notify({content: action ? '请选择行' : '请选择"批量操作方法"', type: 'danger'});
                 }
             }
         }); //confirmDelete
