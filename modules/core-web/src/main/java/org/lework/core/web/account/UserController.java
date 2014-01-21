@@ -167,9 +167,9 @@ public class UserController  extends AbstractController {
                 jsonResult = JsonResult.success("用户&quot;" + entity.getName() + "&quot;删除成功");
             } else if (Strings.isNotBlank(deleteIds)) {   //多个删除
                 List<User> entities = accountService.getUserByIds(Arrays.asList(ids));
-                List<String> names = Collections3.extractToList(entities, "name");
+                String names = Collections3.extractToString(entities, "name", ",");
                 accountService.deleteUsers(entities);
-                jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;删除成功");
+                jsonResult = JsonResult.success("用户&quot;" + names + "&quot;删除成功");
             }
 
         } catch (Exception e) {
@@ -189,11 +189,11 @@ public class UserController  extends AbstractController {
     }
 
     /**
-     * 表头批量处理
+     * 批量操作处理
      * <code>
-     *     <option value="doDelete">删除</option>
-           <option value="doStatusDisable">禁用账号</option>
-           <option value="doStatusEnable">启用账号</option>
+     * <option value="doDelete">删除</option>
+     * <option value="doStatusDisable">禁用账号</option>
+     * <option value="doStatusEnable">启用账号</option>
      * </code>
      */
     @RequestMapping(value = "/doAction", method = {RequestMethod.POST})
@@ -204,16 +204,16 @@ public class UserController  extends AbstractController {
         JsonResult jsonResult = null;
         String[] ids = Strings.split(selectedRowIds, ",");
         List<User> entities = accountService.getUserByIds(Arrays.asList(ids));
-        List<String> names = Collections3.extractToList(entities, "name");
+        String  names = Collections3.extractToString(entities, "name", ",");
         if (action.equals("doDelete")) {
             accountService.deleteUsers(entities);
-            jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;删除成功");
+            jsonResult = JsonResult.success("用户&quot;" +names + "&quot;删除成功");
         } else if (action.equals("doStatusDisable")) {
             accountService.changeStatus(entities, Status.disable);
-            jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;置为" + Status.disable.getName());
+            jsonResult = JsonResult.success("用户&quot;" +names + "&quot;置为" + Status.disable.getName());
         } else if (action.equals("doStatusEnable")) {
             accountService.changeStatus(entities, Status.enable);
-            jsonResult = JsonResult.success("用户&quot;" + Strings.join(names, ",") + "&quot;置为" + Status.enable.getName());
+            jsonResult = JsonResult.success("用户&quot;" +names + "&quot;置为" + Status.enable.getName());
         }
         return jsonResult;
     }

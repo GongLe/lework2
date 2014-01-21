@@ -84,17 +84,12 @@ define(function(require, exports) {
             return false;
         })
     }
-    lework.changeColorTheme = function(){
-        var cssLinkTpl ='<link name="colorThemeStyle" rel="stylesheet" href="../static/assets/css/color.{theme}.css">',theme;
-        $('#colorSelect').on('click','li',function(){
+    lework.changeColorTheme = function () {
+        var cssLinkTpl = '<link name="colorThemeStyle" rel="stylesheet" href="static/assets/css/color.{theme}.css">', theme;
+        $('#colorSelect').on('click', 'li', function () {
             //TODO 保存主题设置
             theme = $(this).attr('class');
-            if (theme == 'default') {
-                //clear all 'colorThemeStyle'
-                $('link[name=colorThemeStyle]').remove()
-            } else {
-                $('body').append(cssLinkTpl.format({'theme': theme}))
-            }
+            $('body').append(cssLinkTpl.format({'theme': theme}))
 
         })
     }

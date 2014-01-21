@@ -22,8 +22,8 @@
 <link rel="stylesheet" href="${ctx}/static/assets/css/tabs.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/component.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/utils.css">
-<!--color theme-->
-<link rel="stylesheet" href="${ctx}/static/assets/css/color.coffee.css">
+<!--color theme
+<link rel="stylesheet" href="${ctx}/static/assets/css/color.coffee.css">   -->
 
 
 <!--lework custom component style-->
