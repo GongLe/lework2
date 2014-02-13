@@ -170,6 +170,7 @@
                         isMobile: true
                     },
                     plainPassword: {
+                        minlength:6,
                         maxlength: 32
                     },
                     status: {

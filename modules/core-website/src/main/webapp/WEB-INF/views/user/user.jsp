@@ -41,7 +41,7 @@
                             <div class="form-group" style="margin-left:-5px;width:250px;">
                                 <input type="text" id="searchInput" name="search_LIKES_loginName" class="form-control" id="cccc" placeholder="搜索">
                             </div>
-                            <button type="button" onclick="refreshDatatables();" class="btn btn-white">筛选</button>
+                            <button type="submit" class="btn btn-white">筛选</button>
 
                     </form>
 
@@ -138,7 +138,12 @@
 
             }
         });//dataTables
-
+        //表单检索.
+        $('#tableNavForm').on('submit',function(e){
+            //取消键盘enter提交表单
+            e.preventDefault();
+            refreshDatatables();
+        })
         //----------事件定义---------
         //双击编辑行
          oTable.on('dblclick.lework', 'tr', function () {
