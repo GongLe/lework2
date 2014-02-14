@@ -13,12 +13,11 @@ import org.lework.runner.orm.support.SearchFilter;
 import org.lework.runner.spring.SpringMvcHolder;
 import org.lework.runner.utils.Collections3;
 import org.lework.runner.utils.Strings;
-import org.lework.runner.web.AbstractController;
-import org.lework.runner.web.CallbackData;
-import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
 import org.lework.runner.web.vo.JsonResult;
 import org.lework.runner.web.vo.TreeResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +42,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "user")
-public class UserController  extends AbstractController {
+public class UserController    {
+    static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private AccountService accountService ;
     @Autowired
@@ -70,7 +70,7 @@ public class UserController  extends AbstractController {
                                 HttpServletResponse response) {
 
         if (!Strings.equals(plainPassword, plainPassword2)) {
-            callback(response, CallbackData.build("resetPasswordCallback", "两次密码输入不一致", NotificationType.ERROR));
+         //   callback(response, CallbackData.build("resetPasswordCallback", "两次密码输入不一致", NotificationType.ERROR));
             return;
         }
 
@@ -78,7 +78,7 @@ public class UserController  extends AbstractController {
         String userNames = Collections3.extractToString(users, "name", ",");
         //重置密码
         accountService.resetUserPassword(users, plainPassword);
-        callback(response, CallbackData.build("resetPasswordCallback", "用户&quot;" + userNames + "&quot;密码重置成功", NotificationType.DEFAULT));
+      //  callback(response, CallbackData.build("resetPasswordCallback", "用户&quot;" + userNames + "&quot;密码重置成功", NotificationType.DEFAULT));
     }
     /**
      * 列表页面*

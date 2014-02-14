@@ -1,0 +1,99 @@
+
+.profile-sidebar{
+    margin-top: 20px;
+}
+/* By default it's not affixed in mobile views, so undo that */
+.profile-sidebar.affix {
+    position: static;
+}
+@media (min-width: 768px) {
+    .profile-sidebar {
+        padding-left: 20px;
+    }
+}
+
+/* First level of nav */
+.profile-sidenav {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* All levels of nav */
+.profile-sidebar .nav > li > a {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #222;
+    padding: 4px 20px;
+}
+.profile-sidebar .nav > li > a:hover,
+.profile-sidebar .nav > li > a:focus {
+    padding-left: 19px;
+    color: #dd4b39;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #dd4b39;
+}
+.profile-sidebar .nav > .active > a,
+.profile-sidebar .nav > .active:hover > a,
+.profile-sidebar .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: bold;
+    color: #dd4b39;
+    background-color: transparent;
+    border-left: 2px solid #dd4b39;
+}
+
+/* Nav: second level (shown on .active) */
+.profile-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    padding-bottom: 10px;
+}
+.profile-sidebar .nav .nav > li > a {
+    padding-top:    2px;
+    padding-bottom: 2px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.profile-sidebar .nav .nav > li > a:hover,
+.profile-sidebar .nav .nav > li > a:focus {
+    padding-left: 29px;
+}
+.profile-sidebar .nav .nav > .active > a,
+.profile-sidebar .nav .nav > .active:hover > a,
+.profile-sidebar .nav .nav > .active:focus > a {
+    font-weight: 500;
+    padding-left: 28px;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+    .profile-sidebar .nav > .active > ul {
+        display: block;
+    }
+    /* Widen the fixed sidebar */
+    .profile-sidebar.affix,
+    .profile-sidebar.affix-bottom {
+        width: 213px;
+    }
+    .profile-sidebar.affix {
+        position: fixed; /* Undo the static from mobile first approach */
+        /*top: 20px;*/
+    }
+    .profile-sidebar.affix-bottom {
+        position: absolute; /* Undo the static from mobile first approach */
+    }
+    .profile-sidebar.affix-bottom .profile-sidenav,
+    .profile-sidebar.affix .profile-sidenav {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+@media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .profile-sidebar.affix-bottom,
+    .profile-sidebar.affix {
+        width: 263px;
+    }
+}

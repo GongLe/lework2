@@ -14,6 +14,8 @@ import org.lework.runner.web.CallbackData;
 import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
 import org.lework.runner.web.vo.TreeResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/organization")
 public class OrganizationController extends AbstractController {
+    static Logger logger = LoggerFactory.getLogger(OrganizationController.class);
     @Autowired
     private OrganizationService organizationService;
 

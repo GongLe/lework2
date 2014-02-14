@@ -1,12 +1,12 @@
 package org.lework.core.web.account;
 
-import org.apache.shiro.SecurityUtils;
-import org.lework.core.persistence.entity.ShiroUser;
+import org.lework.core.persistence.entity.SubjectUtils;
 import org.lework.core.persistence.entity.user.User;
 import org.lework.core.service.account.AccountService;
 import org.lework.runner.utils.Strings;
-import org.lework.runner.web.AbstractController;
-import org.lework.runner.web.NotificationType;
+import org.lework.runner.web.vo.JsonResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +26,8 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping(value = "account/profile")
-public class ProfileController extends AbstractController {
+public class ProfileController  {
+    static Logger logger = LoggerFactory.getLogger(ProfileController.class);
 	@Autowired
 	private AccountService accountService;
 
@@ -35,20 +36,26 @@ public class ProfileController extends AbstractController {
 		model.addAttribute("user",   user);
 		return "account/profile";
 	}
-	
 
-    @RequestMapping(method = RequestMethod.POST  )
-    public String   update(@Valid @ModelAttribute("entity") User user,BindingResult result ,
-                           RedirectAttributes redirectAttributes) {
+
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    JsonResult update(@Valid @ModelAttribute("entity") User entity, BindingResult result,
+                      RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            logger.info(result.toString());
-            prompt(redirectAttributes,"提示信息","保存失败! " + result.toString() , NotificationType.ERROR);
-            return "redirect:/account/profile";
+            logger.warn(result.toString());
+            return JsonResult.failure("数据不合法,保存失败");
         }
-        accountService.updateUser(user);
-        prompt(redirectAttributes,"提示信息","修改成功!", NotificationType.SUCCESS);
-        return "redirect:/account/profile";
+
+        JsonResult jsonResult = JsonResult.failure("用户&quot;" + entity.getName() + "&quot;保存失败");
+        try {
+            accountService.updateUser(entity);
+            jsonResult = JsonResult.success("用户&quot;" + entity.getName() + "&quot;保存成功");
+        } catch (Exception e) {
+            logger.error("用户保存异常:{}", e);
+        }
+        return jsonResult;
     }
 
     //检测用户email唯一性
@@ -68,7 +75,7 @@ public class ProfileController extends AbstractController {
      */
     @ModelAttribute("entity")
     public void prepareModel(Model model) {
-        String id = getCurrentUserId();
+        String id = SubjectUtils.getUser().getId() ;
         if (Strings.isNotBlank(id)) {
             model.addAttribute("entity", accountService.getUser(id));
         }
@@ -82,13 +89,13 @@ public class ProfileController extends AbstractController {
         binder.setDisallowedFields("roles");
     }
 
-    /**
+/*    *//**
      * 取出Shiro中的当前用户Id.
-     */
+     *//*
     private String getCurrentUserId() {
         ShiroUser shiroUser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
         return shiroUser.id;
-    }
+    }*/
 
 
 }

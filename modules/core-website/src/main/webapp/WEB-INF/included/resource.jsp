@@ -31,7 +31,10 @@
 <script src="${ctx}/static/assets/sea-modules/seajs/2.1.1/sea-debug.js"></script>
 
 <script>
-    var STATIC_VERSION = (new Date()).getTime() ;
+    var G  ,
+            STATIC_VERSION = (new Date()).getTime() ,
+            CTX = '<%=request.getContextPath()%>';
+
     // Set configuration
     seajs.config({
         base: '<%=request.getContextPath()%>/static/assets/sea-modules',
@@ -39,6 +42,7 @@
             [ '.js' , '.js?v=' + STATIC_VERSION  ],
             [ '.css' , '.css?v=' + STATIC_VERSION  ]
         ],
+      //  plugins: ['shim'],
         alias: {
             '_jquery': 'jquery/1.10.2/jquery-debug.js',
             'jquery': 'jquery/1.10.2/jquery-migrate.js',
@@ -58,6 +62,7 @@
             'blockUI': 'jquery-blockUI/jquery.blockUI.js',
             'validate': 'jquery-validation/1.11.1/jquery.validate.js',
             'fullCalendar': 'jquery-fullcalendar/1.6.4/fullcalendar.js',
+            'treetable': 'jquery-treetable/jquery.treetable.js',
             'bootstrap': 'bootstrap/3.0.3/bootstrap.js',
             'bootbox': 'bootbox/4.1.0/bootbox.js',
             'wdatePicker': 'My97DatePicker/WdatePicker.js',
@@ -68,13 +73,15 @@
             'utils': 'lework/lework.utils.js',
             'mustache': 'mustache/mustache.js'
         },
-        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage','chosen','slimscroll' ]
+        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage','chosen','slimscroll','validate' ]
     });
+/*
     seajs.on('exec', function (module) {
         if (module.uri === seajs.resolve('jquery')) {
             // window.$ = window.jQuery = module.exports;
         }
     })
+*/
 
 </script>
 

@@ -85,11 +85,11 @@ define(function(require, exports) {
         })
     }
     lework.changeColorTheme = function () {
-        var cssLinkTpl = '<link name="colorThemeStyle" rel="stylesheet" href="static/assets/css/color.{theme}.css">', theme;
+        var cssLinkTpl = '<link name="colorThemeStyle" rel="stylesheet" href="{ctx}/static/assets/css/color.{theme}.css">', theme;
         $('#colorSelect').on('click', 'li', function () {
             //TODO 保存主题设置
             theme = $(this).attr('class');
-            $('body').append(cssLinkTpl.format({'theme': theme}))
+            $('body').append(cssLinkTpl.format({'theme': theme,'ctx':CTX }))
 
         })
     }
