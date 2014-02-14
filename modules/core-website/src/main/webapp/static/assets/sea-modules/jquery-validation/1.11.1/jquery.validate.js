@@ -1240,7 +1240,7 @@
 
             // 异步加载一个模块，在加载完成时，执行回调
             init(jQuery)
-            require.async(['./additional-methods','./jquery_validate_message_cn_zh'] );
+            require.async(['./additional-methods' ] );
             return jQuery;
         });
     } else {
