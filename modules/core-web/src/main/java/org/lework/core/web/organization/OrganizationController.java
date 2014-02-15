@@ -1,8 +1,8 @@
 package org.lework.core.web.organization;
 
 import com.google.common.collect.Lists;
-import org.lework.core.common.enumeration.Status;
 import org.lework.core.common.enumeration.OrgTypes;
+import org.lework.core.common.enumeration.Status;
 import org.lework.core.persistence.entity.organization.Organization;
 import org.lework.core.service.organization.OrgTreeGridDTO;
 import org.lework.core.service.organization.OrganizationService;
@@ -10,9 +10,8 @@ import org.lework.runner.orm.support.SearchFilter;
 import org.lework.runner.utils.Collections3;
 import org.lework.runner.utils.Strings;
 import org.lework.runner.web.AbstractController;
-import org.lework.runner.web.CallbackData;
-import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
+import org.lework.runner.web.vo.JsonResult;
 import org.lework.runner.web.vo.TreeResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,16 +44,30 @@ public class OrganizationController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
+
         return "organization/organization";
+    }
+
+    @RequestMapping(value = "/treetable", method = RequestMethod.GET)
+    public String treetable(Model model) {
+        List<Organization> entities = organizationService.getAllOrganizations();
+        model.addAttribute("entities",entities);
+        return "organization/organization-treetable";
     }
     /**
      * 修改页面
      */
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String update(@ModelAttribute("entity") Organization enitiy ,Model model){
+    public String update(@ModelAttribute("entity") Organization entity ,Model model){
         model.addAttribute("statusList" , Status.values() ) ;
         model.addAttribute("typeList" , OrgTypes.values() ) ;
-
+        //上级组织
+        List<Organization> ingoreNodes = Lists.newArrayList();
+        if(entity.hasChild()){
+            ingoreNodes.addAll(entity.getChildrenOrganizations()) ;
+        }
+        List<TreeResult> orgTree = organizationService.getOrgTree(ingoreNodes);
+        model.addAttribute("orgTree", orgTree);
         return  "organization/organization-update" ;
     }
 
@@ -62,32 +75,32 @@ public class OrganizationController extends AbstractController {
      * 保存
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public void update(@Valid @ModelAttribute("entity") Organization entity, BindingResult result,
-                       @RequestParam(value = "parentId" ,required = false) String parentId ,
-                       HttpServletResponse response) {
+    public
+    @ResponseBody
+    JsonResult update(@Valid @ModelAttribute("entity") Organization entity, BindingResult result,
+                      @RequestParam(value = "parentId", required = false) String parentId,
+                      HttpServletResponse response) {
 
         if (result.hasErrors()) {
-            callback(response, CallbackData.build("actionCallback", "组织机构&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
             logger.warn(result.toString());
+            return JsonResult.failure("数据不合法,保存失败");
         }
+        JsonResult jsonResult = JsonResult.failure("组织机构&quot;" + entity.getName() + "&quot;保存失败");
         //关联父类
         Organization parent = organizationService.getOrganization(parentId);
         if (parent != null) {
             entity.setParentOrganization(parent);
-            entity.setParentName(parent.getName());
         } else { //取消关联
-            entity.setParentOrganization( null);
-            entity.setParentName(null);
+            entity.setParentOrganization(null);
         }
 
         try {
             organizationService.saveOrganization(entity);
-            callback(response, CallbackData.build("actionCallback", "组织机构&quot;" + entity.getName() + "&quot;保存成功", NotificationType.DEFAULT));
+            jsonResult = JsonResult.success("组织机构&quot;" + entity.getName() + "&quot;保存成功");
         } catch (Exception e) {
-            e.printStackTrace();
-            callback(response, CallbackData.build("actionCallback", "组织机构&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
+            logger.error("组织机构保存异常:{}", e);
         }
-
+        return jsonResult;
     }
 
     /**
@@ -103,30 +116,32 @@ public class OrganizationController extends AbstractController {
      * 删除
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public void delete(@RequestParam(value = "deleteId" ,required = false) String deleteId,
+    public
+    @ResponseBody
+    JsonResult delete(@RequestParam(value = "deleteId" ,required = false) String deleteId,
                        @RequestParam(value = "deleteIds" ,required = false) String deleteIds,
                        HttpServletResponse response) {
-
+        JsonResult jsonResult = null ;
         try {
             //单个删除
             if (Strings.isNotBlank(deleteId)) {
                 Organization entity = organizationService.getOrganization(deleteId);
                 organizationService.deleteOrganization(entity);
-                callback(response, CallbackData.build("deleteCallback", "组织机构&quot;" + entity.getName() + "&quot;删除成功", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("组织机构&quot;" + entity.getName() + "&quot;删除成功");
             } else if (Strings.isNotBlank(deleteIds)) {   //多个删除
                 String[] ids = Strings.split(deleteIds, ",");
 
                 List<Organization> entities = organizationService.getOrganizationsByIds(Arrays.asList(ids));
                 List<String> names = Collections3.extractToList(entities, "name");
                 organizationService.deleteOrganization(entities);
-                callback(response, CallbackData.build("deleteCallback", "组织机构&quot;" + Strings.join(names, ",") + "&quot;删除成功", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("组织机构&quot;" + Strings.join(names, ",")  + "&quot;删除成功");
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            callback(response, CallbackData.build("deleteCallback", "组织机构删除失败.", NotificationType.ERROR));
+            logger.error("组织机构保存异常:{}", e);
+            jsonResult = JsonResult.success("删除失败");
         }
-
+      return jsonResult;
     }
 
 
@@ -162,18 +177,21 @@ public class OrganizationController extends AbstractController {
      * ajax上移序号
      */
     @RequestMapping(value = "/upSortNum", method = RequestMethod.POST)
-    public void upSortNum(@Valid @ModelAttribute("entity") Organization entity, HttpServletResponse response) {
+    public
+    @ResponseBody
+    JsonResult upSortNum(@Valid @ModelAttribute("entity") Organization entity) {
         organizationService.upSortNum(entity);
-        callback(response, CallbackData.build("doSortNumCallback", "组织机构&quot;" + entity.getName() + "&quot;序号上移成功", NotificationType.DEFAULT));
+        return JsonResult.success( "组织机构&quot;" + entity.getName() + "&quot;序号上移成功");
     }
 
     /**
      * ajax下移序号
      */
     @RequestMapping(value = "/downSortNum", method = RequestMethod.POST)
-    public void downSortNum(@Valid @ModelAttribute("entity") Organization entity, HttpServletResponse response) {
+    @ResponseBody
+    JsonResult downSortNum(@Valid @ModelAttribute("entity") Organization entity) {
         organizationService.downSortNum(entity);
-        callback(response, CallbackData.build("doSortNumCallback", "组织机构&quot;" + entity.getName() + "&quot;序号下移成功", NotificationType.DEFAULT));
+        return JsonResult.success( "组织机构&quot;" + entity.getName() + "&quot;序号下移成功");
     }
 
 

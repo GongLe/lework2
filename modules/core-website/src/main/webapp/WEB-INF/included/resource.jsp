@@ -46,6 +46,7 @@
         alias: {
             '_jquery': 'jquery/1.10.2/jquery-debug.js',
             'jquery': 'jquery/1.10.2/jquery-migrate.js',
+            'lework-jquery': 'lework/lework.jquery.js',
             'cookie': 'jquery-cookie/jquery.cookie.js',
             'easyui': 'easyui/jquery.easyui.min.js',
             '_easyuiCss': 'easyui/themes/bootstrap/easyui.custom.css',
@@ -73,7 +74,7 @@
             'utils': 'lework/lework.utils.js',
             'mustache': 'mustache/mustache.js'
         },
-        preload: ['jquery', 'bootstrap', 'extendPrototype', 'funPage','chosen','slimscroll','validate' ]
+        preload: ['jquery','lework-jquery','bootstrap', 'extendPrototype', 'funPage','chosen','slimscroll','validate' ]
     });
 /*
     seajs.on('exec', function (module) {

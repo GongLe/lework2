@@ -103,7 +103,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<Organization> getAllOrganizations() {
-        return (List<Organization>) organizationDao.findAll();
+        return (List<Organization>) organizationDao.findAllOrgs();
     }
 
     @Override

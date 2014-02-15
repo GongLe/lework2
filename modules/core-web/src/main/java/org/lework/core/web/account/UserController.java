@@ -85,11 +85,11 @@ public class UserController    {
      */
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
-
         List<TreeResult> orgTree = organizationService.getOrgTree(null);
         SpringMvcHolder.addAttribute("orgTree",orgTree, RequestAttributes.SCOPE_REQUEST);
         return "user/user";
     }
+
 
     /**
      * 修改页面

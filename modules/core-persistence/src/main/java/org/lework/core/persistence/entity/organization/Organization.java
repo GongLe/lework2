@@ -30,7 +30,7 @@ public class Organization extends AuditorEntity {
     private String name;
     /**组织简称*/
     private String shortName;
-    /** 负责人**/
+    /** 主管**/
     private String manager;
     /** 副负责人**/
     private String assistantManager;
@@ -71,7 +71,6 @@ public class Organization extends AuditorEntity {
     /** 排序**/
     private Integer  sortNum;            //排序
 
-    private String parentName;
     /**
      * 上级组织
      */
@@ -88,6 +87,12 @@ public class Organization extends AuditorEntity {
     public String getParentId() {
         Organization parent = getParentOrganization();
         return parent != null ? parent.getId() : Strings.EMPTY;
+    }
+
+    @Transient
+    public String getParentName() {
+        Organization parent = getParentOrganization();
+        return parent != null ? parent.getName() : Strings.EMPTY;
     }
 
     @Transient
@@ -210,14 +215,6 @@ public class Organization extends AuditorEntity {
 
     public void setChildrenOrganizations(List<Organization> childrenOrganizations) {
         this.childrenOrganizations = childrenOrganizations;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
     }
 
     public String getAssistantManager() {

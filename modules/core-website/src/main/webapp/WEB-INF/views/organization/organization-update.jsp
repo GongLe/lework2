@@ -1,197 +1,145 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
-<!DOCTYPE html>
-<html>
-<head> </head>
-<body>
+<div  id="modalWrap" style="padding:15px 40px 0 5px;/*width: 600px;max-height:600px;*/"  >
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1" >
+            <form action="organization/update"  method="post" id="inputForm" name="inputForm" class="form-horizontal" role="form">
+                <!--隐藏域-->
+                <input type="hidden" name="$SiteMesh" value="false">
+                <form:hidden path="entity.id" />
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label" for="parentOrgId">上级组织</label>
 
-<div class="modal-content" >
-    <form action="organization/update"  method="post" id="inputForm" name="inputForm"
-          class="no-margin form-horizontal offset-30 error-inline" >
-        <div class="modal-header"  >
-            <h3>
-                正在<c:if test="${entity.isNew == true}" >新建组织</c:if><c:if test="${entity.isNew ==false}" >编辑组织“${entity.name}”</c:if>
-            </h3>
-        </div>
-
-        <div class="modal-body" >
-            <div  id="inputBody">
-            <div class="row-fluid ">
-                <div class="span12"  >
-
-                    <!--隐藏域-->
-                    <form:hidden path="entity.id"  />
-                    <div class="control-group">
-                        <label class="control-label" for="code">组织编码</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="code" name="code" value="${entity.code}" placeholder="输入组织代码" >
-                        </div>
+                    <div class="col-xs-10">
+                        <le:selectTree attr=" class=\"form-control\" " value="${entity.parentId}"
+                                       treeReuslt="${orgTree}" name="parentOrgId" headerKey="--选择部门--"
+                                       headerValue=""></le:selectTree>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label " for="name">组织名称</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入组织名称">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label" for="name"> 名称</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入组织名称">
                     </div>
-                    <div class="control-group">
-                        <label class="control-label " for="name">组织简称</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="shortName" name="shortName"   value="${entity.shortName}"
-                                   data-rule-required="false" placeholder="输入组织简称">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label" for="code">编码</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="code" name="code" value="${entity.code}" placeholder="输入组织代码" >
                     </div>
-
-
-                    <div class="control-group">
-                        <label class="control-label" for="parentId">上级组织</label>
-                        <div class="controls">
-                            <input id="parentId" name="parentId"  style="width:284px;height:28px;" value="${entity.parentId}"   >
-                            <div class="help-inline">
-                                <a href="javascript:;" onclick="$('#parentId').combotree('clear');">清空</a>
-                            </div>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="shortName">简称</label>
+                    <div class="col-xs-10">
+                        <input class="form-control"  type="text" id="shortName" name="shortName"   value="${entity.shortName}"
+                               data-rule-required="false" placeholder="输入简称">
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="type">类别</label>
-                        <div class="controls">
-                            <form:select  path="entity.type" cssClass="input-xlarge" cssStyle="width:284px"  >
-                                <form:options  items="${typeList}"  itemValue="code" itemLabel="name"/>
-                            </form:select>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"   for="manager">负责人</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="manager" name="manager"   value="${entity.manager}"
+                               data-rule-required="false"    data-rule-maxlength="50" placeholder="输入负责人">
                     </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="status">状态</label>
-                        <div class="controls">
-                            <form:select  path="entity.status" cssClass="input-xlarge" cssStyle="width:284px"  >
-                                <form:options  items="${statusList}"  itemValue="code" itemLabel="name"/>
-                            </form:select>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label " for="name">负责人</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="manager" name="manager"   value="${entity.manager}"
-                                   data-rule-required="false"    data-rule-maxlength="50" placeholder="输入负责人">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label " for="name">联系电话</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="phone" name="phone"   value="${entity.phone}"
-                                   data-rule-required="false"     data-rule-maxlength="50"  data-rule-isTel="true" placeholder="输入联系电话">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label " for="innerPhone">内线</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="innerPhone" name="innerPhone"   value="${entity.innerPhone}"
-                                   data-rule-required="false"    data-rule-maxlength="50" placeholder="输入内线电话">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label " for="fax">传真</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="fax" name="fax"   value="${entity.fax}"
-                                   data-rule-required="false"     data-rule-maxlength="50" placeholder="输入传真">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label " for="fax">地址</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="address" name="address"   value="${entity.address}"
-                                   data-rule-required="false"     data-rule-maxlength="100" placeholder="输入地址">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label " for="fax">网址</label>
-                        <div class="controls">
-                            <input autocomplete="off" class="input-xlarge" type="text" id="url" name="url"   value="${entity.url}"
-                                   data-rule-required="false"    data-rule-maxlength="100" data-rule-url="true" placeholder="输入网址">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="description">描述</label>
-                        <div class="controls">
-                            <textarea id="description"  name="description" rows="3" cssClass="input-xlarge"
-                                      data-rule-required="false"  data-rule-maxlength="100" >${entity.description}</textarea>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="shortName">联系电话</label>
+                    <div class="col-xs-10">
+                        <input class="form-control"  type="text" id="phone" name="phone"   value="${entity.phone}"
+                               data-rule-required="false"     data-rule-maxlength="50"  data-rule-isTel="true" placeholder="输入联系电话">
                     </div>
                 </div>
 
-            </div>
-            </div><!--/#inputBody-->
-        </div><!--/.modal-body-->
-        <div class="modal-footer">
-            <button id="submitBtn"  type="submit" class="btn btn-small btn-primary"   >
-               保存
-            </button>
-            <button type="button" class="btn btn-small" onclick="$.colorbox.close()">
-                关闭
-            </button>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="shortName">内线</label>
+                    <div class="col-xs-10">
+                        <input class="form-control"  type="text" id="innerPhone" name="innerPhone"   value="${entity.innerPhone}"
+                               data-rule-required="false"    data-rule-maxlength="50" placeholder="输入内线电话">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="shortName">传真</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="fax" name="fax"   value="${entity.fax}"
+                               data-rule-required="false"     data-rule-maxlength="50" placeholder="输入传真">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="shortName">地址</label>
+                    <div class="col-xs-10">
+                        <input class="form-control"  type="text" id="address" name="address"   value="${entity.address}"
+                               data-rule-required="false"     data-rule-maxlength="100" placeholder="输入地址">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="shortName">网址</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="url" name="url"   value="${entity.url}"
+                               data-rule-required="false"    data-rule-maxlength="100" data-rule-url="true" placeholder="输入网址">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="description">描述</label>
+
+                    <div class="col-xs-10">
+                        <textarea class="form-control" rows="3" id="description" name="description"
+                                  data-rule-required="false"     data-rule-maxlength="500"        placeholder="输入描述信息"> ${entity.description}</textarea>
+                    </div>
+                </div>
+
+
+            </form>
+
         </div>
-    </form>
-</div>
+
+    </div> <!--/.row-->
+</div><!--/#inputBody-->
 <script>
+    seajs.use(['mustache', 'jquery', 'dialog', 'notify', 'slimscroll', 'validate', 'chosen', 'form'], function (mustache, $, dialog, notify) {
 
-    $(function(){
-        $('#inputBody').slimscroll({
-            height:'400px'
-        }); //slimscroll
+        $(function () {
+            var $inputForm = $('#inputForm');
+            $('#modalWrap').slimscroll({
+                width: '630px',
+                height: '460px'
+            }); //slimscroll
 
-        //from validater
-        $('#inputForm').targetIframe().validate({
-            submitHandler: function (form) {
-                $('#submitBtn').prop('disable',true).text('保存中....')
-                form.submit() ;
-            },
-            rules: {
-            name: {
-                required: true,
-                normalChar :true,
-                maxlength: 50
-            },
-            code : {
-                required: true ,
-                maxlength: 50,
-              //  account :true,
-                remote: {
-                    url: 'organization/validateOrgCode', //后台处理程序
-                    type: 'post',               //数据发送方式
-                    dataType: 'json',           //接受数据格式
-                    data: {                     //要传递的数据
-                        orgId  : function() {
-                            return $('#id').val() ;
-                        }
+            var ajaxSubmitOption = {
+                // target: '#output2',   // target element(s) to be updated with server response
+                beforeSubmit: $.noop,  // pre-submit callback
+                success: function (resp, statusText) {
+                    notify({content: resp.msg});
+                    //关闭弹出层
+                    var d = dialog.list['UPDATE_DIALOG'];
+                    d && d.close();
+                    //刷新父页面表格
+                    $.isFunction(window.refreshDatatables) && window.refreshDatatables();
+                }, // post-submit callback
+                // other available options:
+                //url:       url         // override for form's 'action' attribute
+                //type:      type        // 'get' or 'post', override for form's 'method' attribute
+                dataType: 'json'        // 'xml', 'script', or 'json' (expected server response type)
+            };
+
+            //from validater
+            $inputForm.validate({
+                submitHandler: function (form) {
+                    $(form).ajaxSubmit(ajaxSubmitOption);
+                },
+                rules: {
+                    name: {
+                        required: true,
+                        normalChar: true,
+                        maxlength: 50
                     }
+                }, messages: {
+
                 }
-            },
-            status :{
-                required:true
-            }
-        }, messages: {
-            code:{
-                remote :'该值已被占用'
-            }
-        }
-        }); //end validate
+            }); //end validate
 
-        setTimeout(function () {
-            using(['combotree'], function () {
-                $('#parentId').combotree({
-                    url: 'organization/getTree?ignoreNodeId=${entity.id}',
-                    method: 'get',
-                    onSelect: function (node) {
-                        //  $('#parentId').val(node.id);
-                    },
-                    onLoadSuccess: function () {
-                      //  $('.combo-text', '#inputForm').data('rule-required', false); //修复IE8 validate
-                    }
-                });
-            }) //using
-        }, 150);//timeout
-
-    })  //dom ready
+        }) //dom ready
+    })//seajs use
 </script>
-</body>
-</html>

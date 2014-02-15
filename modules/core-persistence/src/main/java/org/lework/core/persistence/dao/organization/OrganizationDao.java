@@ -19,6 +19,9 @@ public interface OrganizationDao extends PagingAndSortingRepository<Organization
     @Query("from Organization o where 1=1 and o.status=?1 order by o.sortNum")
     public List<Organization> findAllByStatus(String status);
 
+    @Query("from Organization o where 1=1  order by o.sortNum")
+    public List<Organization> findAllOrgs();
+
     public List<Organization> findAllByType(String type);
 
     @Query("from Organization o where o.parentOrganization is null order by o.sortNum")
