@@ -10,18 +10,18 @@
 <tr data-tt-id="${recurseNode.id}" <c:if test="${ not empty recurseNode.parentId}">  data-tt-parent-id="${recurseNode.parentId}"</c:if>  >
 <td>${recurseNode.name}
     <div class="row-actions">
-                                <span class="no-padding">
-                                    <a class="info edit" data-id="${recurseNode.id}" data-name="${recurseNode.name}" href="javascript:;" title="编辑"><i class="icon-edit"></i></a> |
-                                </span>
-                                <span class="no-padding">
-                                    <a class="info confirmDelete" data-id="${recurseNode.id}"  data-name="${recurseNode.name}"  href="javascript:;" title="删除"><i class="icon-trash"></i></a>
-                                </span>
+        <span class="no-padding">
+            <a class="info edit" data-id="${recurseNode.id}" data-name="${recurseNode.name}" href="javascript:;" title="编辑"><i class="icon-edit"></i></a> |
+        </span>
+        <span class="no-padding">
+            <a class="info confirmDelete" data-id="${recurseNode.id}"  data-name="${recurseNode.name}"  href="javascript:;" title="删除"><i class="icon-trash"></i></a>
+        </span>
     </div>
 </td>
 <td>${recurseNode.code}</td>
-<%--<td>${recurseNode.manager}</td>
+ <td>${recurseNode.manager}</td>
 <td>${recurseNode.phone}</td>
-<td class="text-center">
+ <td class="text-center">
 
     <c:choose>
         <c:when test="${recurseNode.siblingSize>0}">
@@ -30,8 +30,9 @@
             &nbsp;
         </c:when>
         <c:otherwise>
-            &nbsp; &nbsp;
-            &nbsp; &nbsp;
+            <a href="javascript:;" class="sortNumAction" style="color:#c0c0c0;"
+               title="上移序号"><i class="icon-chevron-up"></i></a>
+            &nbsp;
         </c:otherwise>
     </c:choose>
 
@@ -42,7 +43,9 @@
                     class="icon-chevron-down"></i></a>
         </c:when>
         <c:otherwise>
-            &nbsp;
+            <a href="javascript:;" class="sortNumAction"style="color:#c0c0c0;"
+               title="下移序号"><i
+                    class="icon-chevron-down"></i></a>
         </c:otherwise>
     </c:choose>
 

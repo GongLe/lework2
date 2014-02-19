@@ -31,7 +31,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${treeGridDTOs}" varStatus="varStatus" var="treeNode" >
+                <!--jstl递归输出tree grid result-->
+                <c:forEach items="${treeGridDTOs}" varStatus="varStatus" var="treeNode">
                     <c:set var="node" value="${treeNode}" scope="request"/>
                     <c:import url="/WEB-INF/views/organization/treetable-recurse.jsp"/>
                     <c:remove var="node" scope="request"/>
