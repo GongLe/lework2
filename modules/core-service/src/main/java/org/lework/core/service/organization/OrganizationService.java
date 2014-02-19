@@ -49,6 +49,8 @@ public interface OrganizationService {
 
     public Organization getOrganizationByCode(String code);
 
+    public Long getSiblingSize(String id);
+
     /**
      * 新增操作时,默认序号为{同级节点最大值}+1
      * @param entity

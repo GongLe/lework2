@@ -70,7 +70,7 @@ public class Organization extends AuditorEntity {
     private Integer isleaf  ;
     /** 排序**/
     private Integer  sortNum;            //排序
-
+    private long  siblingSize = -1;
     /**
      * 上级组织
      */
@@ -110,7 +110,14 @@ public class Organization extends AuditorEntity {
 
         return Strings.isNotBlank(getStatus()) ?  Status.parse(getStatus()).getName() : Strings.EMPTY;
     }
+    @Transient
+    public long getSiblingSize() {
+        return siblingSize;
+    }
 
+    public void setSiblingSize(long siblingSize) {
+        this.siblingSize = siblingSize;
+    }
 
     public Integer getSortNum() {
         return sortNum;

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,10 +50,16 @@ public class OrganizationController extends AbstractController {
     }
 
     @RequestMapping(value = "/treetable", method = RequestMethod.GET)
-    public String treetable(Model model) {
-        List<Organization> entities = organizationService.getAllOrganizations();
-        model.addAttribute("entities",entities);
+    public String treetable(Model model) throws IOException {
+
+      /*  List<Organization> entities = organizationService.getAllOrganizations();
+        model.addAttribute("entities",entities);*/
+        List<OrgTreeGridDTO>  treeGridDTOs =   organizationService.getOrgTreeGrid(null);
+        model.addAttribute("treeGridDTOs",treeGridDTOs) ;
         return "organization/organization-treetable";
+    }
+    private void buildRow(OrgTreeGridDTO parent,final StringBuilder builder){
+
     }
     /**
      * 修改页面
@@ -63,9 +70,11 @@ public class OrganizationController extends AbstractController {
         model.addAttribute("typeList" , OrgTypes.values() ) ;
         //上级组织
         List<Organization> ingoreNodes = Lists.newArrayList();
-        if(entity.hasChild()){
+        //防止环路,自身不能作为父ID
+        ingoreNodes.add(entity);
+       /* if(entity.hasChild()){
             ingoreNodes.addAll(entity.getChildrenOrganizations()) ;
-        }
+        }*/
         List<TreeResult> orgTree = organizationService.getOrgTree(ingoreNodes);
         model.addAttribute("orgTree", orgTree);
         return  "organization/organization-update" ;
@@ -225,6 +234,7 @@ public class OrganizationController extends AbstractController {
     public
     @ResponseBody
     List<OrgTreeGridDTO> getTreeGrid(@RequestParam(value = "ignoreNodeId", required = false) String ignoreNodeId) {
+
         List<Organization> ignoreNodes = organizationService.getSelfAndChildOrgs(ignoreNodeId);
         return organizationService.getOrgTreeGrid(ignoreNodes);
     }
@@ -268,4 +278,6 @@ public class OrganizationController extends AbstractController {
         binder.setDisallowedFields("childrenOrganizations");
         binder.setDisallowedFields("parentOrganization");
     }
+
+
 }

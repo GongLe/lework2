@@ -19,23 +19,24 @@ public interface OrganizationDao extends PagingAndSortingRepository<Organization
     @Query("from Organization o where 1=1 and o.status=?1 order by o.sortNum")
     public List<Organization> findAllByStatus(String status);
 
-    @Query("from Organization o where 1=1  order by o.sortNum")
+    @Query("from Organization o where 1=1 order by o.sortNum")
     public List<Organization> findAllOrgs();
 
     public List<Organization> findAllByType(String type);
 
-    @Query("from Organization o where o.parentOrganization is null order by o.sortNum")
+    @Query("from Organization o where o.parentOrganization is null or o.parentOrganization=''  order by o.sortNum")
     public List<Organization> findRootOrgs();
 
     @Query("from Organization o where  o.parentOrganization.id=?1 order by o.sortNum")
     public List<Organization> findChildOrgsByParentId(String parentId);
 
-    @Query("from Organization o where  o.parentOrganization is null  order by o.sortNum")
-    public List<Organization> findRoots();
 
-    @Query("select max(o.sortNum) from Organization o where  o.parentOrganization is null ")
+    @Query("select max(o.sortNum) from Organization o where  o.parentOrganization is null or o.parentOrganization='' ")
     public Integer findRootMaxSortNum();
 
     @Query("select max(o.sortNum) from Organization o where  o.parentOrganization.id=?1 ")
     public Integer findChildMaxSortNum(String parentId);
+
+    @Query("select count(o.id) from Organization o where  o.parentOrganization.id=?1 ")
+    public Long findChildSize(String parentId);
 }

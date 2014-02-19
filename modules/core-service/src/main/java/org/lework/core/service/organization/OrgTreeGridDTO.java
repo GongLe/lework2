@@ -25,6 +25,8 @@ public class OrgTreeGridDTO {
         Organization parent = entity.getParentOrganization();
         this.parentId = parent != null ? parent.getId() : Strings.EMPTY;
         this.parentCode = parent != null ? parent.getCode() : Strings.EMPTY;
+        this.manager = entity.getManager();
+        this.phone =entity.getPhone();
     }
 
     private String id;
@@ -36,9 +38,11 @@ public class OrgTreeGridDTO {
     private Integer sort;            //排序
     private String type;        //类型
     private String typeName ;        //类型
+    private String manager;       /** 主管**/
+    private String phone;       /**联系电话**/
     private String status;        //状态 默认为有效状态
     private Integer levelIndex; //同级节点index
-    private Integer levelSize; //同级节点个数
+    private Integer siblingSize; //同级节点个数
     private List<OrgTreeGridDTO> children = new ArrayList<OrgTreeGridDTO>();
     //easyui  prop
     private String iconCls;
@@ -132,12 +136,12 @@ public class OrgTreeGridDTO {
         this.levelIndex = levelIndex;
     }
 
-    public Integer getLevelSize() {
-        return levelSize;
+    public Integer getSiblingSize() {
+        return siblingSize;
     }
 
-    public void setLevelSize(Integer levelSize) {
-        this.levelSize = levelSize;
+    public void setSiblingSize(Integer siblingSize) {
+        this.siblingSize = siblingSize;
     }
 
     public String getTypeName() {
@@ -154,5 +158,21 @@ public class OrgTreeGridDTO {
 
     public void setId2(String id2) {
         this.id2 = id2;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

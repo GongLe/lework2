@@ -17,13 +17,13 @@ public interface MenuDao extends PagingAndSortingRepository<Menu, String>, JpaSp
 
     public List<Menu> findAllByStatus(String status);
 
-    @Query("from Menu m where m.parentMenu is null order by m.sortNum")
+    @Query("from Menu m where m.parentMenu is null or m.parentMenu='' order by m.sortNum")
     public List<Menu> findRootMenus();
 
     @Query("from Menu m where  m.parentMenu.id=?1 order by m.sortNum")
     public List<Menu> findChildMenusByParentId(String parentId);
 
-    @Query("from Menu m where  m.parentMenu is null  order by m.sortNum")
+    @Query("from Menu m where  m.parentMenu is null or m.parentMenu=''  order by m.sortNum")
     public List<Menu> findRoots();
 
     @Query("select max(m.sortNum) from Menu m where  m.parentMenu is null ")

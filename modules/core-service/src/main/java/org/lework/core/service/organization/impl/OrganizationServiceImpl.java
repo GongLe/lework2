@@ -119,6 +119,30 @@ public class OrganizationServiceImpl implements OrganizationService {
         return organizationDao.findByCode(code);
     }
 
+/*
+    @Override
+    public void analyzeSiblingSize(List<Organization> entities) {
+        if (Collections3.isEmpty(entities))
+            return;
+        for (Organization o : entities) {
+            o.setSiblingSize(getSiblingSize(o.getId()));
+        }
+    }
+*/
+
+    @Override
+    public Long getSiblingSize(String id) {
+        Long ret = -1L;
+        Organization entity = organizationDao.findOne(id);
+        if(!entity.hasParent()){
+            //根节点
+            ret = Long.valueOf( organizationDao.findRootOrgs().size()-1);
+        }else{
+           ret = organizationDao.findChildSize(entity.getParentId())-1;
+        }
+        return ret;
+    }
+
     /**
      * 新增操作时,默认序号为{同级节点最大值}+1
      *
@@ -171,7 +195,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<OrgTreeGridDTO> getOrgTreeGrid(List<Organization> ignore) {
         //roots node
-        List<Organization> roots = organizationDao.findRoots();
+        List<Organization> roots = organizationDao.findRootOrgs();
         List<OrgTreeGridDTO> rootsNodes = new ArrayList<OrgTreeGridDTO>();
         OrgTreeGridDTO temp;
         Organization curNode;
@@ -183,7 +207,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             if (Collections3.contain(ignore, curNode))
                 continue;
             temp = new OrgTreeGridDTO(curNode);
-            temp.setLevelSize(size);
+            temp.setSiblingSize(size-1);
             temp.setLevelIndex(i);
             rootsNodes.add(temp);
             //递归
@@ -196,7 +220,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<TreeResult> getOrgTree(List<Organization> ignore) {
         //roots node
-        List<Organization> roots = organizationDao.findRoots();
+        List<Organization> roots = organizationDao.findRootOrgs();
         List<TreeResult> rootNodes = new ArrayList<TreeResult>();
         TreeResult temp;
         if (Collections3.isEmpty(roots))
@@ -215,51 +239,49 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public void upSortNum(Organization entity) {
         List<Organization> siblings;
-        int curIndex;
+
         Integer temp;
         Organization pre;
 
         if (!entity.hasParent()) {  //如果是根节点
-            siblings = organizationDao.findRoots();
+            siblings = organizationDao.findRootOrgs();
         } else {  //非根节点时,根据parentId获取同级所有节点
             siblings = organizationDao.findChildOrgsByParentId(entity.getParentId());
         }
         if (Collections3.isNotEmpty(siblings) && siblings.size() > 1) {
-            curIndex = siblings.indexOf(entity);
-            if (curIndex > 0) {
-                pre = siblings.get(curIndex - 1);
+
+                pre =  Collections3.getPreElement(siblings, entity) ;
                 //互换sortNum
                 temp = pre.getSortNum();
                 pre.setSortNum(entity.getSortNum());
                 entity.setSortNum(temp);
                 organizationDao.save(pre);
                 organizationDao.save(entity);
-            }
+
         }
     }
 
     @Override
     public void downSortNum(Organization entity) {
         List<Organization> siblings;
-        int curIndex;
+
         Integer temp;
         Organization next;
         if (!entity.hasParent()) {  //如果是根节点
-            siblings = organizationDao.findRoots();
+            siblings = organizationDao.findRootOrgs();
         } else {  //非根节点时,根据parentId获取同级所有节点
             siblings = organizationDao.findChildOrgsByParentId(entity.getParentId());
         }
         if (Collections3.isNotEmpty(siblings) && siblings.size() > 1) {
-            curIndex = siblings.indexOf(entity);
-            if (curIndex < siblings.size() - 1) {
-                next = siblings.get(curIndex + 1);
-                //互换sortNum
-                temp = next.getSortNum();
-                next.setSortNum(entity.getSortNum());
-                entity.setSortNum(temp);
-                organizationDao.save(next);
-                organizationDao.save(entity);
-            }
+
+            next = Collections3.getNextElement(siblings, entity) ;
+            //互换sortNum
+            temp = next.getSortNum();
+            next.setSortNum(entity.getSortNum());
+            entity.setSortNum(temp);
+            organizationDao.save(next);
+            organizationDao.save(entity);
+
         }
 
     }
@@ -313,7 +335,7 @@ public class OrganizationServiceImpl implements OrganizationService {
                 }
                 node = new OrgTreeGridDTO(curNode);
                 node.setLevelIndex(i);
-                node.setLevelSize(size);
+                node.setSiblingSize(size-1);
                 childNodes.add(node);
                 if (curNode.hasChild()) {
                     fetchChild4TreeGrid(curNode, node, ignore);
