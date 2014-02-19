@@ -8,31 +8,33 @@
                 <input type="hidden" name="$SiteMesh" value="false">
                 <form:hidden path="entity.id" />
                 <div class="form-group">
-                    <label   class="col-xs-2 control-label" for="parentOrgId">上级组织</label>
+                    <label   class="col-xs-2 control-label" for="parentId">上级组织</label>
 
                     <div class="col-xs-10">
                         <le:selectTree attr=" class=\"form-control\" " value="${entity.parentId}"
-                                       treeReuslt="${orgTree}" name="parentOrgId" headerKey="--选择部门--"
+                                       treeReuslt="${orgTree}" name="parentId" headerKey="--选择部门--"
                                        headerValue=""></le:selectTree>
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-xs-2 control-label" for="name"> 名称</label>
                     <div class="col-xs-10">
-                        <input class="form-control" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入组织名称">
+                        <input class="form-control" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入组织名称"
+                               data-rule-required="true"    data-rule-maxlength="50"  >
                     </div>
                 </div>
                 <div class="form-group">
                     <label   class="col-xs-2 control-label" for="code">编码</label>
                     <div class="col-xs-10">
-                        <input class="form-control" type="text" id="code" name="code" value="${entity.code}" placeholder="输入组织代码" >
+                        <input class="form-control" type="text" id="code" name="code" value="${entity.code}" placeholder="输入组织代码"
+                               data-rule-required="true"    data-rule-maxlength="50" >
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-xs-2 control-label"  for="shortName">简称</label>
                     <div class="col-xs-10">
                         <input class="form-control"  type="text" id="shortName" name="shortName"   value="${entity.shortName}"
-                               data-rule-required="false" placeholder="输入简称">
+                               data-rule-required="true" placeholder="输入简称">
                     </div>
                 </div>
                 <div class="form-group">
