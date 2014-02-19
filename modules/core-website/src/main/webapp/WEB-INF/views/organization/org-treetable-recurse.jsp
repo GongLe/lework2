@@ -56,6 +56,6 @@
 <c:if test="${not empty recurseNode.children }">
     <c:forEach items="${recurseNode.children}" varStatus="varStatus" var="treeNode">
         <c:set var="node" value="${treeNode}" scope="request"/>
-        <c:import url="/WEB-INF/views/organization/treetable-recurse.jsp"/>
+        <c:import url="/WEB-INF/views/organization/org-treetable-recurse.jsp"/>
     </c:forEach>
 </c:if>
