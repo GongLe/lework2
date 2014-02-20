@@ -1,9 +1,8 @@
 package org.lework.core.web.role;
 
 import com.google.common.collect.Lists;
-import org.lework.core.common.enumeration.Status;
 import org.lework.core.common.enumeration.RoleTypes;
-import org.lework.core.persistence.entity.organization.Organization;
+import org.lework.core.common.enumeration.Status;
 import org.lework.core.persistence.entity.role.Role;
 import org.lework.core.service.auditor.OperatingAudit;
 import org.lework.core.service.organization.OrganizationService;
@@ -12,9 +11,8 @@ import org.lework.runner.orm.support.SearchFilter;
 import org.lework.runner.utils.Collections3;
 import org.lework.runner.utils.Strings;
 import org.lework.runner.web.AbstractController;
-import org.lework.runner.web.CallbackData;
-import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
+import org.lework.runner.web.vo.JsonResult;
 import org.lework.runner.web.vo.TreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
@@ -49,10 +46,9 @@ public class RoleController extends AbstractController {
     /**
      * list页面*
      */
-    @OperatingAudit(value = "角色管理",function = "查看")
+    @OperatingAudit(value = "角色管理",function = "列表")
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
-
         return "role/role";
     }
 
@@ -62,12 +58,10 @@ public class RoleController extends AbstractController {
      * @param roleGroupId 角色组ID
      */
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String update(@ModelAttribute("entity") Role role, Model model,
-                         @RequestParam(value = "roleGroupId", required = false) String roleGroupId) {
+    public String update(@ModelAttribute("entity") Role role, Model model ) {
         model.addAttribute("statusList", Status.values());
         model.addAttribute("typeList", RoleTypes.values());
         model.addAttribute("checkedPermissionIds", null);
-        model.addAttribute("roleGroupId", roleGroupId);
         return "role/role-update";
     }
 
@@ -76,61 +70,53 @@ public class RoleController extends AbstractController {
      */
     @OperatingAudit(value = "角色管理",function = "保存")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public void update(@Valid @ModelAttribute("entity") Role entity, BindingResult result,
-                       @RequestParam(value = "groupId", required = false) String groupId,
-                       HttpServletResponse response) {
-        //关联组
-        Organization group = organizationService.getOrganization(groupId);
-        if (group != null) {
-            entity.setGroupId(group.getId());
-            entity.setGroupName(group.getName());
-        } else { //取消关联
-            entity.setGroupId(null);
-            entity.setGroupName(null);
-        }
+    public
+    @ResponseBody
+    JsonResult update(@Valid @ModelAttribute("entity") Role entity, BindingResult result ) {
+
         if (result.hasErrors()) {
-            callback(response, CallbackData.build("actionCallback", "角色&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
+            logger.warn(result.toString());
+            return JsonResult.failure("数据不合法,保存失败");
         }
+        JsonResult jsonResult = JsonResult.failure("角色&quot;" + entity.getName() + "&quot;保存失败");
         try {
             //保存
             roleService.saveRole(entity);
-            callback(response, CallbackData.build("actionCallback", "角色&quot;" + entity.getName() + "&quot;保存成功", NotificationType.DEFAULT));
+            jsonResult = JsonResult.success("角色&quot;" + entity.getName() + "&quot;保存成功");
         } catch (Exception e) {
-            e.printStackTrace();
-            callback(response, CallbackData.build("actionCallback", "角色&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
+            logger.error("角色保存异常:{}", e);
         }
-
+        return jsonResult;
     }
 
     /**
      * 删除
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public void delete(@RequestParam(value = "deleteId", required = false) String deleteId,
-                       @RequestParam(value = "deleteIds", required = false) String deleteIds,
-                       HttpServletResponse response) {
-
+    public
+    @ResponseBody
+    JsonResult  delete(@RequestParam(value = "deleteIds", required = true) String deleteIds) {
+        JsonResult jsonResult = JsonResult.failure("删除失败"); ;
         try {
+            String[] ids = Strings.split(deleteIds, ",");
             //单个删除
-            if (Strings.isNotBlank(deleteId)) {
-                Role entity = roleService.getRole(deleteId);
+            if (ids.length == 1) {
+                Role entity = roleService.getRole(ids[0]);
                 roleService.deleteRole(entity);
-                callback(response, CallbackData.build("deleteCallback", "角色&quot;" + entity.getName() + "&quot;删除成功", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("角色&quot;" + entity.getName() + "&quot;删除成功");
             } else if (Strings.isNotBlank(deleteIds)) {   //多个删除
-                String[] ids = Strings.split(deleteIds, ",");
                 List<Role> entities = roleService.getRoleByIds(Arrays.asList(ids));
-                List<String> names = Collections3.extractToList(entities, "name");
+                String names = Collections3.extractToString(entities, "name", ",");
                 roleService.deleteRoles(entities);
-                callback(response, CallbackData.build("deleteCallback", "角色&quot;" + Strings.join(names, ",") + "&quot;删除失败", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("角色&quot;" + names + "&quot;删除成功");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            callback(response, CallbackData.build("deleteCallback", "角色删除失败!" + e.toString(), NotificationType.ERROR));
+            logger.error("角色删除异常:{}", e);
         }
-
+        return jsonResult;
     }
-
     /**
      * 查看
      */
@@ -170,9 +156,6 @@ public class RoleController extends AbstractController {
             HttpServletRequest request) {
 
         List<SearchFilter> filters = SearchFilter.buildFromHttpRequest(request);
-        if (Strings.isNotBlank(search)) {
-            filters.add(new SearchFilter("LIKES_name_OR_code", search));
-        }
         Page<Role> page = roleService.searchPageRole(pageable, filters);
 
         return DataTableResult.build(page);

@@ -60,6 +60,7 @@
                         that.settings.onClose.apply(this);
                     }
                     that.destroy();
+
                 }) .html('<div class="alert-inner-text">'+(that.settings.content || '&nbsp;&nbsp;')+'</div> ')
             this.$alert.append(' <button type="button" class="close" title="关闭" >×</button> ')
             //关闭按钮
@@ -85,6 +86,7 @@
         };
         Notfiy.prototype.destroy = function () {
             this.$alert.off('close.alert').remove();
+            $container.find('.clearfix:first').remove()
             //   this.$alert = null;
         };
         Notfiy.prototype.update = function (content) {

@@ -8,284 +8,251 @@
 </head>
 
 <body>
+<div id="main-body-content" >
+    <h3>角色管理 <button class="btn btn-danger btn-sm" hidefocus="true"  id="create-function" >新建</button> </h3>
+    <div class="row">
 
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>
-            <a href="${ctx}/dashboard" class="grey"> <i class="icon-home home-icon"></i></a>
-        </li>
-        <li class="active">
-            角色管理
-        </li>
-    </ul>
-    <!--.breadcrumb-->
+        <div class="col-md-12">
 
-</div>
+            <div class="tablenav top clearfix" style="padding: 0">
 
-<div class="page-content">
-    <div class="row-fluid">
-        <div class="span12">
-
-            <div class="box box-bordered">
-                <div class="box-title no-margin-top"  >
-                    <h4 class="inner"><i class="icon-group"></i> 角色管理</h4>
-                </div>
-                <div class="box-content no-padding ">
-
-                    <div class="pull-left" style="width:18%;min-height:520px;border-right:1px dashed  #c5d0dc;">
-                           <h5 class="header smaller lighter blue" style="margin:5px 10px;" >角色组</h5>
-                        <ul id="orgTree" ></ul>
+                <form class="navbar-form" style="padding:10px 0 0 0;" role="form" id="tableNavForm">
+                    <%--   <div class="btn-group">
+                           <button type="button" class="btn btn-default">Left</button>
+                           <button type="button" class="btn btn-default">Middle</button>
+                           <button type="button" class="btn btn-default">Right</button>
+                       </div>--%>
+                    <select class="form-control" id="action">
+                        <option value="" selected="selected">批量操作</option>
+                        <option value="doDelete">删除</option>
+                        <option value="doStatusDisable">禁用角色</option>
+                        <option value="doStatusEnable">启用角色</option>
+                    </select>
+                    <button type="button" class="btn btn-white" id="doAction">应用</button>
+                    &nbsp;&nbsp;
+                        <select class="form-control" name="search_EQS_type" id="search_EQS_type">
+                            <option value="" selected="selected">--所有分类--</option>
+                            <option value="doStatusDisable">禁用角色</option>
+                            <option value="doStatusEnable">启用角色</option>
+                        </select>
+                    &nbsp;&nbsp;
+                    <select class="form-control" onchange="$('#searchInput').attr('name',$(this).val() )">
+                        <option value="search_LIKES_name">名称</option>
+                        <option value="search_LIKES_code">编码</option>
+                    </select>
+                    <div class="form-group" style="margin-left:-5px;width:250px;">
+                        <input type="text" id="searchInput" name="search_LIKES_name" class="form-control"  placeholder="搜索">
                     </div>
-                    <div class="pull-left" style="width:78%; padding:0 0 5px 10px;" >
-                        <div class="table-funtion-bar clear-both"  >
+                    <button type="submit" class="btn btn-white">筛选</button>
 
-                            <div class="btn-group">
-                                <button data-toggle="dropdown"  class="btn no-border dropdown-toggle">
-                                    <i id="checkIcon" class="icon-check-empty bigger-120"></i>
-                                    <span class="caret"></span>
-                                </button>
+                </form>
 
-                                <ul class="dropdown-menu dropdown-default">
-                                    <li id="selectedAll">
-                                        <a href="javascript:;"  >全选</a>
-                                    </li>
-                                    <li id="cancelSelected" >
-                                        <a href="javascript:;" >取消</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <button class="btn no-border tooltips" id="create-function" data-original-title="新增" >
-                                    <i class="icon-plus"></i>
-                                </button>
-                                <button class="btn no-border tooltips" id="refresh-function" data-original-title="刷新">
-                                    <i class="icon-refresh"></i>
-                                </button>
-                                <button class="btn no-border tooltips" id="delete-function" style="display:none;" data-original-title="删除">
-                                    <i class="icon-trash"></i>
-                                </button>
-                            </div>
-                            <div class="input-append no-margin-bottom pull-right">
-                                <!--自定义搜索-->
-                                <form id="searchForm" name="searchForm" class="no-margin no-padding">
-                                    <span class="input-icon input-icon-right">
-                                        <input class="input-medium" id="search" name="search" type="text" placeholder="名称/代码">
-                                        <i class="icon-search blue" onclick="$('#searchForm').submit()" ></i>
-                                    </span>
-                                </form> <!--/#searchForm-->
-                            </div>
-
-                        </div> <!--/.table-funtion-bar-->
-
-                        <table id="table-list"
-                               class="table table-hover  table-nomargin table-bordered dataTable dataTable-nosort clear-both">
-                        </table>
-                    </div>
-                </div>
             </div>
-            <!--/.box-->
+            <table id="table-list"
+                   class="table table-hover table-bordered table-striped dataTable dataTable-nosort clear-both">
+            </table>
         </div>
     </div>
-</div>
 
-<!--/.page-content-->
+</div> <!--/#main-body-content -->
+
 <script>
-    var oTable = $('#table-list');
-    $(function () {
-        //表单提交后,iframe回调函数
-        window.actionCallback = function (resp) {
-            var json =  resp.attributes ;
-            $.colorbox.close();
-            oTable.fnDraw();
-            lework.alert({content: json.message, type: json.type })
+
+    seajs.use(['mustache', 'jquery', 'notify', 'dialog', 'datatables', 'confirmDelete' ], function (mustache, $, notify, dialog) {
+
+        var oTable = $('#table-list'),
+                rowActionTpl = $('#tableActionTpl').html();
+        //--------全局函数定义--------------
+        window.refreshDatatables = function () {
+            oTable.fnDraw();     //刷新表格
         };
-        window.deleteCallback = function (resp) {
-            var json =  resp.attributes ;
-            $.colorbox.close();
-            oTable.fnDraw();
-            lework.alert({content:json.message ,type: json.type })
-        };
-      //搜索表单
-      $('#searchForm').submit(function(event){
-          event.preventDefault() ;
-          oTable.fnDraw();
-      });
+        //---------jquery datatables --------
         oTable.dataTable({
             'aoColumns': [
-                { 'mData': 'name', 'sTitle': '角色名称' },
-                { 'mData': 'code', 'sTitle': '角色代码'}  ,
-                { 'mData': 'type', 'sTitle': '类别'}  ,
-                { 'mData': 'status', 'sTitle': '状态'}  ,
-                { 'mData': 'id', 'sTitle': '操作'}
+                { 'mData': 'id', 'sTitle': '<input type="checkbox" class="row-check-all" >' },
+                { 'mData': 'name', 'sTitle': '名称' },
+                { 'mData': 'code', 'sTitle': '编码'}  ,
+                { 'mData': 'type', 'sTitle': '分类'}  ,
+                { 'mData': 'status', 'sTitle': '状态'}
             ],
             'aoColumnDefs': [
                 {
+                    'sWidth': '5%',
                     'mRender': function (data, type, full) {
-                        return    full['typeName'];
+                        return   '<input type="checkbox" value="{0}" class="row-check-one" >'.format(data);
                     },
-                    'aTargets': [2 ]
-                },
-                {
+                    'aTargets': [0 ]
+                },  {
+                    'sWidth': '25%',
                     'mRender': function (data, type, full) {
-                        if (data == 'enable') {
-                            return   '<i class="icon-ok-sign bigger-130 green" title="启用的"></i>';
-                        }
-                        return    '<i class="icon-ok-sign bigger-130 red" title="禁用的"></i>';
+                        return      mustache.render(rowActionTpl, full);
+                    },
+                    'aTargets': [1 ]
+                },  {
+                    'sWidth': '15%',
+                    'mRender': function (data, type, full) {
+                        return     full.typeName;
                     },
                     'aTargets': [3 ]
                 },
                 {
+                    'sWidth': '8%',
                     'mRender': function (data, type, full) {
                         //  console.log(data)
-                        return  $('#tableActionTpl').render({id: data});
+                        if (data == 'enable') {
+                            return   '<i class="icon-ok-sign bigger-130 green" title="启用的"></i>';
+                        }
+                        return    '<i class="icon-remove-circle bigger-130 red" title="禁用的"></i>';
                     },
                     'aTargets': [4 ]
                 },
                 { bSortable: false,
-                    aTargets: [4]
-                },
+                    aTargets: [0]
+                } ,
                 //   { 'bVisible': false,  'aTargets': [ 1 ] },
-                { 'sClass': 'center', 'aTargets': [ 3 ] }
+                { 'sClass': 'center', 'aTargets': [4] }
             ],
-            'sDom': 'rt<"table-footer clearfix"ip>',
+            'sDom': 'rt<"table-footer clearfix no-border-top"lip>',
             'bStateSave': false  , /**state saving **/
             'bProcessing': true ,
             'bServerSide': true,
-            'fnServerData': lework.springDataJpaPageableAdapter,
-            'sAjaxSource': '${ctx}/role/getDatatablesJson',
-            'fnServerParams' :function(aoData ){
-                var selectedNode = $.fn.tree && $('#orgTree').tree('getSelected');
-                if (selectedNode)
-                    aoData.push({ 'name': 'filter_EQS_groupId', 'value': selectedNode.id  });
-                //自定义参数
-                aoData.pushArray($('#searchForm').serializeArray());
-            },
+            'fnServerData': $.springDataJpaPageableAdapter,
+            'sAjaxSource': 'role/getDatatablesJson',
             'fnInitComplete': function () {     /**datatables ready**/
-            } ,
-            fnDrawCallback :function(oSettings ){
-                //resert function bar
-                checkFunbarStatus(false) ;
-                // bootstrap-tooltip
-                $('.tooltips').tooltip();
-                $('.confirmDelete').confirmDelete({onDelete: function () {
-                    var id = $(this).data('id') ;
-                    $.hiddenSubmit({
-                        formAction: 'role/delete',
-                        data: [  {name: 'deleteId', value:  id } ],
-                        complete : function(){  checkFunbarStatus(false); }
-                    })
-                     return true;
-                   }
-                });
+            },
+            'fnServerParams' :function(aoData ){
+                //表头搜索参数
+                aoData.pushArray($('#tableNavForm').serializeArray());
+            },
+            fnDrawCallback: function (oSettings) {
+                //确认删除弹出层
+                oTable.find('.confirmDelete')
+                        .confirmDelete({
+                            onConfirm: function () {
+                                var id   =  $(this).data('id');
+                                $.ajax({
+                                    url: 'role/delete',
+                                    data: {deleteIds: id},
+                                    cache: false,
+                                    type:'post',
+                                    success: function (resp) {
+                                        notify({content: resp.msg});
+                                        refreshDatatables();
+                                    }
+                                })
+                            }
+                        });//confirmDelete
+
             }
         });//dataTables
-
-        //多行选择
-        oTable.tableMutilDelete({
-            afterSelect: function () {
-                var size = oTable.find('tr.selected').size();
-                checkFunbarStatus(size > 0);
-            }
-        });
-
-        //新增
-        $('#create-function').on('click',function () {
-            var roleGroup  = $('#orgTree').tree('getSelected') ;
-            var roleGroupId = (roleGroup && roleGroup['id']) ? roleGroup.id : '' ;
-            $(this).colorbox({
-                href: 'role/update?' + $.param( {$SiteMesh:false,'roleGroupId':roleGroupId}  ) ,
-                adjustY:'40%',
-                width: '700px',
-                overlayClose: false,
-                scrolling: false
-            })
-        });
-        //刷新
-        $('#refresh-function').on('click',function () {
-            oTable.fnDraw();
-
-        });
-        //双击进入修改页面
-        oTable.on('dblclick','tbody>tr',function(event){
-            event.preventDefault();
-            $(this).find('.update').trigger('click');
-        });
-
-        //多行删除
-        $('#delete-function').confirmDelete({text: '<span class="text-warning">确认删除多条记录？</span>',
-            onDelete: function () {
-                var ids = [];
-                oTable.find('tr.selected .confirmDelete').each(function () {
-                    ids.push($(this).data('id'))
-                });
-                ids = ids.join(',');
-                $.hiddenSubmit({
-                    formAction: 'role/delete',
-                    data: [  {name: 'deleteIds', value: ids } ] ,
-                    complete : function(){  checkFunbarStatus(false); }
-                })
-            return true;
-        }
-        });
-        //取消选择
-        $('#cancelSelected').on('click',function () {
-            oTable.find('tbody>tr').removeClass('selected warning');
-            checkFunbarStatus(false);
-        });
-        //全选行
-        $('#selectedAll').on('click',function () {
-            oTable.find('tbody>tr').addClass('selected warning')
-            checkFunbarStatus(true);
-        });
-
-        //根据所选行,修改function bar状态.
-        function checkFunbarStatus(hasSelected) {
-            if (hasSelected == true) {
-                $('#checkIcon').removeClass('icon-check-empty').addClass('icon-check')
-                $('#delete-function').show();
-            } else {
-                $('#checkIcon').removeClass('icon-check').addClass('icon-check-empty');
-                $('#delete-function').hide();
-            }
-        }
-
-        using(['tree'], function () {
-            //角色组
-            $('#orgTree').tree({
-                url: 'organization/getTree',
-                method: 'get',
-                checkbox: false ,
-                onLoadSuccess : function(node, data){
+        //表单检索.
+        $('#tableNavForm').on('submit',function(e){
+            //取消键盘enter提交表单
+            e.preventDefault();
+            refreshDatatables();
+        })
+        //----------事件定义---------
+        //双击编辑行
+        oTable.on('dblclick.lework', 'tr', function () {
+            //触发编辑
+            $(this).find('.edit').trigger('click.lework')
+        })
+        //编辑
+        oTable.on('click.lework', '.edit', function () {
+            var rowData = $(this).data();
+            dialog.ajaxModal({
+                id: 'UPDATE_DIALOG',
+                lock: true,
+                title: '编辑角色"{name}"'.format(rowData),
+                width: 630,
+                height: 300,
+                padding: '0',		// 内容与边界填充距离
+                ajax: {type: 'get', url: 'role/update?', data: $(this).data() },
+                okVal: '保存',
+                ok: function () {
+                    //提交弹出层form
+                    this.DOM.content.find('#inputForm').submit();
+                    return false;
                 },
-                onSelect : function(){
-                    oTable.fnDraw();
+                cancelVal: '关闭',
+                cancel: function () {
                 }
-            });
-        }) //using
+            })
 
-    })  //dom ready
+        })
+        //查看
+        oTable.on('click.lework', '.view', function () {
+            console.log('view');
+        })
+        //新建
+        $('#create-function').on('click.lework', function () {
+            dialog.ajaxModal({
+                id: 'UPDATE_DIALOG',
+                lock: true,
+                title: '新建角色',
+                width: 630,
+                height:300,
+                padding: '0',		// 内容与边界填充距离
+                ajax: {type: 'get', url: 'role/update' },
+                okVal: '保存',
+                cancelVal: '关闭',
+                ok: function () {
+                    //提交弹出层form
+                    this.DOM.content.find('#inputForm').submit();
+                    return false;
+                }
+            })
+        })
+        //--------------多行操作----------------
+        //表格checkbox操作
+        oTable.on('change.lework', '.row-check-all:checkbox', function () {
+            if ($(this).prop('checked')) {
+                oTable.find('.row-check-one').prop('checked', true)
+            } else {
+                oTable.find('.row-check-one').prop('checked', false)
+            }
+        })
+        //批量操作
+        $('#doAction').confirmDelete({
+            text: '<span class="text-warning" >确认操作？</span>',
+            onConfirm: function () {
+                var action = $('#action').val(),
+                        selectedRowIds = oTable.find('.row-check-one:checked')
+                                .map(function () {
+                                    return $(this).val();
+                                }).get().join(',');
+                if (action && selectedRowIds) {
+                    $.ajax({
+                        url: 'role/doAction',
+                        data: {'selectedRowIds': selectedRowIds, 'action': action },
+                        cache: false,
+                        type: 'post',
+                        success: function (resp) {
+                            notify({content: resp.msg});
+                            refreshDatatables();
+                        }
+                    })
+                } else {
+                    notify({content: action ? '请选择行' : '请选择"批量操作方法"', type: 'danger'});
+                }
+            }
+        }); //confirmDelete
+
+    })  //seajs use
+
 
 
 </script>
-
-<!-- ===============JsRender template ===================
-    @see http://www.jsviews.com/#samples/jsr/converters
+<!-- ===============Mustache template ===================
+    @see https://github.com/janl/mustache.js
 -->
-
 <!--table action template-->
-<script id="tableActionTpl" type="text/x-jsrender">
-    <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-        <a class="green tooltips view"  href="role/view?id={{:id}}&$SiteMesh=false"   data-original-title="查看"
-           onclick="$(this).colorbox({adjustY:'40%',width:'650px',overlayClose:false,scrolling:true,scrolling:false });" >
-            <i class="icon-zoom-in bigger-140 filterSelected"></i>
-        </a>
-        <a class="blue tooltips update" href="role/update?id={{:id}}&$SiteMesh=false" data-original-title="编辑"
-           onclick="$(this).colorbox({ adjustY:'40%',width:'700px',overlayClose:false,scrolling:false });" >
-            <i class="icon-edit bigger-140 filterSelected"></i>
-        </a>
-        <a class="red tooltips confirmDelete" href="javascript:;" data-id="{{:id}}"  data-original-title="删除">
-            <i class="icon-trash bigger-140 filterSelected"></i>
-        </a>
+<script id="tableActionTpl" type="text/x-mustache">
+    {{name}}
+    <div class="row-actions">
+        <span><a  class="info view" data-id="{{id}}" data-name="{{name}}" href="javascript:;"  title="查看" ><i class="icon-zoom-in"></i></a> | </span>
+        <span><a class="info edit" data-id="{{id}}" data-name="{{name}}" href="javascript:;" title="编辑"><i class="icon-edit"></i></a> | </span>
+        <span><a class="info confirmDelete" data-id="{{id}}"  data-name="{{name}}"  href="javascript:;" title="删除"><i class="icon-trash"></i></a></span>
     </div>
 </script>
 

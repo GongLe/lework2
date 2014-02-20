@@ -103,7 +103,7 @@ public class UserController    {
             ids = Collections3.extractToList(ownRoles, "id");
             model.addAttribute("ownRoleIdsArr", JsonMapper.nonDefaultMapper().toJson(ids));
         }
-        model.addAttribute("chosenRoleOptions", roleService.getRoleGroupOptions(ownRoles, true));
+        //model.addAttribute("chosenRoleOptions",roleService.getRoleGroupOptions(ownRoles,true)  );
         //组织树.
         List<TreeResult> orgTree = organizationService.getOrgTree(null);
         model.addAttribute("orgTree", orgTree);

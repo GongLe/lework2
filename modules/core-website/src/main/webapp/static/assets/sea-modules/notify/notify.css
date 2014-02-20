@@ -16,6 +16,7 @@
     overflow: visible;
     font-size:12px;
     text-align: center;
+    z-index: 9999;
 }
 
 .lework-notify button.close {
@@ -52,7 +53,6 @@
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    z-index: 998;
     vertical-align: middle;
 }
 .alert-inner-text{

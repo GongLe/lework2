@@ -57,7 +57,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void downSortNum(Menu entity) {
         List<Menu> siblings;
-        int curIndex;
+
         Integer temp;
         Menu next;
         if (!entity.hasParent()) {    //如果是根节点
@@ -66,16 +66,14 @@ public class MenuServiceImpl implements MenuService {
             siblings = menuDao.findChildMenusByParentId(entity.getParentId());
         }
         if (Collections3.isNotEmpty(siblings) && siblings.size() > 1) {
-            curIndex = siblings.indexOf(entity);
-            if (curIndex < siblings.size() - 1) {
-                next = siblings.get(curIndex + 1);
+            next = Collections3.getNextElement(siblings, entity) ;
                 //互换sortNum
                 temp = next.getSortNum();
                 next.setSortNum(entity.getSortNum());
                 entity.setSortNum(temp);
                 menuDao.save(next);
                 menuDao.save(entity);
-            }
+
         }
 
     }
@@ -83,7 +81,6 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void upSortNum(Menu entity) {
         List<Menu> siblings;
-        int curIndex;
         Integer temp;
         Menu pre;
         //如果是根节点
@@ -93,16 +90,14 @@ public class MenuServiceImpl implements MenuService {
             siblings = menuDao.findChildMenusByParentId(entity.getParentId());
         }
         if (Collections3.isNotEmpty(siblings) && siblings.size() > 1) {
-            curIndex = siblings.indexOf(entity);
-            if (curIndex > 0) {
-                pre = siblings.get(curIndex - 1);
-                //互换sortNum
-                temp = pre.getSortNum();
-                pre.setSortNum(entity.getSortNum());
-                entity.setSortNum(temp);
-                menuDao.save(pre);
-                menuDao.save(entity);
-            }
+            pre = Collections3.getPreElement(siblings, entity);
+            //互换sortNum
+            temp = pre.getSortNum();
+            pre.setSortNum(entity.getSortNum());
+            entity.setSortNum(temp);
+            menuDao.save(pre);
+            menuDao.save(entity);
+
         }
     }
 
@@ -267,7 +262,7 @@ public class MenuServiceImpl implements MenuService {
                 continue;
             }
             temp = new MenuTreeGridDTO(curNode);
-            temp.setLevelSize(size);
+            temp.setSiblingSize(size);
             temp.setLevelIndex(i);
             rootNodes.add(temp);
             fetchChild4TreeGrid(curNode, temp, ignore);
@@ -366,7 +361,7 @@ public class MenuServiceImpl implements MenuService {
                 }
                 node = new MenuTreeGridDTO(curNode);
                 node.setLevelIndex(i);
-                node.setLevelSize(size);
+                node.setSiblingSize(size);
                 child.add(node);
                 if (curNode.hasChild()) {
                     fetchChild4TreeGrid(curNode, node, ignore);

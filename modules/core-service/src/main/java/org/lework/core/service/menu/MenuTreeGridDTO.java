@@ -37,7 +37,7 @@ public class MenuTreeGridDTO {
     private String url;                //URL
     private String icon;                //图标
     private Integer levelIndex ; //同级节点index
-    private Integer levelSize ; //同级节点个数
+    private Integer siblingSize ; //同级节点个数
     private List<MenuTreeGridDTO> children = new ArrayList<MenuTreeGridDTO>();
     //easyui  prop
     private String iconCls;
@@ -146,11 +146,11 @@ public class MenuTreeGridDTO {
         this.levelIndex = levelIndex;
     }
 
-    public Integer getLevelSize() {
-        return levelSize;
+    public Integer getSiblingSize() {
+        return siblingSize;
     }
 
-    public void setLevelSize(Integer levelSize) {
-        this.levelSize = levelSize;
+    public void setSiblingSize(Integer siblingSize) {
+        this.siblingSize = siblingSize;
     }
 }

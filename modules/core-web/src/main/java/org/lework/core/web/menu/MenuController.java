@@ -14,6 +14,7 @@ import org.lework.runner.web.AbstractController;
 import org.lework.runner.web.CallbackData;
 import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
+import org.lework.runner.web.vo.JsonResult;
 import org.lework.runner.web.vo.TreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,48 +51,58 @@ public class MenuController extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
-
         return "menu/menu";
+    }
+
+    @RequestMapping(value = "/treetable", method = RequestMethod.GET)
+    public String treetable(Model model) throws IOException {
+
+        List<MenuTreeGridDTO>  treeGridDTOs =   menuService.getMenuTreeGrid(null) ;
+        model.addAttribute("treeGridDTOs",treeGridDTOs) ;
+        return "menu/menu-treetable";
     }
 
     /**
      * 修改页面
      */
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String update(@ModelAttribute("entity") Menu entity ,Model model){
-        model.addAttribute("statusList" , Status.values() ) ;
-
-        return  "menu/menu-update" ;
+    public String update(@ModelAttribute("entity") Menu entity, Model model) {
+        model.addAttribute("statusList", Status.values());
+        //上级组织
+        List<Menu> ingoreNodes = Lists.newArrayList();
+        //防止环路,自身不能作为父ID
+        ingoreNodes.add(entity);
+        List<TreeResult> menuTree = menuService.getMenuTree(ingoreNodes);
+        model.addAttribute("menuTree", menuTree);
+        return "menu/menu-update";
     }
 
     /**
      * 保存
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public void update(@Valid @ModelAttribute("entity") Menu entity, BindingResult result,
-                       @RequestParam(value = "parentId", required = false) String parentId,
-                       HttpServletResponse response) {
-
+    @ResponseBody
+    JsonResult update(@Valid @ModelAttribute("entity") Menu entity, BindingResult result,
+                      @RequestParam(value = "parentId", required = false) String parentId ) {
         if (result.hasErrors()) {
-            callback(response, CallbackData.build("actionCallback", "菜单&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
             logger.warn(result.toString());
+            return JsonResult.failure("数据不合法,保存失败");
         }
+        JsonResult jsonResult = JsonResult.failure("菜单&quot;" + entity.getName() + "&quot;保存失败");
         //关联父类
         Menu parent = menuService.getMenu(parentId);
         if (parent != null) {
             entity.setParentMenu(parent);
-            entity.setParentName(parent.getName());
         } else { //取消关联
             entity.setParentMenu(null);
-            entity.setParentName(null);
         }
         try {
             menuService.saveMenu(entity);
-            callback(response, CallbackData.build("actionCallback", "菜单&quot;" + entity.getName() + "&quot;保存成功", NotificationType.DEFAULT));
+            jsonResult = JsonResult.success("菜单&quot;" + entity.getName() + "&quot;保存成功");
         } catch (Exception e) {
-            e.printStackTrace();
-            callback(response, CallbackData.build("actionCallback", "菜单&quot;" + entity.getName() + "&quot;保存失败", NotificationType.ERROR));
+            logger.error("菜单保存异常:{}", e);
         }
+        return jsonResult;
 
     }
 
@@ -98,36 +110,36 @@ public class MenuController extends AbstractController {
      * 删除
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public void delete(@RequestParam(value = "deleteId", required = false) String deleteId,
-                       @RequestParam(value = "deleteIds", required = false) String deleteIds,
-                       HttpServletResponse response) {
-
+    public
+    @ResponseBody
+    JsonResult delete(@RequestParam(value = "deleteId", required = false) String deleteId,
+                      @RequestParam(value = "deleteIds", required = false) String deleteIds) {
+        JsonResult jsonResult = null;
         try {
             //单个删除
             if (Strings.isNotBlank(deleteId)) {
                 Menu entity = menuService.getMenu(deleteId);
                 menuService.deleteMenu(entity);
-                callback(response, CallbackData.build("deleteCallback", "菜单&quot;" + entity.getName() + "&quot;删除成功", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("菜单&quot;" + entity.getName() + "&quot;删除成功");
             } else if (Strings.isNotBlank(deleteIds)) {   //多个删除
                 String[] ids = Strings.split(deleteIds, ",");
-
                 List<Menu> entities = menuService.getMenusByIds(Arrays.asList(ids));
                 List<String> names = Collections3.extractToList(entities, "name");
                 menuService.deleteMenus(entities);
-                callback(response, CallbackData.build("deleteCallback", "菜单&quot;" + Strings.join(names, ",") + "&quot;删除成功", NotificationType.DEFAULT));
+                jsonResult = JsonResult.success("菜单&quot;" + Strings.join(names, ",") + "&quot;删除成功");
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            callback(response, CallbackData.build("deleteCallback", "菜单删除失败.", NotificationType.ERROR));
+            logger.error("菜单保存异常:{}", e);
+            jsonResult = JsonResult.success("删除失败");
         }
-
+        return jsonResult;
     }
     /**
      * 查看
      */
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public String view(@ModelAttribute("entity") Menu menu ,Model model) {
+    public String view(@ModelAttribute("entity") Menu entity  ,Model model) {
         model.addAttribute("statusList" , Status.values() ) ;
         return "menu/menu-view";
     }
@@ -221,22 +233,26 @@ public class MenuController extends AbstractController {
         return DataTableResult.build(page);
     }
 
+
     /**
      * ajax上移序号
      */
     @RequestMapping(value = "/upSortNum", method = RequestMethod.POST)
-    public void upSortNum(@Valid @ModelAttribute("entity") Menu entity, HttpServletResponse response) {
+    public
+    @ResponseBody
+    JsonResult upSortNum(@Valid @ModelAttribute("entity") Menu entity) {
         menuService.upSortNum(entity);
-        callback(response, CallbackData.build("doSortNumCallback", "菜单&quot;" + entity.getName() + "&quot序号上移成功", NotificationType.DEFAULT));
+        return JsonResult.success("菜单&quot;" + entity.getName() + "&quot;序号上移成功");
     }
 
     /**
      * ajax下移序号
      */
     @RequestMapping(value = "/downSortNum", method = RequestMethod.POST)
-    public void downSortNum(@Valid @ModelAttribute("entity") Menu entity, HttpServletResponse response) {
+    @ResponseBody
+    JsonResult downSortNum(@Valid @ModelAttribute("entity") Menu entity) {
         menuService.downSortNum(entity);
-        callback(response, CallbackData.build("doSortNumCallback", "菜单&quot;" + entity.getName() + "&quot序号下移成功", NotificationType.DEFAULT));
+        return JsonResult.success( "菜单&quot;" + entity.getName() + "&quot;序号下移成功");
     }
 
     /**

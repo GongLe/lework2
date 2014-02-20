@@ -33,7 +33,8 @@ public class Menu extends AuditorEntity {
     private String status;        //状态 默认为有效状态
     private String url;                //URL
     private String icon;                //图标
-    private String parentName;
+    private String description;                //description
+    //private String parentName;
     private Menu parentMenu;        //上级菜单
     private List<Menu> childrenMenus;    //下级菜单
     private List<Role> roles = new ArrayList<Role>();    //菜单对应的角色
@@ -105,7 +106,6 @@ public class Menu extends AuditorEntity {
         this.status = status;
     }
 
-    @NotBlank
     @Length(max = 200)
     public String getUrl() {
         return url;
@@ -134,13 +134,11 @@ public class Menu extends AuditorEntity {
         this.parentMenu = parentMenu;
     }
 
+    @Transient
     public String getParentName() {
-        return parentName;
+        return getParentMenu() != null ? getParentMenu().getName() : Strings.EMPTY;
     }
 
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "parentMenu", fetch = FetchType.LAZY)
@@ -163,6 +161,13 @@ public class Menu extends AuditorEntity {
         this.roles = roles;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public boolean equals(Object obj) {

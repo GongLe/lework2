@@ -39,7 +39,7 @@
                                 <option value="search_LIKES_mobile">手机号码</option>
                             </select>
                             <div class="form-group" style="margin-left:-5px;width:250px;">
-                                <input type="text" id="searchInput" name="search_LIKES_loginName" class="form-control" id="cccc" placeholder="搜索">
+                                <input type="text" id="searchInput" name="search_LIKES_loginName" class="form-control"  placeholder="搜索">
                             </div>
                             <button type="submit" class="btn btn-white">筛选</button>
 

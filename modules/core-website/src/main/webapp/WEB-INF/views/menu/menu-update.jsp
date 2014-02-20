@@ -1,167 +1,147 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
-<!DOCTYPE html>
-<html>
-<head>
+<div  id="modalWrap" style="padding:15px 40px 0 5px;/*width: 600px;max-height:600px;*/"  >
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1" >
+            <form action="menu/update"  method="post" id="inputForm" name="inputForm" class="form-horizontal" role="form">
+                <!--隐藏域-->
+                <input type="hidden" name="$SiteMesh" value="false">
+                <form:hidden path="entity.id" />
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label" for="parentId">上级菜单</label>
 
-</head>
-
-<body>
-
-<div class="modal-content" >
-    <form action="menu/update"  method="post" id="inputForm" name="inputForm"
-          class="no-margin form-horizontal offset-30 error-inline" >
-        <div class="modal-header" style="padding:5px 20px 5px 20px;">
-            <h3>
-                <small class="grey">
-                正在<c:if test="${entity.isNew == true}" >新建菜单</c:if><c:if test="${entity.isNew ==false}" >编辑菜单“${entity.name}”</c:if>
-                </small>
-            </h3>
-        </div>
-
-        <div class="modal-body ">
-            <div class="row-fluid ">
-                <div class="span12"  >
-
-                    <!--隐藏域-->
-                    <input type="hidden" name="$SiteMesh" value="false">
-                    <form:hidden path="entity.id"  />
-                    <input type="hidden" name="$SiteMesh" value="false">
-                    <div class="control-group">
-                        <label class="control-label " for="name">菜单名称</label>
-                        <div class="controls">
-                            <input autocomplete="off"  class="input-xlarge" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入菜单名称">
-                        </div>
+                    <div class="col-xs-10">
+                        <le:selectTree attr=" class=\"form-control\" " value="${entity.parentId}"
+                                       treeReuslt="${menuTree}" name="parentId" headerKey="--选择菜单--"
+                                       headerValue=""></le:selectTree>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="code">菜单代码</label>
-                        <div class="controls">
-                            <input  autocomplete="off" class="input-xlarge" type="text" id="code" name="code" value="${entity.code}" placeholder="输入菜单代码">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label" for="name"> 名称</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="name" name="name"   value="${entity.name}" placeholder="输入组织名称"
+                               data-rule-required="true"    data-rule-maxlength="50"  >
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="parentId">上级菜单</label>
-                        <div class="controls">
-                            <input id="parentId" name="parentId"  style="width:284px;height:28px;" value="${entity.parentId}"   >
-                            <div class="help-inline">
-                                <a href="javascript:;" onclick="$('#parentId').combotree('clear');">清空</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="url">URL</label>
-                        <div class="controls">
-                            <input class="input-xlarge" type="text" id="url" name="url" value="${entity.url}" placeholder="输入菜单URL">
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="status">状态</label>
-                        <div class="controls">
-                            <form:select  path="entity.status" cssClass="input-xlarge" cssStyle="width:284px"  >
-                                <form:options  items="${statusList}"  itemValue="code" itemLabel="name"/>
-                            </form:select>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="icon">icon</label>
-                        <div class="controls">
-                            <input class="input-xlarge" type="text" id="icon" name="icon" value="${entity.icon}"
-                                   placeholder="输入菜单icon">
-                            <div class="help-inline">
-                                <a href="javascript:;" id="selectIcon" class="smaller-90" title="Icons"
-                                   onclick="$(this).text($(this).text() == '选择' ? '关闭' : '选择' );">选择</a>
-                            </div>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label   class="col-xs-2 control-label" for="code">编码</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="code" name="code" value="${entity.code}" placeholder="输入组织代码"
+                               data-rule-required="true"    data-rule-maxlength="50" >
                     </div>
                 </div>
 
-            </div>
-        </div><!--/.modal-body-->
-        <div class="modal-footer">
-            <button id="submitBtn" type="submit" class="btn btn-small btn-primary" >
-                保存
-            </button>
-            <button type="button" class="btn btn-small" onclick="$.colorbox.close()">
-                关闭
-            </button>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label"  for="url">url</label>
+                    <div class="col-xs-10">
+                        <input class="form-control" type="text" id="url" name="url"   value="${entity.url}"
+                               data-rule-required="false"  data-rule-maxlength="100"  placeholder="输入url">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="parentId">状态</label>
+                    <div class="col-xs-10">
+                        <form:select path="entity.status" cssClass="form-control">
+                            <form:options items="${statusList}" itemValue="code" itemLabel="name"/>
+                        </form:select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="icon">icon</label>
+
+                    <div class="col-xs-10">
+                        <%--<input class="form-control" type="text" id="icon" name="icon" value="${entity.icon}"
+                               data-rule-required="false" data-rule-maxlength="100" placeholder="输入icon">--%>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="icon-preview"><i class="${entity.icon}"></i> </span>
+                            <input type="text" class="form-control" id="icon" name="icon" value="${entity.icon}">
+                              <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" id="selectIcon">选择Icon</button>
+                              </span>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="description">描述</label>
+
+                    <div class="col-xs-10">
+                        <textarea class="form-control" rows="3" id="description" name="description"
+                                  data-rule-required="false"     data-rule-maxlength="500"        placeholder="输入描述信息"> ${entity.description}</textarea>
+                    </div>
+                </div>
+
+
+            </form>
+
         </div>
-    </form>
-</div>
+
+    </div> <!--/.row-->
+</div><!--/#inputBody-->
 <script>
+    seajs.use(['mustache', 'jquery', 'dialog', 'notify', 'slimscroll', 'validate', 'chosen', 'form'], function (mustache, $, dialog, notify) {
 
-    $(function(){
-        //页面icon弹出层回调
-        window.selectIconCallback = function () {
-            $('#icon', '#inputForm').val($(this).prop('class'));
-        }
-        //from validater
-        $('#inputForm').targetIframe().validate({
-            submitHandler: function (form) {
-                $('#submitBtn').prop('disable',true).text('保存中....')
-                 form.submit() ;
-            },
-            rules: {
-                name: {
-                    required: true,
-                    normalChar: true,
-                    maxlength: 50
+        $(function () {
+            var $inputForm = $('#inputForm');
+            $('#modalWrap').slimscroll({
+                width: '630px',
+                height: '400px'
+            }); //slimscroll
+
+            var ajaxSubmitOption = {
+                // target: '#output2',   // target element(s) to be updated with server response
+                beforeSubmit: $.noop,  // pre-submit callback
+                success: function (resp, statusText) {
+                    notify({content: resp.msg});
+                    //关闭弹出层
+                    var d = dialog.list['UPDATE_DIALOG'];
+                    d && d.close();
+                    //刷新父页面表格
+                    $.isFunction(window.refreshDatatables) && window.refreshDatatables();
+                }, // post-submit callback
+                // other available options:
+                //url:       url         // override for form's 'action' attribute
+                //type:      type        // 'get' or 'post', override for form's 'method' attribute
+                dataType: 'json'        // 'xml', 'script', or 'json' (expected server response type)
+            };
+
+            //from validater
+            $inputForm.validate({
+                submitHandler: function (form) {
+                    $(form).ajaxSubmit(ajaxSubmitOption);
                 },
-                code: {
-                    required: true,
-                    maxlength: 50,
-                    account: true,
-                    remote: {
-                        url: 'menu/validateMenuCode', //后台处理程序
-                        type: 'post',               //数据发送方式
-                        dataType: 'json',           //接受数据格式
-                        data: {                     //要传递的数据
-                            menuId: function () {
-                                return $('#id').val();
-                            }
-                        }
+                rules: {
+                    name: {
+                        required: true,
+                        normalChar: true,
+                        maxlength: 50
                     }
-                },
-                url: {
-                    required: true,
-                    maxlength: 200
-                },
-                status: {
-                    required: true
-                }
-            }, messages: {
-                code: {
-                    remote: '该值已被占用'
-                }
-            }
-        }); //end validate
+                }, messages: {
 
-        setTimeout(function () {
-            using(['combotree'], function () {
-                $('#parentId').combotree({
-                    url: 'menu/getTree?ignoreNodeId=${entity.id}',
-                    method: 'get',
-                    onLoadSuccess: function () {
-                      //  $('.combo-text', '#inputForm').data('rule-required', false); //修复IE8 validate
+                }
+            }); //end validate
+            //------------icon弹出层----------
+            $('#selectIcon').on('click',function(){
+                dialog.ajaxModal({
+                    id: 'fontawesome_dialog',
+                    lock: true,
+                    title: '选择icon',
+                    width: 630,
+                    height: 400,
+                    padding: '0',		// 内容与边界填充距离
+                    ajax: {type: 'get', url: 'menu/fontawesome?'},
+                    okVal:null,
+                    ok:null,
+                    cancelVal: '关闭',
+                    cancel: function () {
                     }
-                });
-            }) //using
-        }, 100);//timeout
-
-        $('#selectIcon').on('click.popover',function (e) {
-            e.preventDefault();
-            var $ele = $(this) ;
-            $ele.off('click.popover') ;
-            $.get('menu/fontawesome?$SiteMesh=false', function (html) {
-                $ele.popover({
-                    placement :'top' ,
-                    html : true,
-                    content: html
-                }).popover('show');
+                })
             });
-        });
 
-    })  //dom ready
+            //icon弹出层回调
+            window.selectIconCallback = function (val) {
+                $inputForm.find('#icon').val(val);
+            }
+        }) //dom ready
+    })//seajs use
 </script>
-</body>
-</html>

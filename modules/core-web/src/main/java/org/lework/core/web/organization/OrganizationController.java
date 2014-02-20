@@ -52,15 +52,11 @@ public class OrganizationController extends AbstractController {
     @RequestMapping(value = "/treetable", method = RequestMethod.GET)
     public String treetable(Model model) throws IOException {
 
-      /*  List<Organization> entities = organizationService.getAllOrganizations();
-        model.addAttribute("entities",entities);*/
         List<OrgTreeGridDTO>  treeGridDTOs =   organizationService.getOrgTreeGrid(null);
         model.addAttribute("treeGridDTOs",treeGridDTOs) ;
         return "organization/organization-treetable";
     }
-    private void buildRow(OrgTreeGridDTO parent,final StringBuilder builder){
 
-    }
     /**
      * 修改页面
      */
@@ -72,9 +68,6 @@ public class OrganizationController extends AbstractController {
         List<Organization> ingoreNodes = Lists.newArrayList();
         //防止环路,自身不能作为父ID
         ingoreNodes.add(entity);
-       /* if(entity.hasChild()){
-            ingoreNodes.addAll(entity.getChildrenOrganizations()) ;
-        }*/
         List<TreeResult> orgTree = organizationService.getOrgTree(ingoreNodes);
         model.addAttribute("orgTree", orgTree);
         return  "organization/organization-update" ;
@@ -128,8 +121,7 @@ public class OrganizationController extends AbstractController {
     public
     @ResponseBody
     JsonResult delete(@RequestParam(value = "deleteId" ,required = false) String deleteId,
-                       @RequestParam(value = "deleteIds" ,required = false) String deleteIds,
-                       HttpServletResponse response) {
+                       @RequestParam(value = "deleteIds" ,required = false) String deleteIds ) {
         JsonResult jsonResult = null ;
         try {
             //单个删除
