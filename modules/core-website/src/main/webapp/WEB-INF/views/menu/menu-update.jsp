@@ -115,6 +115,21 @@
                         required: true,
                         normalChar: true,
                         maxlength: 50
+                    },
+                    code: {
+                        required: false,
+                        maxlength: 50,
+                        account:true,
+                        remote: {
+                            url: 'menu/validateMenuCode', //后台处理程序
+                            type: 'post',               //数据发送方式
+                            dataType: 'json',           //接受数据格式
+                            data: {                     //要传递的数据
+                                menuId: function () {
+                                    return $inputForm.find('#id').val();
+                                }
+                            }
+                        }
                     }
                 }, messages: {
 

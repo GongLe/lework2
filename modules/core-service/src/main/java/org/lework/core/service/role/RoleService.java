@@ -28,6 +28,8 @@ public interface RoleService {
 
     public List<Role> getAllRoleByGroupId(String groupId);
 
+    public List<Role> getAllRoleByType(String type);
+
     public List<Role> getRolesByIds(List<String> ids);
 
     /**

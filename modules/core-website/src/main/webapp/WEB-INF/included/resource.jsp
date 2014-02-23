@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="${ctx}/static/assets/css/button.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/sidebar2.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/table.css">
-<link rel="stylesheet" href="${ctx}/static/assets/css/tabs.css">
+<%--<link rel="stylesheet" href="${ctx}/static/assets/css/tabs.css">--%>
 <link rel="stylesheet" href="${ctx}/static/assets/css/component.css">
 <link rel="stylesheet" href="${ctx}/static/assets/css/utils.css">
 <!--color theme
@@ -64,6 +64,7 @@
             'validate': 'jquery-validation/1.11.1/jquery.validate.js',
             'fullCalendar': 'jquery-fullcalendar/1.6.4/fullcalendar.js',
             'treetable': 'jquery-treetable/jquery.treetable.js',
+            'ztree': 'ztree/jquery.ztree.core-3.5.js',
             'bootstrap': 'bootstrap/3.0.3/bootstrap.js',
             'bootbox': 'bootbox/4.1.0/bootbox.js',
             'wdatePicker': 'My97DatePicker/WdatePicker.js',

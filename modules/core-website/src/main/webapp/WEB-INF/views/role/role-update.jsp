@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
-<div  id="roleInputBody" style="padding:25px 40px 0 5px;/*width: 600px;max-height:600px;*/"  >
+<div  id="roleInputBody" style="padding:35px 40px 0 5px;/*width: 600px;max-height:600px;*/"  >
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1" >
             <form action="role/update"  method="post" id="inputForm" name="inputForm" class="form-horizontal" role="form">
@@ -91,6 +91,21 @@
                         required: true,
                         normalChar: true,
                         maxlength: 50
+                    },
+                    code: {
+                        required: false,
+                        account:true,
+                        maxlength: 50,
+                        remote: {
+                            url: 'role/validateRoleCode', //后台处理程序
+                            type: 'post',               //数据发送方式
+                            dataType: 'json',           //接受数据格式
+                            data: {                     //要传递的数据
+                                roleId: function () {
+                                    return $inputForm.find('#id').val();
+                                }
+                            }
+                        }
                     },
                     status: {
                         required: true

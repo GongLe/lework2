@@ -5,138 +5,85 @@
 <html>
 <head>
     <title>角色权限控制</title>
-    <style type="text/css">
-        .box-title{border-bottom: 1px dashed #c5d0dc!important;}
-        .west{ width:15%;min-height:550px;border-right:1px dashed  #c5d0dc;  }
-        .west h5{  margin:5px 10px; }
-        .middle{
-            width:20%;min-height:550px;border-right:1px dashed  #c5d0dc;
-            overflow: auto;}
-        .middle h5{margin:5px 10px;}
-        .east{width:63%; padding:0 0 5px 10px;}
-        .east h5{margin:5px 10px;}
-    </style>
 </head>
 
 <body>
+<div id="main-body-content">
+    <h3>角色权限控制 </h3>
 
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>
-            <a href="${ctx}/dashboard" class="grey"> <i class="icon-home home-icon"></i></a>
-        </li>
-        <li class="active">
-            角色权限控制
-        </li>
-    </ul>
-    <!--.breadcrumb-->
-
-</div>
-
-<div class="page-content">
-    <div class="row-fluid">
-        <div class="span12">
-
-            <div class="box  box-bordered">
-                <div class="box-title no-margin-top" >
-                    <h4  ><i class="icon-group"></i> 角色权限控制</h4>
-                </div>
-                <div class="box-content no-padding ">
-
-                    <div class="pull-left west" >
-                          <h5  class="header smaller lighter blue">  角色组</h5>
-                          <ul id="orgTree" style="padding:5px 10px 0 5px;" ></ul>
-                    </div>
-                    <div class="pull-left middle"  >
-                        <h5  class="header smaller lighter blue ">角色</h5>
-                        <ul id="roleTree" style="padding:5px 10px 0 5px;" ></ul>
-                        <div id="alertNullRoleData" class="alert alert-warning" style="margin:0 8px;">
-                            <button type="button" class="close" data-dismiss="alert">
-                                <i class="icon-remove"></i>
-                            </button>
-                             暂无数据
-                            <br>
-                        </div><!--/.alert-->
-                    </div>
-                    <div class="pull-left east" id="shouQuan">
-                            <h5  class="header smaller lighter blue "> 角色授权</h5>
-                            <div class="alert alert-warning">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <i class="icon-remove"></i>
-                                </button>
-                                 暂无数据
-                                <br>
-                            </div><!--/.alert-->
-                    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">test ztree</div>
+                <div class="panel-body">
+                    <ul id="roleTypeTree" class="ztree"></ul>
                 </div>
             </div>
-            <!--/.box-->
         </div>
+        <div class="col-md-8" id="roleControlTabsContainer"> </div>
     </div>
+
 </div>
+<!--/#main-body-content -->
 
-<!--/.page-content-->
 <script>
-    var $orgTree =  $('#orgTree') ,$roleTree = $('#roleTree') ;
-    $(function () {
-        /**
-        * 加载角色组
-         * 加载队列:角色组 ==>  角色 ==> 角色授权页面
-         */
-        var loadOrgTree = function () {
-            $orgTree.tree({
-                url: 'organization/getTree',
-                method: 'get',
-                checkbox: false,
-                onLoadSuccess: function (node, data) {
-                    //默认选择根节点.
-                    var root =  $('#orgTree').tree('getRoot');
-                    $('#orgTree').tree('select', root.target);
-                },
-                onSelect : function (node) {
-                    loadRoleTree(node.id);
+    seajs.use(['mustache', 'jquery', 'notify', 'dialog', 'datatables', 'confirmDelete', 'ztree' ], function (mustache, $, notify, dialog) {
+        $(document).ready(function () {
+            var setting = {
+                callback: {
+                    beforeClick: zTreeBeforeClick,
+                    onClick: zTreeOnClick,
+                    onCheck: zTreeOnCheck
                 }
-            });
-        }
-        /**
-         *根据角色组()加载所属角色
-         * @param groupId
-         */
-        var loadRoleTree = function (groupId) {
-            $roleTree.tree({
-                url: 'roleControl/getRoleTreeByGroupId?' + $.param({'groupId': groupId }),
-                method: 'get',
-                checkbox: false,
-                onLoadSuccess: function (node, data) {
-                    //默认选择根节点.
-                    var root = $('#roleTree').tree('getRoot');
-                    if (root) {
-                        $('#alertNullRoleData').hide();
-                        $('#roleTree').tree('select', root.target);
-                    } else {
-                        $('#alertNullRoleData').show();
+            } , zNodes = [] , treeObj;
+            $.ajax({
+                url: '${ctx}/role/getTree',
+                data: {'_': (new Date()).getTime() },
+                cache: false,
+                type: 'post',
+                success: function (resp) {
+                    treeObj=  $.fn.zTree.init($("#roleTypeTree"), setting, resp);
+                    onloadActiveOneNode();
+                }
+            })
+            function zTreeOnCheck(event, treeId, treeNode) {
+                console.log("zTreeOnClick : " + treeNode.tId + ", " + treeNode.name);
+            };
+            function zTreeOnClick(event, treeId, treeNode) {
+                console.log("zTreeOnClick : " + treeNode.tId + ", " + treeNode.name);
+            };
+            function zTreeBeforeClick(treeId, treeNode, clickFlag) {
+                //加载tab页
+                if (treeNode['attributes']['type'] == 'typeNode') {
+                    notify({content: '请选择角色节点', type: 'info'})
+                    return false;
+                }
+                 $('#roleControlTabsContainer').load2('roleControl/tabs', {'roleId': treeNode.id, '$SiteMesh': 'false'})
+                return  true;
+            };
+            /**
+            *加载完成后激活第一个节点.
+             */
+            function onloadActiveOneNode(){
+                var nodes = treeObj.getNodes(),selectNode ;
+                if (nodes.length > 0) {
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (nodes[i]['children'] && nodes[i]['children'].length>0){
+                            treeObj.selectNode(selectNode=nodes[i]['children'][0]);
+                            //触发点击事件
+                            treeObj.setting.callback.onClick(null, treeObj.setting.treeId, selectNode);
+                            break;
+                        }
+
                     }
-                },
-                onSelect: function (node) {
-                    loadShouQuan(node.id);
                 }
-            });
-        }
-        /**
-         * 根据角色ID加载角色授权页面
-         * @param roleId
-         */
-        var loadShouQuan = function (roleId) {
-            $('#shouQuan').load('roleControl/tabs?' + $.param({'roleId': roleId, '$SiteMesh': 'false' }));
-        }
-
-        using(['tree'], function () {
-            loadOrgTree();
-        }) //using
-
-    })  //dom ready
+            }
 
 
+        }); //dom ready
+    })  //seajs use
 </script>
+
+
 </body>
 </html>

@@ -93,6 +93,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public List<Role> getAllRoleByType(String type) {
+        return roleDao.findRolesByType(type) ;
+    }
+
+    @Override
     public List<Role> getRolesByIds(List<String> ids) {
         if (Collections3.isEmpty(ids)) {
             return new ArrayList<Role>();

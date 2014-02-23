@@ -48,7 +48,9 @@ public class RoleController extends AbstractController {
      */
     @OperatingAudit(value = "角色管理",function = "列表")
     @RequestMapping(method = RequestMethod.GET)
-    public String list() {
+    public String list(  Model model ) {
+        model.addAttribute("statusList", Status.values());
+        model.addAttribute("typeList", RoleTypes.values());
         return "role/role";
     }
 
@@ -123,13 +125,11 @@ public class RoleController extends AbstractController {
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     public String view(@ModelAttribute("entity") Role role, Model model) {
         model.addAttribute("statusList", Status.values());
+        model.addAttribute("typeList", RoleTypes.values());
         return "role/role-view";
     }
 
-    /**======================
-     *       ajax json data
-     * ======================
-     **/
+
     /**
      * 验证角色代码是否可用
      *
@@ -162,34 +162,33 @@ public class RoleController extends AbstractController {
     }
 
     /**
-     * get Role's easyui tree json result
+     * get Role's   tree json result
      *
-     * @param status 过滤节点状态
+     * @param status 过滤出节点状态
      */
     @RequestMapping(value = "/getTree", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
-    List<TreeResult> getTree(@RequestParam(value = "checkbox", required = false) String checkbox,
-                             @RequestParam(value = "status", required = false) String status) {
-        boolean isCheckbox = Strings.equals(checkbox, "true");
-        boolean filterStatus = Strings.isNotBlank(status);
-        boolean disable;
+    List<TreeResult> getTree(@RequestParam(value = "status", required = false) String status) {
+        boolean isFilterStatus = Strings.isNotBlank(status);
         List<Role> entities;
-        List<TreeResult> nodeList = Lists.newArrayList();
-        //TreeResult root = new TreeResult("root","角色",Strings.EMPTY,Strings.EMPTY) ;
-        if (filterStatus) {
-            entities = roleService.getAllRoleByStatus(Status.valueOf(status));
-        } else {
-            entities = roleService.getAllRole();
-        }
-        if (!Collections3.isEmpty(entities)) {
-            for (Role r : entities) {
-                disable = Strings.equals(r.getStatus(), Status.disable.getCode());
-                nodeList.add(new TreeResult(r.getId(), r.getName(), disable ? "red" : Strings.EMPTY, Strings.EMPTY));
+        List<TreeResult> rootNodes = Lists.newArrayList();
+        TreeResult temp;
+        for (RoleTypes type : RoleTypes.values()) {
+            temp = new TreeResult(type.getCode(), type.getName(), null, "typeNode");
+            temp.setOpen(true);
+            entities = roleService.getAllRoleByType(type.getCode());
+            if (Collections3.isNotEmpty(entities)) {
+                for (Role r : entities) {
+                    if (isFilterStatus && !Strings.equals(status, r.getStatus()))
+                        continue;
+                    temp.getChildren().add(new TreeResult(r.getId(), r.getName(), null, r.getType()));
+                }
             }
+            rootNodes.add(temp);
         }
 
-        return nodeList;
+        return rootNodes;
     }
 
     /**

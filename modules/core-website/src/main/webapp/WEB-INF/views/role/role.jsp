@@ -31,10 +31,19 @@
                     <button type="button" class="btn btn-white" id="doAction">应用</button>
                     &nbsp;&nbsp;
                         <select class="form-control" name="search_EQS_type" id="search_EQS_type">
-                            <option value="" selected="selected">--所有分类--</option>
-                            <option value="doStatusDisable">禁用角色</option>
-                            <option value="doStatusEnable">启用角色</option>
+                            <option value="" selected="selected">--显示所有分类--</option>
+                            <c:forEach items="${typeList}" var="t">
+                                <option value="${t.code}">${t.name}</option>
+                            </c:forEach>
                         </select>
+                        &nbsp;&nbsp;
+                        <select class="form-control" name="search_EQS_status" id="search_EQS_status">
+                            <option value="" selected="selected">--显示所有状态--</option>
+                            <c:forEach items="${statusList}" var="s">
+                                <option value="${s.code}">${s.name}</option>
+                            </c:forEach>
+                        </select>
+
                     &nbsp;&nbsp;
                     <select class="form-control" onchange="$('#searchInput').attr('name',$(this).val() )">
                         <option value="search_LIKES_name">名称</option>
@@ -182,7 +191,19 @@
         })
         //查看
         oTable.on('click.lework', '.view', function () {
-            console.log('view');
+            var rowData = $(this).data();
+            dialog.ajaxModal({
+                id: 'VIEW_DIALOG',
+                lock: false,
+                title: '查看角色"{name}"'.format(rowData),
+                width: 630,
+                height: 300,
+                padding: '0',		// 内容与边界填充距离
+                ajax: {type: 'get', url: 'role/view', data: $(this).data()  },
+                okVal: null,
+                cancelVal: '关闭',
+                ok: null
+            })
         })
         //新建
         $('#create-function').on('click.lework', function () {

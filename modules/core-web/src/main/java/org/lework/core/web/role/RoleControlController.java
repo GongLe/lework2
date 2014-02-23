@@ -219,7 +219,7 @@ public class RoleControlController extends AbstractController {
     @RequestMapping(value = "/getRoleTreeByGroupId", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
-    List<TreeResult> getRoleTreeByGroupId(@RequestParam(value = "groupId", required = true) String groupId) {
+    List<TreeResult>  getRoleTreeByGroupId(@RequestParam(value = "groupId", required = true) String groupId) {
 
 
         boolean disable; //高亮状态
@@ -249,10 +249,10 @@ public class RoleControlController extends AbstractController {
      * @param search   用户名||登录名
      * @return Datatables Json Data
      */
-    @RequestMapping(value = "/geRoleRelatedUserJson", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/getRoleRelateUser", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
-    DataTableResult<User> geRoleRelatedUserJson(@PageableDefault(page = 0, size = 15) Pageable pageable,
+    DataTableResult<User> getRoleRelateUser(@PageableDefault(page = 0, size = 15) Pageable pageable,
                                                 @RequestParam(value = "roleId") String roleId,
                                                 @RequestParam(value = "search", required = false) String search) {
 

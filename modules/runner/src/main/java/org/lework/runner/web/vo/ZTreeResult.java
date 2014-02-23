@@ -21,14 +21,13 @@ import java.util.Map;
 *         children: an array nodes defines some children nodes
  * </pre>
  */
-public class TreeResult implements Serializable {
-    public final static String STATE_OPEN = "open";
-    public final static String STATE_CLOSED = "closed";
+public class ZTreeResult implements Serializable {
 
-    public TreeResult() {
+
+    public ZTreeResult() {
     }
 
-    public TreeResult(String id, String text, String iconCls, String type) {
+    public ZTreeResult(String id, String text, String iconCls, String type) {
         this.id = id;
         this.text = text;
         this.iconCls = iconCls;
@@ -42,11 +41,10 @@ public class TreeResult implements Serializable {
     private String state;
 
     private Boolean checked = false;
-    private Boolean open = false;
     private String iconCls;
     private Map attributes = new HashMap();
 
-    private List<TreeResult> children = new ArrayList<TreeResult>();
+    private List<ZTreeResult> children = new ArrayList<ZTreeResult>();
 
     /**
      * 添加属性
@@ -55,7 +53,7 @@ public class TreeResult implements Serializable {
      * @param value
      * @return 返回this 当前对象实例,可继续使用其它API, 链式操作.
      */
-    public TreeResult addAttribute(String name, Object value) {
+    public ZTreeResult addAttribute(String name, Object value) {
         getAttributes().put(name, value);
         return this;
     }
@@ -67,9 +65,7 @@ public class TreeResult implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public String getName(){
-        return  this.text;
-    }
+
     public String getText() {
         return text;
     }
@@ -102,11 +98,11 @@ public class TreeResult implements Serializable {
         this.attributes = attributes;
     }
 
-    public List<TreeResult> getChildren() {
+    public List<ZTreeResult> getChildren() {
         return children;
     }
 
-    public void setChildren(List<TreeResult> children) {
+    public void setChildren(List<ZTreeResult> children) {
         this.children = children;
     }
 
@@ -118,11 +114,5 @@ public class TreeResult implements Serializable {
         this.iconCls = iconCls;
     }
 
-    public Boolean getOpen() {
-        return open;
-    }
 
-    public void setOpen(Boolean open) {
-        this.open = open;
-    }
 }
