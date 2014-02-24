@@ -9,24 +9,26 @@
 <div id="userCheckItems">
     <c:forEach items="${users}" var="user">
         <c:if test="${user.selected == true}">
-            <div class="checkbuttonOk  panelcheck" data-role-id="${roleId}" data-user-id="${user.id}"  data-user-name="${user.name}" >
+            <div class="checkbuttonOk  panelcheck" data-role-id="${roleId}" data-user-id="${user.id}"  data-user-ids="${user.id}"  data-user-name="${user.name}" >
                 <div data-id="${user.id}" class="checktext" title="${user.name}"> <i class="icon-user blue"></i>&nbsp;&nbsp;${user.name}
                 </div>
                 <div class="triangleOk"></div>
             </div>
         </c:if>
         <c:if test="${user.selected == false}">
-            <div class="checkbuttonNo  panelcheck" data-role-id="${roleId}" data-user-id="${user.id}"  data-user-name="${user.name}">
+            <div class="checkbuttonNo  panelcheck" data-role-id="${roleId}" data-user-id="${user.id}" data-user-ids="${user.id}"  data-user-name="${user.name}">
                 <div data-id="${user.id}" class="checktext" title="${user.name}"> <i class="icon-user blue"></i>&nbsp;&nbsp;${user.name}
                 </div>
                 <div class="triangleNo"></div>
             </div>
         </c:if>
     </c:forEach>
+    <c:if test="${ empty users}">
+         <div class="alert alert-warning">无记录</div>
+    </c:if>
 </div>
 <script>
-
-    $(function(){
+    seajs.use(['mustache', 'jquery', 'notify', 'dialog', 'datatables', 'confirmDelete', 'ztree' ], function (mustache, $, notify, dialog) {
         $('#userCheckItems').on('click', '.panelcheck', function () {
             if ($(this).hasClass('checkbuttonNo')) {   //选中
                 $(this).removeClass('checkbuttonNo')
@@ -45,38 +47,36 @@
             }
         });
 
-        /**
-         * 添加角色成员
-         */
-        function createRelateUser(param) {
 
-            $.hiddenSubmit({
-                formAction: 'roleControl/createRelateUser',
-                data: [
-                    {name: 'userId', value: param.userId } ,
-                    {name: 'userName', value: param.userName } ,
-                    {name: 'roleId', value: param.roleId }
-                ],
-                complete: null
+        function createRelateUser(param) {
+            $.ajax({
+                url: 'roleControl/createRelateUser',
+                data: param,
+                cache: false,
+                type: 'post',
+                success: function (resp) {
+                    notify({content: resp.msg});
+
+                }
             })
+
         }
 
-        /**
-         *解除角色成员
-         */
         function removeRelatedUser(param) {
-            $.hiddenSubmit({
-                formAction: 'roleControl/removeRelatedUser',
-                data: [
-                    {name: 'userId', value: param.userId } ,
-                    {name: 'userName', value: param.userName } ,
-                    {name: 'roleId', value: param.roleId }
-                ],
-                complete: null
+            $.ajax({
+                url:  'roleControl/removeRelatedUser',
+                data: param,
+                cache: false,
+                type: 'post',
+                success: function (resp) {
+                    notify({content: resp.msg});
+
+                }
             })
         }
 
     });
+
 </script>
 </body>
 </html>

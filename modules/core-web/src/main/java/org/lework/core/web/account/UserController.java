@@ -52,8 +52,7 @@ public class UserController    {
     private OrganizationService organizationService;
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
-    public String resetPassword(Model model,
-                                @RequestParam(value = "userIds")  String  userIds) {
+    public String resetPassword(Model model, @RequestParam(value = "userIds")  String  userIds) {
         List<String> userIdList = Lists.newArrayList(Strings.split(userIds, ","));
         List<User> users = accountService.getUserByIds(userIdList);
         String userNames = Collections3.extractToString(users, "name", ",");
@@ -187,6 +186,7 @@ public class UserController    {
         model.addAttribute("statusList" , Status.values() ) ;
         return "user/user-view";
     }
+
 
     /**
      * 批量操作处理

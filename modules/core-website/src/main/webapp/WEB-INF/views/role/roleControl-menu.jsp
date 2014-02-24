@@ -1,93 +1,97 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
+<div class="row">
+    <div class="col-md-12">
+        <nav class="navbar navbar-default" role="navigation" style="min-height:35px;margin-top: 15px;">
+            <div class="collapse navbar-collapse"  >
+                <button type="button" class="btn btn-danger btn-sm  navbar-btn" id="saveRoleMenu">保存</button>
 
-<!DOCTYPE html>
-<html>
-<body>
-<div id="menuTreeGridContainer" style="max-height:500px;">
-    <div class="table-funtion-bar clear-both" style="margin:5px 0 10px 0;padding: 4px 10px 4px;" id="menuBar"  >
-        <div class="btn-group" style="padding-top:4px;">
-            <button class="btn btn-small  no-border tooltips" id="refreshMenu-function" data-original-title="刷新" data-placement="bottom">
-                <i class="icon-refresh"></i>
-            </button>
+            </div>
+        </nav>
+        <div class="clearfix dataTables_wrapper" style="font-size: 18px;" >
+            <table id="menuTreetable" class="table table-hover  dataTable dataTable-nosort clear-both treetable">
+                <thead>
+                <tr >
+                    <th ><input type="checkbox" class="row-check-all" ></th>
+                    <th>icon</th>
+                    <th>名称</th>
+                    <th>编码</th>
+                    <th>UIR</th>
+                    <th class="text-center">状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--jstl递归输出tree grid result-->
+                <c:forEach items="${treeGridDTOs}" varStatus="varStatus" var="treeNode">
+                    <c:set var="node" value="${treeNode}" scope="request"/>
+                    <c:import url="/WEB-INF/views/role/roleControl-treetable-recurse.jsp"/>
+                    <c:remove var="node" scope="request"/>
+                </c:forEach>
+
+                </tbody>
+            </table>
+
         </div>
-        <button class="btn btn-small btn-danger no-border tooltips" style="margin-top:4px;" id="saveMenu-function" data-original-title="保存" data-placement="bottom" >
-            <i class="icon-save"></i>保存
-        </button>
-    </div> <!--/.table-funtion-bar-->
-    <table id="menuTreeGrid" style="width:640px;height:450px;" ></table>
-</div>
-<script>
-    $(function () {
-        window.saveRelatedMenuCallback = function (resp) {
-            var json = resp.attributes;
-            lework.alert({content: json.message, type: json.type,
-                timer: 1500,
-                onClose: null })
-        }
-        var checkedIdsArr = ${checkedIds}, roleId = '${roleId}';
-        var $menuTreeGrid = $('#menuTreeGrid');
-        var hasCheck;
-        var saveBtnTpl = ' <button  class="btn btn-minier btn-danger" id="saveMenu" title="保存"><i class="icon-save"></i>保存</button>';
-        $menuTreeGrid.width($('#shouQuan').width() * 0.95);
-        using(['treegrid'], function () {
-            $menuTreeGrid.treegrid({
-                url: 'menu/getTreeGrid',
-                method: 'post',
-                rownumbers: false,
-                idField: 'id',
-                treeField: 'name',
-                columns: [
-                    [
-                        {field: 'id', title: '选择', width: 60, align: 'center', formatter: function (value, row, index) {
-                            hasCheck = checkedIdsArr.indexOf(value) != -1 ? 'checked="checked"' : '';
-                            return '<input type="checkbox" {0} name="checkedMenuId"  id="{1}" />'.format(hasCheck, value);
-                        }},
-                        {field: 'name', title: '菜单名称', width: 160},
-                        {field: 'code', title: '菜单代码', width: 115, align: 'left'},
-                        {field: 'url', title: 'URL', width: 270}
-                    ]
-                ],
-                onClickRow: function (row) {
-                },
-                onSelect: function (node) {
-                },
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                    //修复 treegrid IE下border-right不可见bug.
-                    var $wrap = $('.datagrid-wrap');
-                    $wrap.width($wrap.width() - 2);
-                    //默认选择根节点.
-                    var root = $menuTreeGrid.treegrid('getRoot');
 
+    </div>
+</div>
+
+<script>
+    seajs.use([ 'jquery', 'notify', 'dialog', 'treetable', 'confirmDelete','blockUI' ], function ($, notify, dialog) {
+        $(function () {
+            var oTable = $('#menuTreetable') ,checkedIdsArr = ${checkedIds};
+            var roleId = '${roleId}';
+            //刷新表格
+            window.refreshDatatables = function () {
+              //  $.isFunction(loadTreetable) &&  loadTreetable();
+            };
+            var  initCheckbox = function(){
+                oTable.find('.row-check-one:checkbox').each(function(){
+                    if (checkedIdsArr.indexOf($(this).val()) !=-1 ) {
+                        $(this).prop('checked', true)
+                    }
+                })
+            }
+            oTable.treetable({
+                expandable: true,
+                initialState: 'expanded',  //"expanded" or "collapsed".
+                onInitialized:function(){
+                    initCheckbox();
+                },
+                onNodeCollapse: function () {
+                },
+                onNodeExpand: function () {
                 }
             });
-
-        }); //using
-        $('#refreshMenu-function').on('click',function(){
-            $menuTreeGrid.treegrid('reload');
-        })
-        $('#saveMenu-function').on('click',  function (e) {
-            e.preventDefault();
-
-            $('#menuTreeGridContainer').block();
-            var selectedIdsJson = $('input[name="checkedMenuId"]:checked', '#menuTreeGridContainer')
-                    .map(function () {
-                        return {'name': 'checkedMenuId', 'value': this.id };
-                    })
-                    .get();
-            selectedIdsJson.push({'name': 'roleId', value: roleId});
-            //保存操作
-            $.hiddenSubmit({
-                formAction: 'roleControl/saveRelatedMenu',
-                data: selectedIdsJson,
-                complete: function () {
-                    $('#menuTreeGridContainer').unblock()
+            //表格全选,反选操作
+            oTable.on('change.lework', '.row-check-all:checkbox', function () {
+                if ($(this).prop('checked')) {
+                    oTable.find('.row-check-one').prop('checked', true)
+                } else {
+                    oTable.find('.row-check-one').prop('checked', false)
                 }
             })
+            $('#saveRoleMenu').confirmDelete({
+                text:' 确认保存？',
+                onConfirm: function () {
+                    var selectedRowIds = oTable.find('.row-check-one:checked')
+                            .map(function () {
+                                return $(this).val();
+                            }).get().join(',');
+
+                    $.ajax({
+                        url: 'roleControl/saveRelatedMenu',
+                        data: {'checkedMenuIds': selectedRowIds, 'roleId': roleId },
+                        cache: false,
+                        type: 'post',
+                        success: function (resp) {
+                            notify({content: resp.msg});
+                        }
+                    })
+                }
+            });//confirmDelete
 
         })
-    }) //dom ready
+    })
 </script>
-</body>
-</html>
+

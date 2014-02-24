@@ -31,9 +31,7 @@
         $(document).ready(function () {
             var setting = {
                 callback: {
-                    beforeClick: zTreeBeforeClick,
-                    onClick: zTreeOnClick,
-                    onCheck: zTreeOnCheck
+                    beforeClick: zTreeBeforeClick
                 }
             } , zNodes = [] , treeObj;
             $.ajax({
@@ -46,12 +44,7 @@
                     onloadActiveOneNode();
                 }
             })
-            function zTreeOnCheck(event, treeId, treeNode) {
-                console.log("zTreeOnClick : " + treeNode.tId + ", " + treeNode.name);
-            };
-            function zTreeOnClick(event, treeId, treeNode) {
-                console.log("zTreeOnClick : " + treeNode.tId + ", " + treeNode.name);
-            };
+
             function zTreeBeforeClick(treeId, treeNode, clickFlag) {
                 //加载tab页
                 if (treeNode['attributes']['type'] == 'typeNode') {
@@ -69,9 +62,9 @@
                 if (nodes.length > 0) {
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i]['children'] && nodes[i]['children'].length>0){
-                            treeObj.selectNode(selectNode=nodes[i]['children'][0]);
-                            //触发点击事件
-                            treeObj.setting.callback.onClick(null, treeObj.setting.treeId, selectNode);
+                            selectNode=nodes[i]['children'][0]
+                            //ztree 节点触发点击事件
+                            $('#' + selectNode.tId+'_a').trigger('click')
                             break;
                         }
 

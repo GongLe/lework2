@@ -229,6 +229,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             if (Collections3.contain(ignore, root))
                 continue;
             temp = convert2TreeNode(root);
+            temp.setOpen(true);
             rootNodes.add(temp);
             //递归
             fetchChild4Tree(root, temp, ignore);

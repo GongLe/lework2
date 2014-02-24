@@ -1,23 +1,21 @@
 package org.lework.core.web.role;
 
 import com.google.common.collect.Lists;
-import org.lework.core.common.enumeration.RoleTypes;
 import org.lework.core.common.enumeration.Status;
 import org.lework.core.persistence.entity.menu.Menu;
-import org.lework.core.persistence.entity.organization.Organization;
 import org.lework.core.persistence.entity.role.Role;
 import org.lework.core.persistence.entity.user.User;
 import org.lework.core.service.account.AccountService;
 import org.lework.core.service.menu.MenuService;
+import org.lework.core.service.menu.MenuTreeGridDTO;
 import org.lework.core.service.organization.OrganizationService;
 import org.lework.core.service.role.RoleService;
 import org.lework.runner.mapper.JsonMapper;
 import org.lework.runner.utils.Collections3;
 import org.lework.runner.utils.Strings;
 import org.lework.runner.web.AbstractController;
-import org.lework.runner.web.CallbackData;
-import org.lework.runner.web.NotificationType;
 import org.lework.runner.web.datatables.DataTableResult;
+import org.lework.runner.web.vo.JsonResult;
 import org.lework.runner.web.vo.TreeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,12 +23,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,50 +53,6 @@ public class RoleControlController extends AbstractController {
     public String list() {
 
         return "role/roleControl";
-    }
-
-    /**
-     * 修改页面
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String update(@ModelAttribute("entity") Role role,
-                         Model model) {
-        model.addAttribute("statusList",  Status.values());
-        model.addAttribute("typeList", RoleTypes.values());
-
-        model.addAttribute("checkedPermissionIds", null);
-
-        return "role/roleControl-update";
-    }
-
-    /**
-     * 保存
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public void update(@Valid @ModelAttribute("entity") Role entity, BindingResult result,
-                       @RequestParam(value = "groupId" ,required = false) String groupId ,
-                       HttpServletResponse response) {
-        //关联组
-        Organization group = organizationService.getOrganization(groupId);
-        if (group != null) {
-            entity.setGroupId(group.getId());
-            entity.setGroupName(group.getName());
-        } else { //取消关联
-            entity.setGroupId(null);
-            entity.setGroupName(null);
-        }
-        if (result.hasErrors()) {
-            callback(response, CallbackData.build("actionCallback", "角色&quot;" + entity.getName() + "&quot保存失败", NotificationType.ERROR));
-        }
-        try {
-            //保存
-            roleService.saveRole(entity);
-            callback(response, CallbackData.build("actionCallback", "角色&quot;" + entity.getName() + "&quot保存成功", NotificationType.DEFAULT));
-        }catch (Exception e){
-            e.printStackTrace();
-            callback(response, CallbackData.build("actionCallback", "角色&quot;" + entity.getName() + "&quot保存失败", NotificationType.ERROR));
-        }
-
     }
 
     /**
@@ -144,17 +96,24 @@ public class RoleControlController extends AbstractController {
      *
      * @param roleId   角色ID
      * @param userId   用户ID
-     * @param response
      */
     @RequestMapping(value = "/createRelateUser", method = RequestMethod.POST)
-    public void createRelateUser(@RequestParam(value = "roleId") String roleId,
-                                 @RequestParam(value = "userId") String userId,
-                                 @RequestParam(value = "userName", required = false) String userName,
-                                 HttpServletResponse response) {
-        Role role = roleService.getRole(roleId);
-        roleService.createRelateUser(role, userId);
-        callback(response, CallbackData.build("createRelateCallback", "添加成员&quot;" + userName + " &quot;成功",
-                NotificationType.DEFAULT));
+    public
+    @ResponseBody
+    JsonResult createRelateUser(@RequestParam(value = "roleId") String roleId,
+                                @RequestParam(value = "userId") String userId,
+                                @RequestParam(value = "userName", required = false) String userName ) {
+
+        JsonResult jsonResult = JsonResult.failure("添加成员&quot;" + userName + " &quot;失败");
+        try {
+            Role role = roleService.getRole(roleId);
+            roleService.createRelateUser(role, userId);
+            jsonResult = JsonResult.success("添加成员&quot;" + userName + " &quot;成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("删除异常:{}", e);
+        }
+        return jsonResult;
     }
 
     /**
@@ -162,17 +121,31 @@ public class RoleControlController extends AbstractController {
      *
      * @param roleId   角色ID
      * @param userId   用户ID
-     * @param response
      */
     @RequestMapping(value = "/removeRelatedUser", method = RequestMethod.POST)
-    public void removeRelatedUser(@RequestParam(value = "roleId") String roleId,
-                                  @RequestParam(value = "userId") String userId,
-                                  @RequestParam(value = "userName", required = false) String userName,
-                                  HttpServletResponse response) {
-        Role role = roleService.getRole(roleId);
-        roleService.removeRelatedUser(role, userId);
-        callback(response, CallbackData.build("removeRelatedCallback", "解除成员&quot;" + userName + " &quot;成功",
-                NotificationType.DEFAULT));
+    public
+    @ResponseBody
+    JsonResult removeRelatedUser(@RequestParam(value = "roleId") String roleId,
+                                 @RequestParam(value = "userIds") String userIds,
+                                 @RequestParam(value = "userName", required = false) String userName) {
+        JsonResult jsonResult = JsonResult.failure("解除成员&quot;" + userName + " &quot;失败");
+        try {
+            String[] ids = Strings.split(userIds, ",");
+            Role role = roleService.getRole(roleId);
+            for (String id : ids) {
+                roleService.removeRelatedUser(role, id);
+            }
+            if(Strings.isNotBlank(userName)){
+                jsonResult = JsonResult.success("解除成员&quot;" + userName + " &quot;成功");
+            }else{
+                jsonResult = JsonResult.success("解除成员成功");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("删除异常:{}", e);
+        }
+        return jsonResult;
     }
 
     /**
@@ -183,9 +156,12 @@ public class RoleControlController extends AbstractController {
         List<String > checkedIds = Collections3.extractToList(menuService.getRoleMenus(roleId), "id");
         model.addAttribute("checkedIds", new JsonMapper().toJson(checkedIds));
         model.addAttribute("roleId",roleId );
+        List<MenuTreeGridDTO>  treeGridDTOs =   menuService.getMenuTreeGrid(null) ;
+        model.addAttribute("treeGridDTOs",treeGridDTOs) ;
+
         return "role/roleControl-menu";
     }
-     //TODO save relate menu action
+
 
     /**
      * 授权角色菜单给角色.
@@ -195,22 +171,32 @@ public class RoleControlController extends AbstractController {
      * @param response
      */
     @RequestMapping(value = "/saveRelatedMenu", method = RequestMethod.POST)
-    public void saveRelatedMenu(@RequestParam(value = "roleId") String roleId,
-                                @RequestParam(value = "checkedMenuId", required = false) List<String> checkedMenuIds,
-                                HttpServletResponse response) {
-        Role role = roleService.getRole(roleId);
+    public
+    @ResponseBody
+    JsonResult saveRelatedMenu(@RequestParam(value = "roleId",required = true) String roleId,
+                              @RequestParam(value = "checkedMenuIds", required = false) String checkedMenuIds) {
+        JsonResult jsonResult = JsonResult.failure("授权菜单失败");
         //关联菜单
-        if (Collections3.isNotEmpty(checkedMenuIds)) {
-            List<Menu> menus = menuService.getMenusByIds(checkedMenuIds);
-            role.getMenus().clear();
-            role.getMenus().addAll(menus);
-        } else {
-            role.setMenus(null);
+        try {
+            Role role = roleService.getRole(roleId);
+            //关联菜单
+            if (Strings.isNotBlank(checkedMenuIds)) {
+                List<String> menuIds = Arrays.asList(Strings.split(checkedMenuIds, ","));
+                List<Menu> menus = menuService.getMenusByIds(menuIds);
+                role.getMenus().clear();
+                role.getMenus().addAll(menus);
+            } else {
+                role.setMenus(null);
+            }
+            roleService.saveRole(role);
+            jsonResult = JsonResult.success("授权&quot;\"" + role.getName() + "\" &quot;菜单成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("删除异常:{}", e);
         }
-        roleService.saveRole(role);
-        callback(response, CallbackData.build("saveRelatedMenuCallback", "授权&quot;\"" + role.getName() + "\" &quot;菜单成功",
-                NotificationType.DEFAULT));
+        return jsonResult;
     }
+
 
     /**
      * 根据角色组ID加载所属角色
@@ -259,6 +245,7 @@ public class RoleControlController extends AbstractController {
         Page<User> page = accountService.searchUserPageByRoleId(pageable, roleId, search);
         return DataTableResult.build(page);
     }
+
 
 
     /**

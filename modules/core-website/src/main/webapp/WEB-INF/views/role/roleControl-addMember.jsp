@@ -1,111 +1,69 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>添加成员</title>
-    <style type="text/css">
-        .box-title {
-            border-bottom: 1px dashed #c5d0dc !important;
-        }
-        #memberContainer .west {
-            width: 28%;
-            min-height: 300px;
-            border-right: 1px dashed #c5d0dc;
-        }
-        #memberContainer  .west h6 {
-            margin: 5px 10px;
-        }
-        #memberContainer  .middle {
-            width: 70%;
-            min-height: 300px;
-            padding:0 0 0 5px;
-            border-right: none;
-            overflow: auto;
-        }
-        #memberContainer  .middle h6 {
-            margin: 5px 10px;
-        }
-    </style>
-</head>
-<body>
- <div class="modal-content" >
-     <form  method="post" id="inputForm" name="inputForm"
-            class="no-margin form-horizontal offset-30 error-inline" >
-         <div class="modal-header" style="padding:5px 15px 0 5px">
-             <small class="grey">
-                 添加用户到角色
-             </small>
+ <div id="memberContainer" style="width:800px;min-height: 350px;padding: 10px 20px 0px 20px;">
+     <div class="row ">
+         <div class="col-sm-12">
+             <div class="alert alert-info " style="margin-bottom: 5px;">${role.name}(${role.code})</div>
          </div>
-
-         <div class="modal-body ">
-             <div class="row-fluid ">
-                 <div class="span12"  >
-                     <div class="box  box-bordered-no ">
-                         <div class="box-title no-margin-top no-padding-top no-padding-left" >
-                             <div class="alert no-margin-bottom">${role.name}(${role.code})</div>
-                         </div>
-                         <div class="box-content no-padding " id="memberContainer">
-
-                             <div class="pull-left west" >
-                                 <h6  class="smaller lighter blue">部门</h6>
-                                 <ul id="orgTree" style="padding:5px 10px 0 5px;" ></ul>
-                             </div>
-                             <div class="pull-left middle"  >
-                                 <h6  class="smaller lighter blue text-left">成员</h6>
-                                 <div id="userItems">
-                                    加载中...
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                     <!--/.box-->
-                 </div>
-
+         <div class="col-sm-4" style="height: 400px;border-right:1px solid #c0c0c0;" >
+             <h6  class="smaller lighter blue">部门</h6>
+             <ul id="orgTree" class="ztree"></ul>
+         </div>
+         <div class="col-sm-8">
+             <h6  class="smaller lighter blue text-left">成员</h6>
+             <div id="userItems">
+                 加载中...
              </div>
-         </div><!--/.modal-body-->
-         <div class="modal-footer">
-             <button type="button" class="btn btn-small" onclick="$.colorbox.close()">
-                 关闭
-             </button>
          </div>
-     </form>
+
+     </div>  <!--/.row-->
  </div>
 <script>
-    //组织结构树
-    var $orgTree = $('#orgTree', '#inputForm');
-    $(function () {
-        var loadOrgTree = function () {
-            $orgTree.tree({
-                url: 'organization/getTree',
-                method: 'get',
-                checkbox: false,
-                onLoadSuccess: function (node, data) {
-                    //默认选择根节点.
-                    var root = $orgTree.tree('getRoot');
-                    $orgTree.tree('select', root.target);
-                },
-                onSelect: function (node) {
-                    loadCheckUserItems(node.id, '${role.id}');
+    seajs.use(['mustache', 'jquery', 'notify', 'dialog', 'datatables', 'confirmDelete', 'ztree' ], function (mustache, $, notify, dialog) {
+
+        $(function () {
+            var roleId = '${role.id}',$orgTree  = $('#orgTree')  ;
+            //ztree
+            var setting = {
+                callback: {
+                    beforeClick: zTreeBeforeClick
                 }
-            });
-        }
+            } , zNodes = [] , treeObj;
+            $.ajax({
+                url: 'organization/getTree',
+                data: {'_': (new Date()).getTime() },
+                cache: false,
+                type: 'post',
+                success: function (resp) {
+                    treeObj=  $.fn.zTree.init($orgTree, setting, resp);
+                   onloadActiveOneNode();
+                }
+            })
 
-        using(['tree'], function () {
-            loadOrgTree();
-        }) //using
+            function zTreeBeforeClick(treeId, treeNode, clickFlag) {
+                loadCheckUserItems(treeNode.id,roleId) ;
+                return  true;
+            };
+            /**
+             *加载完成后激活第一个节点.
+             */
+            function onloadActiveOneNode(){
+                var nodes = treeObj.getNodes() ;
+                if (nodes.length > 0) {
+                    $('#' + nodes[0].tId+'_a').trigger('click')
+                }
+            }
 
-        //对应的User选项列表
-        function loadCheckUserItems(orgId, roleId) {
-            $('#userItems').load('roleControl/addMember-checkUser?' + $.param({
-                '$SiteMesh': false,
-                _d: lework.time(),
-                roleId: roleId,
-                orgId: orgId
-            }));
-        }
-    });
+            //对应的User选项列表
+            function loadCheckUserItems(orgId, roleId) {
+                $('#userItems').load2('roleControl/addMember-checkUser?',{
+                    '$SiteMesh': false,
+                    roleId: roleId,
+                    orgId: orgId
+                } );
+            }
+        }) //dom ready
+    })//seajs use
+
+
 </script>
-</body>
-</html>
