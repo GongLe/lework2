@@ -7,11 +7,11 @@
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:set var="recurseNode" value="${requestScope.node}"/>
-<tr data-tt-id="${recurseNode.id}" <c:if test="${ not empty recurseNode.parentId}">  data-tt-parent-id="${recurseNode.parentId}"</c:if>  >
-<td><input type="checkbox" value="${recurseNode.id}" class="row-check-one" ></td>
-<td><c:if test="${not empty recurseNode.icon}"><i class="${recurseNode.icon}"></i></c:if>  </td>
-<td>${recurseNode.name} </td>
-<td>${recurseNode.code}</td>
+<tr data-tt-id="${recurseNode.id}" <c:if  test="${ not empty recurseNode.parentId}"> data-tt-parent-id="${recurseNode.parentId}"</c:if>  >
+    <td><input type="checkbox" value="${recurseNode.id}" class="row-check-one"></td>
+    <td><c:if test="${not empty recurseNode.icon}"><i class="${recurseNode.icon}"></i></c:if></td>
+    <td>${recurseNode.name} </td>
+    <td>${recurseNode.code}</td>
  <td>${recurseNode.url}</td>
 <td class="text-center">
     <c:choose>

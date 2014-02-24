@@ -1,13 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/included/taglibs.jsp" %>
 <div class="row">
-    <div class="col-md-12">
-        <nav class="navbar navbar-default" role="navigation" style="min-height:35px;margin-top: 15px;">
-            <div class="collapse navbar-collapse"  >
-                <button type="button" class="btn btn-danger btn-sm  navbar-btn" id="saveRoleMenu">保存</button>
 
-            </div>
-        </nav>
+    <div class="col-md-12">
+        <button type="button" class="btn btn-danger btn-sm" id="saveRoleMenu"
+                style="margin-bottom:10px;"><i class="icon-save"></i> 保存</button>
+    </div>
+    <div class="col-md-12">
         <div class="clearfix dataTables_wrapper" style="font-size: 18px;" >
             <table id="menuTreetable" class="table table-hover  dataTable dataTable-nosort clear-both treetable">
                 <thead>
