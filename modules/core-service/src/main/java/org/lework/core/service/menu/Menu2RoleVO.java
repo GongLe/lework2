@@ -18,7 +18,7 @@ public class Menu2RoleVO {
         this.code = role.getCode();
         this.status = role.getStatus();
         this.type = role.getType();
-        this.groupName = role.getGroupName();
+      //  this.groupName = role.getGroupName();
         this.description = role.getDescription();
         this.sortNum = role.getSortNum();
 

@@ -28,10 +28,10 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
      */
     /**
      * 按JPQL分页查询.
-     *主表需要使用 x作为别名.
+     *主表需要使用<strong> x </strong>作为别名.
      *eg: select x from Role x inner join x.menus m  where m.id=?1
      * @param pageable Spring data jpa 分页对象
-     * @param jpql     hql语句.
+     * @param jpql     jpql语句.
      * @param values   数量可变的查询参数,按顺序绑定.
      * @return 分页查询结果, 附带结果列表及所有查询输入参数.
      * @see org.springframework.data.domain.Pageable
@@ -40,8 +40,8 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
     public Page<T> findPage(final Pageable pageable, String jpql, final Object... values) {
         Validate.notNull(pageable, "pageable不能为空");
 
-        long totalCount = countHqlResult(jpql, values);
-        jpql = setOrderParameterToHql(jpql, pageable);
+        long totalCount = countJpqlReuslt(jpql, values);
+        jpql = setOrderParameterToJpql(jpql, pageable);
         Query q = createQuery(jpql, values);
         setPageParameterToQuery(q, pageable);
 
@@ -52,10 +52,10 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
 
     /**
      * 按JPQL分页查询.
-     *主表需要使用 x作为别名.
+     *主表需要使用<strong> x </strong>作为别名..
      *eg: select x from Role x inner join x.menus m  where m.id=?1
      * @param pageable Spring data jpa 分页对象
-     * @param jpql     hql语句.
+     * @param jpql     jpql语句.
      * @param values   数量可变的查询参数,按别名绑定.
      * @return 分页查询结果, 附带结果列表及所有查询输入参数.
      * @see org.springframework.data.domain.Pageable
@@ -64,8 +64,8 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
     public Page<T> findPage(final Pageable pageable, String jpql, final Map<String, ?> values) {
         Validate.notNull(pageable, "pageable不能为空");
 
-        long totalCount = countHqlResult(jpql, values);
-        jpql = setOrderParameterToHql(jpql, pageable);
+        long totalCount = countJPQLResult(jpql, values);
+        jpql = setOrderParameterToJpql(jpql, pageable);
         Query q = createQuery(jpql, values);
         setPageParameterToQuery(q, pageable);
 
@@ -77,7 +77,7 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
     /**
      * 在JPQL的后面添加分页参数定义的orderBy, 辅助函数.
      */
-    protected String setOrderParameterToHql(final String jpql, final Pageable pageable) {
+    protected String setOrderParameterToJpql(final String jpql, final Pageable pageable) {
         if (pageable.getSort() == null)
             return jpql;
         StringBuilder builder = new StringBuilder(jpql);
@@ -107,9 +107,9 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
     /**
      * 执行count查询获得本次Hql查询所能获得的对象总数.
      * <p/>
-     * 本函数只能自动处理简单的hql语句,复杂的hql查询请另行编写count语句查询.
+     * 本函数只能自动处理简单的jpql语句,复杂的jpql查询请另行编写count语句查询.
      */
-    protected Long countHqlResult(final String jpql, final Object... values) {
+    protected Long countJpqlReuslt(final String jpql, final Object... values) {
         String countHql = prepareCountHql(jpql);
 
         try {
@@ -123,9 +123,9 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
     /**
      * 执行count查询获得本次Hql查询所能获得的对象总数.
      * <p/>
-     * 本函数只能自动处理简单的hql语句,复杂的hql查询请另行编写count语句查询.
+     * 本函数只能自动处理简单的jpql语句,复杂的jpql查询请另行编写count语句查询.
      */
-    protected long countHqlResult(final String jpql, final Map<String, ?> values) {
+    protected long countJPQLResult(final String jpql, final Map<String, ?> values) {
         String countHql = prepareCountHql(jpql);
 
         try {
@@ -136,9 +136,9 @@ public class JpaDao<T, ID extends Serializable> extends CrudJpaDao<T, ID> {
         }
     }
 
-    private String prepareCountHql(String orgHql) {
-        String countHql = "select count (*) " + removeSelect(removeOrders(orgHql));
-        return countHql;
+    private String prepareCountHql(String jpql) {
+        String countJPQL = "select count (*) " + removeSelect(removeOrders(jpql));
+        return countJPQL;
     }
 
     private static String removeSelect(String jpql) {
